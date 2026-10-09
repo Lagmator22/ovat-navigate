@@ -1,0 +1,298 @@
+<!--
+title: OVAT Guide
+description: Install OVAT, start the model server, run your first agent, chat locally on a Mac, compare engines, use the terminal UI, write workflow.yml and add an MCP tool.
+nav: guide
+-->
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Guide</p>
+    <h1 class="display">From <span class="lit">pip install</span><br>to a real answer.</h1>
+    <p class="lede">Every command in the order you will need it. Each step says what it does and what you should see. If anything goes wrong, <code>ovat doctor</code> is the fastest diagnosis: every yellow row says what to do.</p>
+  </div>
+</section>
+
+<div class="wrap with-toc">
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <a href="#install">Install</a>
+    <a href="#first-run">Your first run</a>
+    <a href="#mac">On a Mac</a>
+    <a href="#bench">Compare engines</a>
+    <a href="#telemetry">Traces and telemetry</a>
+    <a href="#tui">The terminal UI</a>
+    <a href="#yaml">Writing workflow.yml</a>
+    <a href="#mcp">Adding an MCP tool</a>
+    <a href="#models">Picking a model</a>
+    <a href="#trouble">Troubleshooting</a>
+  </nav>
+
+  <div class="arch-body">
+    <section class="arch-sec" id="install" aria-labelledby="install-t">
+      <h2 class="h2" id="install-t">Install</h2>
+      <div class="prose">
+        <p>You need Python 3.10 to 3.14. The full agent needs Windows 11, Ubuntu 22.04 or 24.04, or RHEL 9 on x86-64, because that is where OVMS runs. macOS works for everything except serving. Plan for 8 GB of RAM at least, 16 GB to be comfortable, and about 8 GB of disk (15 GB with RAG).</p>
+      </div>
+      <div class="code">
+        <div class="code-head"><span>terminal</span><button class="copy-btn" type="button" data-copy="pip install ovat" aria-label="Copy"><span class="copy-label">Copy</span></button></div>
+<pre><code><span class="p">$</span> pip install ovat</code></pre>
+      </div>
+      <div class="prose"><p>The base install already has the native engine, all built-in tools, MCP, RAG and telemetry. Extras add only what you ask for:</p></div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Optional extras</caption>
+          <thead><tr><th scope="col">Extra</th><th scope="col">Gives you</th></tr></thead>
+          <tbody>
+            <tr><td><code>langchain</code> <code>llamaindex</code> <code>openai-agents</code></td><td>The matching <code>agent.type</code></td></tr>
+            <tr><td><code>tui</code></td><td>The full-screen terminal UI (<code>ovat</code> with no arguments)</td></tr>
+            <tr><td><code>convert</code></td><td><code>optimum-cli</code>, to convert Hugging Face models to OpenVINO IR (needed for the RAG embedder)</td></tr>
+            <tr><td><code>dev</code></td><td>Every framework above, plus pytest</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code">
+        <div class="code-head"><span>everything at once</span><button class="copy-btn" type="button" data-copy='pip install "ovat[langchain,llamaindex,openai-agents,tui]"' aria-label="Copy"><span class="copy-label">Copy</span></button></div>
+<pre><code><span class="p">$</span> pip install <span class="s">"ovat[langchain,llamaindex,openai-agents,tui]"</span></code></pre>
+      </div>
+      <p class="callout"><strong>Linux needs two system packages first.</strong> A minimal image has no Python, and OVMS needs <code>libxml2</code>. On Ubuntu: <code>sudo apt install -y python3 python3-venv python3-pip libxml2 curl</code>. On RHEL 9: <code>sudo dnf install -y python3 python3-pip libxml2 curl</code>.</p>
+      <p class="callout"><strong>Using a GPU or NPU?</strong> Update the driver first. An old driver usually shows up as the device being missing from <code>ovat doctor</code>, not as an error. On Windows also install the Visual C++ Redistributable, which OVMS needs to start at all.</p>
+    </section>
+
+    <section class="arch-sec" id="first-run" aria-labelledby="first-t">
+      <h2 class="h2" id="first-t">Your first run</h2>
+      <ol class="guide-steps">
+        <li class="guide-step"><div>
+          <h3 class="h3">Install the model server, once</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat setup</code></pre></div>
+          <p>Picks the right OVMS archive for your OS, checks its SHA-256, and unpacks it into <code>~/.ovat/ovms</code>. No <code>PATH</code> edit, no environment variable. Running it again does nothing. On macOS it explains that there is no build and what to use instead.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Write a starter config</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat init workflow.yml</code></pre></div>
+          <p>Writes a <code>workflow.yml</code> tuned to this machine, with the device it detected.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Check the machine and the config</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat doctor workflow.yml</code></pre></div>
+          <p>A table of checks: Python, dependencies, OpenVINO devices, device routing, OVMS, and your config. Green is fine, yellow is a heads-up with the fix written next to it, red needs fixing.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Prove the wiring, with no server</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat run workflow.yml --dry-run
+<span class="t-ok-c">Built agent</span>  model=Qwen3.5-4B-int4-ov  tools=['search_docs', 'transcribe']  max_iterations=10
+<span class="t-warn-c">dry-run:</span> not calling the model.</code></pre></div>
+          <p>Builds the whole agent and stops before calling the model. Works on any machine, including a Mac.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Start OVMS</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat serve workflow.yml</code></pre></div>
+          <p>The first time, this downloads the model: 3.5 GB for the default. It shows elapsed time and only gives up after five minutes with no progress at all, so a slow connection is fine. When OVMS is ready, the prompt comes back and the server keeps running in the background. Its process ID is saved in <code>ovms.pid</code> and its log in <code>ovms.log</code>.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Ask something</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat run workflow.yml -i <span class="s">"summarise my notes"</span></code></pre></div>
+          <p>The first line says which engine ran. Then comes the answer, and, when a document search ran, a <code>sources:</code> line that OVAT prints from the tool results itself. Add <code>--react</code>, <code>--llamaindex</code> or <code>--openai-sdk</code> to try another engine without editing the file.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Give it your documents</h3>
+          <div class="code"><pre><code><span class="c"># the embedder is the one model you convert yourself</span>
+<span class="p">$</span> pip install <span class="s">"ovat[convert]"</span>
+<span class="p">$</span> optimum-cli export openvino --model BAAI/bge-small-en-v1.5 \
+    --task feature-extraction models/bge-small-en-v1.5
+
+<span class="p">$</span> ovat index ./my-notes workflow.yml</code></pre></div>
+          <p>Reads every .txt and .md file in the folder, slices it into chunks, embeds them and stores them in the file named by <code>rag.retriever.db_path</code>. Run it again after editing documents: <code>run</code> and <code>chat</code> warn when an indexed file has changed or gone.</p>
+        </div></li>
+        <li class="guide-step"><div>
+          <h3 class="h3">Shut it down</h3>
+          <div class="code"><pre><code><span class="p">$</span> ovat serve workflow.yml --stop</code></pre></div>
+          <p>Stops the OVMS that <code>serve</code> started, after checking the saved process really is OVMS.</p>
+        </div></li>
+      </ol>
+    </section>
+
+    <section class="arch-sec" id="mac" aria-labelledby="mac-t">
+      <h2 class="h2" id="mac-t">On a Mac: chat locally, no server</h2>
+      <div class="prose">
+        <p>OVMS has no macOS build. <code>openvino_genai</code> does run natively on Apple Silicon, so <code>ovat chat</code> gives you real retrieval-augmented answers on the CPU: it embeds your question, pulls the closest chunks from your index, and has a local model answer from them. It does not call tools; it always retrieves first and then answers once.</p>
+      </div>
+      <div class="code">
+        <div class="code-head"><span>macOS, from a clone of the OVAT repo</span></div>
+<pre><code><span class="p">$</span> git clone https://github.com/Lagmator22/ovat.git &amp;&amp; cd ovat
+<span class="p">$</span> hf download OpenVINO/Qwen3.5-0.8B-int4-ov --local-dir models/Qwen3.5-0.8B-int4-ov
+<span class="p">$</span> pip install <span class="s">"ovat[convert]"</span>
+<span class="p">$</span> optimum-cli export openvino --model BAAI/bge-small-en-v1.5 \
+    --task feature-extraction models/bge-small-en-v1.5
+<span class="p">$</span> ovat index ./examples/rag/docs examples/rag/workflow.yml
+<span class="p">$</span> ovat chat examples/rag/workflow.yml -i <span class="s">"What is OVAT's memory budget?"</span></code></pre>
+      </div>
+      <div class="prose"><p><code>ovat chat</code> finds a local model by itself (in <code>model_search_paths</code>, <code>OVAT_MODELS</code>, <code>./models</code> and <code>~/models</code>), or take one with <code>--model-path</code>. It streams the answer; Ctrl-C stops it. There is no answer length cap unless you set <code>--max-tokens</code>.</p></div>
+    </section>
+
+    <section class="arch-sec" id="bench" aria-labelledby="bench-t">
+      <h2 class="h2" id="bench-t">Compare the four engines</h2>
+      <div class="code">
+        <div class="code-head"><span>terminal</span></div>
+<pre><code><span class="p">$</span> ovat bench workflow.yml -i <span class="s">"What can you do?"</span> --out report.json
+<span class="p">$</span> ovat bench workflow.yml -i <span class="s">"..."</span> --repeat 5     <span class="c"># success rate and medians</span></code></pre>
+      </div>
+      <figure class="shot">
+        <img src="assets/media/ovat-bench-four-engines.gif" width="1000" height="628" loading="lazy" alt="A real session on the AI PC: ovat doctor shows every check ok with CPU, GPU and NPU detected, ovat serve starts OVMS on the GPU, and ovat bench prints a table in which native, react, llamaindex and openai-agents all answer ok.">
+        <figcaption>Recorded on an Intel AI PC (LunarLake, Arc 140V GPU) serving Qwen3.5-4B-int4-ov: doctor, serve, then bench. The dashes are deliberate: only the native loop gets token counts back.</figcaption>
+      </figure>
+      <div class="prose">
+        <p>Each engine runs in its own fresh process, so one engine's memory does not leak into the next one's number. A failing engine becomes a row with the reason written under the table, not a crash.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="telemetry" aria-labelledby="tel-t2">
+      <h2 class="h2" id="tel-t2">Traces and telemetry</h2>
+      <div class="code">
+        <div class="code-head"><span>terminal</span></div>
+<pre><code><span class="p">$</span> ovat run workflow.yml -i <span class="s">"..."</span> --trace trace.json        <span class="c"># one run: turns, tokens, tools, latency</span>
+<span class="p">$</span> ovat run workflow.yml -i <span class="s">"..."</span> --telemetry live.jsonl  <span class="c"># sampled while it runs</span>
+<span class="p">$</span> ovat telemetry                                            <span class="c"># the machine, live, no run</span></code></pre>
+      </div>
+      <div class="prose">
+        <p>The trace records every turn: the tool calls with their sources, token counts, latency, and the failure flags (<code>truncated</code>, <code>undecoded_tool_call</code>, <code>empty_answer</code>). A failed run still writes its trace and exits non-zero. Unknown values stay <code>null</code>, never 0.</p>
+        <p><strong>One caveat on memory:</strong> <code>--trace</code> measures the OVAT process. With OVMS serving, the model lives in the server process. For Qwen3.5-4B that was measured at 4.3 GB steady and 6.5 GB peak, while the trace said about 0.45 GB. On the local <code>ovat chat</code> path the trace is the model.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="tui" aria-labelledby="tui-t">
+      <h2 class="h2" id="tui-t">The terminal UI</h2>
+      <div class="prose">
+        <p>Install the <code>tui</code> extra, then run <code>ovat</code> with no arguments. Anything you type runs as a real command in your environment; typing <code>/</code> opens a menu of OVAT shortcuts. Chat runs inside the app: the model loads once, answers stream, and conversations are saved in <code>.ovat/sessions/</code>.</p>
+      </div>
+      <div class="charts-2">
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Launcher commands</caption>
+            <thead><tr><th scope="col">Launcher</th><th scope="col">Does</th></tr></thead>
+            <tbody>
+              <tr><td><code>/chat</code></td><td>Chat with your docs; optional config and model path</td></tr>
+              <tr><td><code>/doctor</code></td><td>The doctor checks, live; press r to re-run</td></tr>
+              <tr><td><code>/telemetry</code></td><td>Live numbers for the machine and the run</td></tr>
+              <tr><td><code>/run</code> <code>/index</code> <code>/init</code></td><td>Fill in the matching <code>ovat</code> command</td></tr>
+              <tr><td><code>/serve</code> <code>/models</code></td><td>Start OVMS, list its models (AI PC)</td></tr>
+              <tr><td><code>/clear</code> <code>/exit</code></td><td>Clear the output, leave</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption class="sr-only">Chat screen commands</caption>
+            <thead><tr><th scope="col">In chat</th><th scope="col">Does</th></tr></thead>
+            <tbody>
+              <tr><td><code>/engine</code></td><td>Swap between the local model and OVMS with tools</td></tr>
+              <tr><td><code>/thinking</code></td><td>Show or hide the model's reasoning</td></tr>
+              <tr><td><code>/tokens N</code></td><td>Answer length cap; 0 means none</td></tr>
+              <tr><td><code>/copy</code></td><td>Copy the last answer, or <code>me</code>, or <code>all</code></td></tr>
+              <tr><td><code>/save</code> <code>/load</code></td><td>Save or pick a conversation</td></tr>
+              <tr><td><kbd>Esc</kbd> <kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Stop the answer that is streaming</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="callout info">The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p>
+    </section>
+
+    <section class="arch-sec" id="yaml" aria-labelledby="yaml-t">
+      <h2 class="h2" id="yaml-t">Writing workflow.yml</h2>
+      <div class="prose">
+        <p>Four sections: <code>model</code> (required), <code>tools</code>, <code>agent</code> and <code>rag</code>. Unknown keys are errors, so a typo fails immediately. Select a line or a note to see what it does. Every field, with its type and default, is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/workflow_yaml_reference.md" rel="noopener">generated reference</a>.</p>
+      </div>
+      <!--#include anno-yaml-->
+      <p class="callout"><strong>Name your tool parser.</strong> The wrong one fails silently: the agent answers fluently and never calls a tool. If you leave the field out, OVAT derives it from the model name, and falls back to <code>hermes3</code> for families it does not know.</p>
+    </section>
+
+    <section class="arch-sec" id="mcp" aria-labelledby="mcp-t">
+      <h2 class="h2" id="mcp-t">Adding an MCP tool</h2>
+      <div class="prose">
+        <p>Any MCP server that speaks over stdio becomes a tool with a few lines of YAML. OVAT launches it, asks which tools it offers, and imports every one of them. Here is a tool of your own, written with FastMCP, the same library OVAT's built-ins use.</p>
+      </div>
+      <div class="charts-2">
+        <div class="code">
+          <div class="code-head"><span>my_tool.py</span><button class="copy-btn" type="button" data-copy-from="#mcp-py" aria-label="Copy my_tool.py"><span class="copy-label">Copy</span></button></div>
+<pre><code id="mcp-py"><span class="k">from</span> fastmcp <span class="k">import</span> FastMCP
+
+mcp = FastMCP(<span class="s">"word_count"</span>)
+
+
+<span class="f">@mcp.tool</span>
+<span class="k">def</span> <span class="f">word_count</span>(path: str) -&gt; int:
+    <span class="s">"""Count the words in a text file.
+    Use when the user asks how long a file is."""</span>
+    <span class="k">with</span> open(path, encoding=<span class="s">"utf-8"</span>) <span class="k">as</span> f:
+        <span class="k">return</span> len(f.read().split())
+
+
+<span class="k">if</span> __name__ == <span class="s">"__main__"</span>:
+    mcp.run()</code></pre>
+        </div>
+        <div class="code">
+          <div class="code-head"><span>workflow.yml</span><button class="copy-btn" type="button" data-copy-from="#mcp-yml" aria-label="Copy the tools section"><span class="copy-label">Copy</span></button></div>
+<pre><code id="mcp-yml"><span class="k">tools:</span>
+  - <span class="k">name:</span> <span class="s">word_count</span>
+    <span class="k">type:</span> <span class="s">mcp_stdio</span>
+    <span class="k">command:</span> [<span class="s">"python"</span>, <span class="s">"my_tool.py"</span>]
+
+  <span class="c"># someone else's server, from npm</span>
+  - <span class="k">name:</span> <span class="s">filesystem</span>
+    <span class="k">type:</span> <span class="s">mcp_stdio</span>
+    <span class="k">command:</span> [<span class="s">"npx"</span>, <span class="s">"-y"</span>,
+      <span class="s">"@modelcontextprotocol/server-filesystem"</span>, <span class="s">"/docs"</span>]</code></pre>
+        </div>
+      </div>
+      <div class="prose">
+        <p><strong>The docstring is for the model.</strong> It reads the description to decide when to call your tool, so say plainly when to use it.</p>
+        <p><strong>Environment.</strong> An MCP server starts with only a few variables (HOME, PATH and a handful more). Pass anything else with <code>env:</code> under the tool; <code>${VAR}</code> is expanded from your shell.</p>
+        <p><strong>It works the other way too.</strong> OVAT's own tools are MCP servers: <code>python -m ovat.tools.transcribe</code> gives any MCP-aware agent OpenVINO Whisper, and <code>python -m ovat.tools.search_docs --config workflow.yml</code> serves your index.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="models" aria-labelledby="models-t">
+      <h2 class="h2" id="models-t">Picking a model</h2>
+      <div class="prose"><p>These are ready-made OpenVINO exports on Hugging Face. <code>ovat serve</code> downloads the one in <code>source_model</code>; on a Mac fetch it with <code>hf download</code>.</p></div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Models</caption>
+          <thead><tr><th scope="col">Model</th><th scope="col">Download</th><th scope="col">Memory</th><th scope="col">Use it when</th></tr></thead>
+          <tbody>
+            <tr><td><code>Qwen3.5-4B-int4-ov</code></td><td class="num">3.5 GB</td><td class="num">4.3 GB steady, 6.5 GB peak (measured)</td><td>The default. Text, vision and tools in one model.</td></tr>
+            <tr><td><code>Qwen3.5-0.8B-int4-ov</code></td><td class="num">0.9 GB</td><td class="num">about 2 GB (estimate)</td><td>An 8 GB machine, or a fast first run.</td></tr>
+            <tr><td><code>Qwen3-8B-int4-ov</code></td><td class="num">4.9 GB</td><td class="num">about 6 to 7 GB (estimate)</td><td>Strongest text answers; no vision.</td></tr>
+            <tr><td><code>Qwen3-8B-int4-cw-ov</code></td><td class="num"></td><td class="num"></td><td>The NPU. Channel-wise INT4, the export the NPU compiles.</td></tr>
+            <tr><td><code>whisper-base-int8-ov</code></td><td class="num">0.08 GB</td><td class="num">small</td><td>The <code>transcribe</code> tool.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted small">Only the Qwen3.5-4B memory figure was measured, on an Intel AI PC, from the OVMS process. The others are estimates from parameter count and precision. The load spike decides whether a model fits, so 8 GB machines should prefer the 0.8B model.</p>
+    </section>
+
+    <section class="arch-sec" id="trouble" aria-labelledby="trouble-t">
+      <h2 class="h2" id="trouble-t">Troubleshooting</h2>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Symptoms and likely causes</caption>
+          <thead><tr><th scope="col">Symptom</th><th scope="col">Likely cause</th></tr></thead>
+          <tbody>
+            <tr><td>The agent answers fluently but never calls a tool</td><td>Wrong <code>tool_parser</code>. Qwen3.5 needs <code>qwen3coder</code>, Qwen3 needs <code>hermes3</code>. OVAT warns when raw tool-call markup reaches the answer.</td></tr>
+            <tr><td><code>OVMS exited without becoming ready</code>, empty log</td><td>The <code>python_off</code> build, or a missing VC++ Redistributable on Windows.</td></tr>
+            <tr><td><code>ovat doctor</code> finds no OVMS</td><td>Set <code>OVAT_OVMS</code> to the unpacked folder, or run <code>ovat setup</code>.</td></tr>
+            <tr><td>No GPU or NPU listed in doctor</td><td>The driver is out of date.</td></tr>
+            <tr><td><code>search_docs</code> returns <code>[stub]</code></td><td>No <code>rag:</code> section, or no <code>--config</code> on the MCP command.</td></tr>
+            <tr><td><code>serve</code> looks stuck</td><td>The first run downloads the model. Watch <code>ovms.log</code>.</td></tr>
+            <tr><td>A request times out on a CPU-only machine</td><td>Raise <code>model.request_timeout</code>; an agent turn is several model calls. OVAT says this when it happens.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="arch-sec tight-end" aria-label="Keep reading">
+      <div class="next-up">
+        <a class="next-card" href="results.html"><span>Next</span><strong>See what was measured</strong><p>Accuracy, memory, determinism and the NPU, on a real AI PC.</p></a>
+        <a class="next-card" href="architecture.html"><span>Or</span><strong>How it works inside</strong><p>The nine layers, animated.</p></a>
+      </div>
+    </section>
+  </div>
+</div>

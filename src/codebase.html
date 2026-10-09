@@ -1,0 +1,55 @@
+<!--
+title: OVAT Codebase Map
+description: An interactive map of every module in the ovat Python package: what each file does, why it is built that way, what it works with, and a link to it on GitHub.
+nav: codebase
+scripts: modules.js codebase.js
+-->
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Codebase</p>
+    <h1 class="display">Every module,<br><span class="soft">one click away.</span></h1>
+    <p class="lede">The <code>ovat/</code> package, grouped by folder. Pick a file to see what it does, why it is built the way it is, and what it works with. The bar under each name is its size in lines. Or press <strong>Follow one ovat run</strong> to watch a request move through the files in order.</p>
+  </div>
+</section>
+
+<section class="section tight cb-section" aria-label="Codebase navigator">
+  <div class="wrap" id="navigator">
+    <div class="trace-bar">
+      <button class="btn btn-primary" id="trace-btn" type="button" aria-pressed="false">Follow one ovat run</button>
+      <p id="trace-text" aria-live="polite">Twelve stops, from the command line to the printed answer.</p>
+    </div>
+    <div class="nav-tools">
+      <div class="search">
+        <label class="sr-only" for="mod-search">Search modules</label>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+        <input id="mod-search" type="search" placeholder="Search, e.g. timeout, NPU, schema" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="chips" id="layer-chips" role="group" aria-label="Filter by layer"></div>
+    </div>
+    <p class="faint small mono cb-count" id="mod-count" aria-live="polite"></p>
+    <div class="navigator">
+      <div class="pkgs" id="pkgs"></div>
+      <aside class="detail" id="detail" aria-live="polite">
+        <div class="detail-body"><p>Pick a module on the left.</p></div>
+      </aside>
+    </div>
+    <noscript>
+      <p class="callout">The interactive map needs JavaScript. The same information is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md#file-map">file map in ARCHITECTURE.md</a>, and the code is browsable at <a href="https://github.com/Lagmator22/ovat/tree/main/ovat">github.com/Lagmator22/ovat/tree/main/ovat</a>.</p>
+    </noscript>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="outside-t">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Outside the package</p>
+      <h2 class="h2" id="outside-t">The rest of the repository</h2>
+    </div>
+    <div class="rules3 rules4">
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/tests" rel="noopener">tests/</a></h3><p>About 800 tests, no server needed. <code>live</code> tests need OVMS and <code>rag</code> tests need the embedder; both skip themselves. The UI is tested headless.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/examples" rel="noopener">examples/</a></h3><p>Runnable configs: minimal, rag, react, audio-multimodal, document-qa, document-qa-npu and plano. Each folder has its own README.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/docs" rel="noopener">docs/</a></h3><p><code>ARCHITECTURE.md</code>, the design record; the workflow reference, generated from the schema so it cannot drift; and the walkthrough.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a></h3><p>Contributor rules and the list of landmines: each one cost a whole session once, with the measurement that found it.</p></div>
+    </div>
+  </div>
+</section>

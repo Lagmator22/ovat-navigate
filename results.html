@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#070a10">
+<title>OVAT Results</title>
+<meta name="description" content="Measured results for OVAT on an Intel LunarLake AI PC: accuracy and memory across OVMS versions, determinism, tuning knobs, KV cache latency, NPU tool calling and benchmark honesty.">
+<link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/results.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OVAT Results">
+<meta property="og:description" content="Measured results for OVAT on an Intel LunarLake AI PC: accuracy and memory across OVMS versions, determinism, tuning knobs, KV cache latency, NPU tool calling and benchmark honesty.">
+<meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/results.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/site.js" defer></script>
+</head>
+<body class="sheet">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg>
+      <span class="brand-word">ovat</span>
+      <span class="brand-tag">navigate</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul><li><a href="index.html">Overview</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="guide.html">Guide</a></li><li><a href="results.html" aria-current="page">Results</a></li><li><a href="codebase.html">Codebase</a></li></ul>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme"><svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+      <a class="icon-btn" href="https://github.com/Lagmator22/ovat" rel="noopener" aria-label="OVAT on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 22 12.2C22 6.6 17.5 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Measured results</p>
+    <h1 class="display">Numbers from<br><span class="lit">a real AI PC.</span></h1>
+    <p class="lede">Everything here was measured on an Intel LunarLake AI PC with an Arc 140V GPU and an NPU, running Windows 11, and is written down in the OVAT repository with how it was taken. Where a result is thin, it says so. A measurement that lies is worse than one that is missing.</p>
+  </div>
+</section>
+
+<div class="wrap with-toc">
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <a href="#accuracy">Accuracy by OVMS version</a>
+    <a href="#memory">Server memory</a>
+    <a href="#determinism">Same input, same output</a>
+    <a href="#knobs">Tuning knobs</a>
+    <a href="#kvcache">A full KV cache</a>
+    <a href="#npu">Tool calling on the NPU</a>
+    <a href="#local">The local no-tools note</a>
+    <a href="#honest">Benchmark honesty</a>
+    <a href="#tests">Tests and CI</a>
+  </nav>
+
+  <div class="arch-body">
+    <section class="arch-sec" id="accuracy" aria-labelledby="acc-t">
+      <p class="layer-tag"><b>OVMS</b> 2026.2.1 vs 2026.4.1</p>
+      <h2 class="h2" id="acc-t">One server upgrade, fourteen more right answers</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Right answers out of 60</h3>
+          <p>15 questions that need a tool (RAG, audio, vision, document Q&amp;A and NPU) through all four engines. Qwen3.5-4B on the GPU and Qwen3-8B-int4-cw on the NPU.</p>
+        </div>
+        <div class="hbars">
+          <div class="hbar"><span class="hbar-label">OVMS 2026.2.1</span><span class="hbar-track"><span class="hbar-fill low" data-w="70%"></span></span><span class="hbar-val num">42<small>/60</small></span></div>
+          <div class="hbar"><span class="hbar-label">OVMS 2026.4.1, the pin</span><span class="hbar-track"><span class="hbar-fill hi" data-w="93.33%"></span></span><span class="hbar-val num">56<small>/60</small></span></div>
+          <div class="hbar"><span class="hbar-label">2026.4.1 after the 1.1.0 fixes</span><span class="hbar-track"><span class="hbar-fill hi" data-w="98.33%"></span></span><span class="hbar-val num">59<small>/60</small></span></div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><span class="axis-ticks"><span>0</span><span>15</span><span>30</span><span>45</span><span>60</span></span><span></span></div>
+        <div class="flip">
+          <div><b class="num">14</b><span>answers flipped from wrong to right</span></div>
+          <div><b class="num">0</b><span>flipped from right to wrong</span></div>
+        </div>
+        <div class="chart-foot">
+          <p><strong>Is it chance?</strong> McNemar's test, which compares paired right and wrong answers on the same questions, gives p = 0.0001. That is why OVAT pins OVMS 2026.4.1 in <code>core/ovms_installer.py</code>, and why <code>ovat setup</code> and <code>doctor</code> read the installed version.</p>
+          <p>The 59/60 run came later, on main, after round three fixed the vision tool. It is a separate run and was not part of the paired test.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="memory" aria-labelledby="mem-t">
+      <p class="layer-tag"><b>Memory</b> Read from the server process</p>
+      <h2 class="h2" id="mem-t">A quarter of the memory, for the same work</h2>
+      <div class="charts-2">
+        <div class="chart anim">
+          <div class="chart-head">
+            <h3 class="h3">GPU server peak, same 15 x 4 run</h3>
+            <p>Peak memory of the OVMS process serving the GPU model.</p>
+          </div>
+          <div>
+            <div class="vbars">
+              <div class="vbar"><span class="vbar-val num">17.3 GB</span><span class="vbar-fill low" data-h="96%"></span></div>
+              <div class="vbar"><span class="vbar-val num">4.9 GB</span><span class="vbar-fill hi" data-h="27.2%"></span></div>
+            </div>
+            <div class="vbar-labels"><span>OVMS 2026.2.1</span><span>OVMS 2026.4.1</span></div>
+          </div>
+        </div>
+        <div class="chart anim">
+          <div class="chart-head">
+            <h3 class="h3">Where a model's memory lives</h3>
+            <p>Qwen3.5-4B-int4-ov served by OVMS. The weights sit in the server, not in OVAT.</p>
+          </div>
+          <div class="hbars">
+            <div class="hbar"><span class="hbar-label">OVMS, steady</span><span class="hbar-track"><span class="hbar-fill" data-w="53.75%"></span></span><span class="hbar-val num">4.3 GB</span></div>
+            <div class="hbar"><span class="hbar-label">OVMS, peak at load</span><span class="hbar-track"><span class="hbar-fill hi" data-w="81.25%"></span></span><span class="hbar-val num">6.5 GB</span></div>
+            <div class="hbar"><span class="hbar-label">OVAT client, as <code>--trace</code> sees it</span><span class="hbar-track"><span class="hbar-fill low" data-w="5.6%"></span></span><span class="hbar-val num">0.45 GB</span></div>
+          </div>
+          <div class="axis" aria-hidden="true"><span></span><span class="axis-ticks"><span>0</span><span>2</span><span>4</span><span>6</span><span>8 GB</span></span><span></span></div>
+        </div>
+      </div>
+      <div class="prose after-fig">
+        <p>The load peak sits 2.2 GB above steady state, and the peak is what decides whether a model fits. That is why 8 GB machines should use the 0.8B model. On the local <code>ovat chat</code> path the model runs inside OVAT, so there the trace figure is the model.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="determinism" aria-labelledby="det-t">
+      <p class="layer-tag"><b>Determinism</b> temperature 0</p>
+      <h2 class="h2" id="det-t">Same question, same answer, finally</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Distinct answers to one repeated request</h3>
+          <p>Each dot is one run. Same colour means the same answer text.</p>
+        </div>
+        <div class="stack-sm">
+          <div class="dots-row"><span class="hbar-label">OVMS 2026.2.1, 5 runs</span>
+            <div class="dots" aria-label="Five runs, up to five different answers">
+              <span class="dot d1" data-i="0">A</span><span class="dot d2" data-i="1">B</span><span class="dot d3" data-i="2">C</span><span class="dot d4" data-i="3">D</span><span class="dot d5" data-i="4">E</span>
+            </div>
+          </div>
+          <div class="dots-row"><span class="hbar-label">OVMS 2026.4.1, 10 runs</span>
+            <div class="dots" aria-label="Ten runs, one identical answer">
+              <span class="dot same" data-i="0">A</span><span class="dot same" data-i="1">A</span><span class="dot same" data-i="2">A</span><span class="dot same" data-i="3">A</span><span class="dot same" data-i="4">A</span><span class="dot same" data-i="5">A</span><span class="dot same" data-i="6">A</span><span class="dot same" data-i="7">A</span><span class="dot same" data-i="8">A</span><span class="dot same" data-i="9">A</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-foot">
+          <p><strong>2026.2.1:</strong> up to 5 different answers in 5 runs at temperature 0, the worst case shown. A fixed <code>seed: 42</code> did not help: 0 of 20 attempts matched across two identical arms.</p>
+          <p><strong>2026.4.1:</strong> every engine returned one identical answer across 10 runs, on two servers. So on 2026.4.1, repeating one question gives one sample, not ten. The unit of measurement is a different question, which is why the accuracy test uses 15 of them.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="knobs" aria-labelledby="knob-t">
+      <p class="layer-tag"><b>Tuning</b> measured, then left off</p>
+      <h2 class="h2" id="knob-t">Extra settings did not beat the plain config</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Right answers out of 60, OVMS 2026.4.1</h3>
+          <p>The same 15 questions through all four engines, one setting changed at a time.</p>
+        </div>
+        <div class="hbars">
+          <div class="hbar"><span class="hbar-label">Plain config</span><span class="hbar-track"><span class="hbar-fill hi" data-w="93.33%"></span></span><span class="hbar-val num">56</span></div>
+          <div class="hbar"><span class="hbar-label"><code>ovms_tool_guided_generation</code></span><span class="hbar-track"><span class="hbar-fill" data-w="91.67%"></span></span><span class="hbar-val num">55</span></div>
+          <div class="hbar"><span class="hbar-label"><code>tool_parser: auto</code></span><span class="hbar-track"><span class="hbar-fill" data-w="90%"></span></span><span class="hbar-val num">54</span></div>
+          <div class="hbar"><span class="hbar-label"><code>enable_thinking: false</code></span><span class="hbar-track"><span class="hbar-fill" data-w="90%"></span></span><span class="hbar-val num">54</span></div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><span class="axis-ticks"><span>0</span><span>15</span><span>30</span><span>45</span><span>60</span></span><span></span></div>
+        <div class="chart-foot">
+          <p>None of the three got a single answer right that the plain config got wrong (p &gt;= 0.5), so all three stay off by default.</p>
+          <p><strong>About <code>auto</code>:</strong> on OVMS 2026.2.1 it selected no parser at all and printed the raw tool call as the answer. On 2026.4.1 it detects <code>qwen3coder</code>. OVAT still names the parser, so an older server someone installed by hand also works.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="kvcache" aria-labelledby="kv-t">
+      <p class="layer-tag"><b>KV cache</b> static size, three runs per arm</p>
+      <h2 class="h2" id="kv-t">A full cache costs about ten times the latency</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Seconds for one LangChain tool-calling test</h3>
+          <p>The KV cache is the model's working memory for a conversation. These runs fixed its size with <code>--cache_size</code>.</p>
+        </div>
+        <div class="hbars">
+          <div class="hbar"><span class="hbar-label">1 GB, 13.9% full</span><span class="hbar-track"><span class="hbar-fill" data-w="10%"></span></span><span class="hbar-val num">16 s</span></div>
+          <div class="hbar"><span class="hbar-label">1 GB, 100% full, <span class="kv-fail">tool call failed</span></span><span class="hbar-track"><span class="hbar-fill bad" data-w="94.4%"></span></span><span class="hbar-val num">151 s</span></div>
+          <div class="hbar"><span class="hbar-label">1 GB, 100% full</span><span class="hbar-track"><span class="hbar-fill low" data-w="91.25%"></span></span><span class="hbar-val num">146 s</span></div>
+          <div class="hbar"><span class="hbar-label">8 GB, under 2% full, 3 runs</span><span class="hbar-track"><span class="hbar-fill hi" data-w="11.25%"></span></span><span class="hbar-val num">13 to 18 s</span></div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><span class="axis-ticks"><span>0</span><span>40</span><span>80</span><span>120</span><span>160 s</span></span><span></span></div>
+        <div class="chart-foot">
+          <p><strong>What it shows:</strong> a full cache reproducibly costs about 10x the time, which matches the preemption and recompute that OVMS documents.</p>
+          <p><strong>What it does not show:</strong> that a full cache breaks tool calls. The failure appeared once at 100%, but the same reading also passed, so at three runs per arm that stays unproven. And unless the size is fixed, OVMS grows the cache as it goes, so "100% full" on its own means little.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="npu" aria-labelledby="npu-t">
+      <p class="layer-tag"><b>NPU</b> OVMS 2026.2.1, LunarLake</p>
+      <h2 class="h2" id="npu-t">The NPU can run a tool-calling agent</h2>
+      <div class="figures npu-figs">
+        <div class="figure"><span class="big num">36<small> s</small></span><span class="vs">to compile</span><p><code>OpenVINO/Qwen3-8B-int4-cw-ov</code> compiled for the NPU and became available.</p></div>
+        <div class="figure"><span class="big num">1</span><span class="vs">tool call, decoded</span><p><code>examples/document-qa-npu.yml</code> over 2 turns, in 63.8 s, with no undecoded call.</p></div>
+        <div class="figure"><span class="big hex">0x78000004</span><span class="vs">the stock export</span><p>A standard <code>-int4-ov</code> export fails to compile on the NPU before generating a token.</p></div>
+        <div class="figure"><span class="big num">2129</span><span class="vs">token hard cap</span><p>With <code>--max_prompt_len 2000</code>, every reply stopped at exactly this total.</p></div>
+      </div>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Prompt plus reply always ended at 2129 tokens</h3>
+          <p>The NPU pipeline is compiled to fixed shapes, so the total length has a ceiling however the split falls. The reply was cut mid-sentence and labelled <code>finish_reason: "unknown"</code>, not <code>"length"</code>.</p>
+        </div>
+        <div class="stack-sm">
+          <div class="stack-bar" role="img" aria-label="28 prompt tokens plus 2101 reply tokens"><span class="p" data-flex="28"></span><span class="c" data-flex="2101">2101 reply</span></div>
+          <span class="stack-cap">28 prompt + 2101 reply = 2129</span>
+          <div class="stack-bar" role="img" aria-label="1529 prompt tokens plus 600 reply tokens"><span class="p" data-flex="1529">1529 prompt</span><span class="c" data-flex="600">600 reply</span></div>
+          <span class="stack-cap">1529 prompt + 600 reply = 2129</span>
+        </div>
+        <div class="legend"><span><i class="l-p"></i>prompt tokens</span><span><i class="l-c"></i>reply tokens</span></div>
+        <div class="chart-foot">
+          <p>A tool call still being written when the cap lands is cut in half, which looks exactly like a parser failure. For an agent, whose prompt grows every round, the prompt length setting matters most; OVAT raises the NPU default from 1024 to 4096.</p>
+          <p><strong>Not verified:</strong> that group quantisation is the cause of the stock export's failure. The compiler's own message was about duplicated names. What is verified is that the channel-wise export compiles and the stock one does not.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="local" aria-labelledby="local-t">
+      <p class="layer-tag"><b>Local chat</b> Qwen3.5-0.8B</p>
+      <h2 class="h2" id="local-t">Telling a small model it has no tools</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Right answers out of 3</h3>
+          <p>The local path retrieves first and has no tools, but it used to pass on the workflow's prompt, which said "always call search_docs". The small model started each answer with the literal text "search_docs". One added note fixed it.</p>
+        </div>
+        <div class="stack-sm">
+          <div class="dots-row"><span class="hbar-label">Workflow prompt only</span><div class="dots"><span class="dot right" data-i="0" aria-label="right">&#10003;</span><span class="dot wrong" data-i="1" aria-label="wrong">&#10005;</span><span class="dot wrong" data-i="2" aria-label="wrong">&#10005;</span></div></div>
+          <div class="dots-row"><span class="hbar-label">Plus the no-tools note</span><div class="dots"><span class="dot right" data-i="3" aria-label="right">&#10003;</span><span class="dot right" data-i="4" aria-label="right">&#10003;</span><span class="dot right" data-i="5" aria-label="right">&#10003;</span></div></div>
+        </div>
+        <div class="chart-foot"><p>The note is <code>_NO_TOOLS_NOTE</code> in <code>agent/rag_chat.py</code>. Three questions is a small sample; it is reported as measured.</p></div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="honest" aria-labelledby="hon-t">
+      <p class="layer-tag"><b>Benchmarks</b> why each engine gets its own process</p>
+      <h2 class="h2" id="hon-t">The lightest engine looked like the heaviest</h2>
+      <div class="chart anim">
+        <div class="chart-head">
+          <h3 class="h3">Peak memory of the native engine, MB</h3>
+          <p>Measured against live OVMS. Memory is a whole-process number, so engines sharing a process inherit each other's allocations.</p>
+        </div>
+        <div class="hbars">
+          <div class="hbar"><span class="hbar-label">Isolated, own process</span><span class="hbar-track"><span class="hbar-fill hi" data-w="38.83%"></span></span><span class="hbar-val num">466</span></div>
+          <div class="hbar"><span class="hbar-label">Shared process, run first</span><span class="hbar-track"><span class="hbar-fill" data-w="38.82%"></span></span><span class="hbar-val num">465.8</span></div>
+          <div class="hbar"><span class="hbar-label">Shared process, run last</span><span class="hbar-track"><span class="hbar-fill bad" data-w="96.3%"></span></span><span class="hbar-val num">1155.6</span></div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><span class="axis-ticks"><span>0</span><span>300</span><span>600</span><span>900</span><span>1200</span></span><span></span></div>
+        <div class="chart-foot"><p>Reversing the order reversed the conclusion. <code>ovat bench</code> now starts a fresh process per engine, and a failing engine is a row in the table, not a crash.</p></div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="tests" aria-labelledby="tests-t">
+      <p class="layer-tag"><b>Quality</b> every push</p>
+      <h2 class="h2" id="tests-t">800+ tests, chosen platforms</h2>
+      <div class="prose">
+        <p>The suite needs no server and no model; tests that do are marked and skip themselves. Every fix ships with a test that fails when the fix is backed out. The CI matrix is picked to open as many differences between machines at once as possible, because every bug the project shipped lived in a gap between two machines.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">CI matrix</caption>
+          <thead><tr><th scope="col">Runner</th><th scope="col">Python</th><th scope="col">Why it is there</th></tr></thead>
+          <tbody>
+            <tr><td>ubuntu-22.04</td><td class="num">3.10</td><td>The oldest of everything supported, including SQLite 3.37, where RAG was once silently empty.</td></tr>
+            <tr><td>ubuntu-24.04</td><td class="num">3.12</td><td>A current Linux.</td></tr>
+            <tr><td>windows-latest</td><td class="num">3.12</td><td>The only platform with <code>.exe</code> and backslash paths. The suite once passed only here.</td></tr>
+            <tr><td>macos-latest</td><td class="num">3.13</td><td>The development platform.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose">
+        <p>Two more jobs check what the suite itself cannot: that a base install imports no framework and no UI library, and that the built wheel installs and runs. Runners are not root on purpose: the OVMS installer once passed in every root environment and failed for the first real user.</p>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="OVAT Navigate, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg><span class="brand-word">ovat</span></a>
+        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="guide.html">Guide</a></li>
+          <li><a href="results.html">Measured results</a></li>
+          <li><a href="codebase.html">Codebase map</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Project</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat" rel="noopener">Source on GitHub</a></li>
+          <li><a href="https://pypi.org/project/ovat/" rel="noopener">ovat on PyPI</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md" rel="noopener">ARCHITECTURE.md</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/workflow_yaml_reference.md" rel="noopener">workflow.yml reference</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>About</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate" rel="noopener">Site source</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/blob/main/SECURITY.md" rel="noopener">Security</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/tree/main/assets/fonts" rel="noopener">Font licenses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Describes OVAT 1.1.1. Apache 2.0.</span>
+      <span>Not an official Intel or OpenVINO site. Intel and OpenVINO are trademarks of Intel Corporation.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

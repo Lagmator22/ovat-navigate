@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#070a10">
+<title>OVAT Architecture</title>
+<meta name="description" content="How OVAT is built, layer by layer: config, four agent engines, the tool-calling loop, providers, RAG, MCP, telemetry, serving and device routing, with animated diagrams.">
+<link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/architecture.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OVAT Architecture">
+<meta property="og:description" content="How OVAT is built, layer by layer: config, four agent engines, the tool-calling loop, providers, RAG, MCP, telemetry, serving and device routing, with animated diagrams.">
+<meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/architecture.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/flow.js" defer></script>
+</head>
+<body class="sheet">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg>
+      <span class="brand-word">ovat</span>
+      <span class="brand-tag">navigate</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul><li><a href="index.html">Overview</a></li><li><a href="architecture.html" aria-current="page">Architecture</a></li><li><a href="guide.html">Guide</a></li><li><a href="results.html">Results</a></li><li><a href="codebase.html">Codebase</a></li></ul>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme"><svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+      <a class="icon-btn" href="https://github.com/Lagmator22/ovat" rel="noopener" aria-label="OVAT on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 22 12.2C22 6.6 17.5 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">Architecture</p>
+    <h1 class="display">Nine layers.<br><span class="soft">Each one has a reason.</span></h1>
+    <p class="lede">OVAT sits between you and OpenVINO Model Server. OVMS does the inference. OVAT decides which model, which device, which parser and which tools, then runs the loop and the server for you. This page walks the layers in order, the way a request meets them.</p>
+  </div>
+</section>
+
+<div class="wrap with-toc">
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <a href="#layers">The nine layers</a>
+    <a href="#l1">1 CLI and config</a>
+    <a href="#l2">2 Four engines</a>
+    <a href="#l3">3 The agent loop</a>
+    <a href="#l4">4 Providers and RAG</a>
+    <a href="#l5">5 Tools and MCP</a>
+    <a href="#l6">6 Orchestration</a>
+    <a href="#l7">7 Telemetry</a>
+    <a href="#l8">8 Serving</a>
+    <a href="#l9">9 Devices</a>
+    <a href="#failures">When tool calls fail</a>
+    <a href="#rules">Design rules</a>
+  </nav>
+
+  <div class="arch-body">
+
+    <section class="arch-sec" id="layers" aria-labelledby="layers-t">
+      <div class="section-head">
+        <h2 class="h2" id="layers-t">The nine layers</h2>
+        <p class="lede">The layers come from the project proposal and <code>docs/ARCHITECTURE.md</code>. Eight are built. Layer 6 was always a stretch goal and stays out of scope.</p>
+      </div>
+      <ol class="layer-stack">
+        <li><a href="#l1"><span class="ln-n">1</span><span class="ln-name">CLI and configuration</span><span class="ln-files">cli/main.py, config/workflow.py</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l2"><span class="ln-n">2</span><span class="ln-name">Framework integration</span><span class="ln-files">langchain, llamaindex, openai-agents</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l3"><span class="ln-n">3</span><span class="ln-name">Agent core</span><span class="ln-files">agent/loop.py, agent/session.py</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l4"><span class="ln-n">4</span><span class="ln-name">Provider abstraction</span><span class="ln-files">providers/</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l5"><span class="ln-n">5</span><span class="ln-name">Tools and MCP</span><span class="ln-files">tools/</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l6"><span class="ln-n">6</span><span class="ln-name">Orchestration (A2A)</span><span class="ln-files">not in the code</span><span class="pill off">not built</span></a></li>
+        <li><a href="#l7"><span class="ln-n">7</span><span class="ln-name">Observability</span><span class="ln-files">telemetry/, bench.py</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l8"><span class="ln-n">8</span><span class="ln-name">Deployment and serving</span><span class="ln-files">core/model_server.py, core/ovms_*.py</span><span class="pill ok">built</span></a></li>
+        <li><a href="#l9"><span class="ln-n">9</span><span class="ln-name">OpenVINO runtime and hardware</span><span class="ln-files">core/device_manager.py</span><span class="pill ok">built</span></a></li>
+      </ol>
+    </section>
+
+    <section class="arch-sec" id="l1" aria-labelledby="l1-t">
+      <p class="layer-tag"><b>Layer 1</b> CLI and configuration</p>
+      <h2 class="h2" id="l1-t">A strict file, read in one place</h2>
+      <div class="prose">
+        <p>Every command is a Python function that Typer turns into <code>ovat &lt;command&gt;</code> from its type hints. There are eleven: <code>run</code>, <code>chat</code>, <code>index</code>, <code>init</code>, <code>doctor</code>, <code>setup</code>, <code>serve</code>, <code>models</code>, <code>bench</code>, <code>telemetry</code> and <code>tui</code>. A bare <code>ovat</code> opens the terminal UI.</p>
+        <p><strong>The config is strict.</strong> <code>WorkflowConfig</code> is a pydantic model that forbids unknown keys. Think of it as a struct with a constructor that refuses bad input. A typo such as <code>max_iteration</code> fails at once, by name, instead of being ignored while the default quietly stays in charge.</p>
+        <p><strong>Only one function loads it.</strong> <code>_load_config()</code> in <code>cli/main.py</code> turns three different failures into three plain sentences: the file is missing, the YAML does not parse, or the schema does not match. An empty file used to produce a Python internals error; now it is a schema error that names the missing <code>model</code> section.</p>
+        <p><strong>Model text is data, not markup.</strong> Every value OVAT did not write goes through <code>esc()</code> before printing. A model answer ending in <code>[/INST]</code> once crashed <code>ovat run</code>, because the console library read it as a style tag.</p>
+      </div>
+      <div class="tree three-errors" aria-label="The three loading failures">
+        <div class="tree-row"><span class="flag f-warn">file missing</span><p>Names the path it looked for, and notices when a question was typed where the file name belongs.</p></div>
+        <div class="tree-row"><span class="flag f-warn">bad YAML</span><p>Gives the line and column where parsing stopped.</p></div>
+        <div class="tree-row"><span class="flag f-warn">schema error</span><p>Lists each field and what was wrong with it, and explains that unknown keys are rejected on purpose.</p></div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l2" aria-labelledby="l2-t">
+      <p class="layer-tag"><b>Layer 2</b> Framework integration</p>
+      <h2 class="h2" id="l2-t">Four engines behind one method</h2>
+      <div class="prose">
+        <p>Every engine exposes the same <code>.run(text) -&gt; text</code>. The factory hands back one of them and the CLI never knows which. In C++ terms it is one interface with four implementations.</p>
+        <p>Two things keep the four honest. Tool arguments for every engine are derived from each tool's own <code>SCHEMA</code> by <code>agent/arg_models.py</code>; a hand-kept second list once let a tool work on one engine and crash on another. And the server connection (URL, model, timeout, sampling) is described once in <code>providers/backend.py</code>; <code>temperature</code> was once set in two engines and missing in the other two for a whole release.</p>
+        <p>The LangChain, LlamaIndex and Agents SDK engines run their own event loop and refuse to start inside one that already exists. That is on purpose: nesting would deadlock.</p>
+      </div>
+      <figure class="diagram minw-560" data-routes data-autoplay="5200" aria-label="Four agent engines share one backend">
+  <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+    <svg class="dg" viewBox="0 0 900 380" role="img" aria-labelledby="eng-svg-t eng-svg-d">
+      <title id="eng-svg-t">Four engines, one backend</title>
+      <desc id="eng-svg-d">native, react, llamaindex and openai-agents each connect to LLMBackend, one shared description of the OVMS connection, which talks to the same OVMS server.</desc>
+      <defs>
+        <marker id="ah-e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <path id="ew-native" class="wire" d="M260 52 C312 52 296 178 346 178" marker-end="url(#ah-e)"/>
+      <path id="ew-react" class="wire" d="M260 140 C306 140 302 186 346 186" marker-end="url(#ah-e)"/>
+      <path id="ew-llama" class="wire" d="M260 228 C306 228 302 194 346 194" marker-end="url(#ah-e)"/>
+      <path id="ew-oai" class="wire" d="M260 316 C312 316 296 202 346 202" marker-end="url(#ah-e)"/>
+      <path id="ew-b" class="wire" d="M580 190 H646" marker-end="url(#ah-e)"/>
+
+      <g id="e-native" class="node"><rect class="box" x="20" y="20" width="240" height="64" rx="12"/><text class="t-k" x="40" y="44">agent/loop.py</text><text class="t-t" x="40" y="72">native</text></g>
+      <g id="e-react" class="node"><rect class="box" x="20" y="108" width="240" height="64" rx="12"/><text class="t-k" x="40" y="132">LangChain</text><text class="t-t" x="40" y="160">react</text></g>
+      <g id="e-llama" class="node"><rect class="box" x="20" y="196" width="240" height="64" rx="12"/><text class="t-k" x="40" y="220">LlamaIndex</text><text class="t-t" x="40" y="248">llamaindex</text></g>
+      <g id="e-oai" class="node"><rect class="box" x="20" y="284" width="240" height="64" rx="12"/><text class="t-k" x="40" y="308">OpenAI Agents SDK</text><text class="t-t" x="40" y="336">openai-agents</text></g>
+      <g id="e-be" class="node"><rect class="box" x="350" y="140" width="230" height="100" rx="12"/><text class="t-k" x="370" y="170">providers/backend.py</text><text class="t-t" x="370" y="200">LLMBackend</text><text class="t-s" x="370" y="222">one shared description</text></g>
+      <g id="e-ov" class="node"><rect class="box" x="650" y="140" width="230" height="100" rx="12"/><text class="t-k" x="670" y="170">the same server</text><text class="t-t" x="670" y="200">OVMS /v3</text><text class="t-s" x="670" y="222">same model, same tools</text></g>
+    </svg>
+  </div>
+  <div class="diagram-side">
+    <div class="diagram-controls">
+      <div class="seg" role="tablist" aria-label="Pick an engine">
+        <button type="button" role="tab" id="et-native" aria-controls="ep-native" aria-selected="true" data-wires="ew-native ew-b" data-lanes="ew-native>ew-b>!ew-b>!ew-native" data-on="e-native e-be e-ov"><code>native</code></button>
+        <button type="button" role="tab" id="et-react" aria-controls="ep-react" aria-selected="false" tabindex="-1" data-wires="ew-react ew-b" data-lanes="ew-react>ew-b>!ew-b>!ew-react" data-on="e-react e-be e-ov"><code>react</code></button>
+        <button type="button" role="tab" id="et-llama" aria-controls="ep-llama" aria-selected="false" tabindex="-1" data-wires="ew-llama ew-b" data-lanes="ew-llama>ew-b>!ew-b>!ew-llama" data-on="e-llama e-be e-ov"><code>llamaindex</code></button>
+        <button type="button" role="tab" id="et-oai" aria-controls="ep-oai" aria-selected="false" tabindex="-1" data-wires="ew-oai ew-b" data-lanes="ew-oai>ew-b>!ew-b>!ew-oai" data-on="e-oai e-be e-ov"><code>openai-agents</code></button>
+      </div>
+        <button class="ctl motion-ctl" type="button" data-act="motion" aria-pressed="false"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause motion</span></button>
+    </div>
+    <div class="engine-detail" id="ep-native" role="tabpanel" aria-labelledby="et-native">
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">native</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>OVAT's own loop in <code>agent/loop.py</code>. No extra library.</dd>
+        <dt>Run</dt><dd><code>--native</code></dd>
+        <dt>Install</dt><dd>Included in <code>pip install ovat</code></dd>
+        <dt>Tokens</dt><dd>The only engine that records token counts per turn.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-react" role="tabpanel" aria-labelledby="et-react" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">react</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>LangChain's <code>create_agent</code> with a <code>ChatOpenAI</code> model pointed at OVMS.</dd>
+        <dt>Run</dt><dd><code>--react</code> or <code>--langchain</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[langchain]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded. Shown as a dash, never as 0.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-llama" role="tabpanel" aria-labelledby="et-llama" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">llamaindex</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>LlamaIndex's <code>FunctionAgent</code> with an <code>OpenAILike</code> model. Both <code>is_chat_model</code> and <code>is_function_calling_model</code> must be set, or it quietly stops calling tools.</dd>
+        <dt>Run</dt><dd><code>--llamaindex</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[llamaindex]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-oai" role="tabpanel" aria-labelledby="et-oai" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">openai-agents</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>The OpenAI Agents SDK, kept on your machine by three settings: an explicit client on the <code>/v3</code> URL, the Chat Completions model, and tracing turned off.</dd>
+        <dt>Run</dt><dd><code>--openai-agents</code> or <code>--openai-sdk</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[openai-agents]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded.</dd>
+      </dl>
+    </div>
+  </div>
+</figure>
+
+    </section>
+
+    <section class="arch-sec" id="l3" aria-labelledby="l3-t">
+      <p class="layer-tag"><b>Layer 3</b> Agent core</p>
+      <h2 class="h2" id="l3-t">The loop that gives the model hands</h2>
+      <div class="prose">
+        <p>A model can only write text. The native loop in <code>agent/loop.py</code> is what turns its written request into a real function call. Each round has four beats: ask, read, act, report. Below, one real question from the RAG example goes round twice.</p>
+      </div>
+      <figure class="diagram" data-seq aria-labelledby="loop-cap">
+        <div class="diagram-stage">
+          <svg class="dg" viewBox="0 0 840 500" role="img" aria-labelledby="loop-t loop-d">
+            <title id="loop-t">The native agent loop</title>
+            <desc id="loop-d">Four beats in a circle: ask the model, read the reply, act by running a tool, report the result. A reply with no tool calls leaves the circle as the answer.</desc>
+            <defs>
+              <marker id="ah-l" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+            </defs>
+            <circle class="ring" cx="300" cy="260" r="180"/>
+            <path id="la1" class="wire" d="M395.4 107.4 A180 180 0 0 1 452.6 164.6" marker-end="url(#ah-l)"/>
+            <path id="la2" class="wire" d="M452.6 355.4 A180 180 0 0 1 395.4 412.6" marker-end="url(#ah-l)"/>
+            <path id="la3" class="wire" d="M204.6 412.6 A180 180 0 0 1 147.4 355.4" marker-end="url(#ah-l)"/>
+            <path id="la4" class="wire" d="M147.4 164.6 A180 180 0 0 1 204.6 107.4" marker-end="url(#ah-l)"/>
+            <path id="lx" class="wire" d="M555 260 H636" marker-end="url(#ah-l)"/>
+
+            <text class="t-c" x="300" y="226" text-anchor="middle">round</text>
+            <text class="t-big" x="300" y="274" text-anchor="middle" data-slot="round">1</text>
+            <text class="t-c" x="300" y="304" text-anchor="middle">max_iterations: 10</text>
+
+            <g id="l-ask" class="node"><rect class="box" x="225" y="48" width="150" height="64" rx="12"/><text class="t-k" x="243" y="72">1 ask</text><text class="t-t" x="243" y="98">Model</text></g>
+            <g id="l-read" class="node"><rect class="box" x="405" y="228" width="150" height="64" rx="12"/><text class="t-k" x="423" y="252">2 read</text><text class="t-t" x="423" y="278">Reply</text></g>
+            <g id="l-act" class="node tone-tool"><rect class="box" x="225" y="408" width="150" height="64" rx="12"/><text class="t-k" x="243" y="432">3 act</text><text class="t-t" x="243" y="458">Run tool</text></g>
+            <g id="l-rep" class="node"><rect class="box" x="45" y="228" width="150" height="64" rx="12"/><text class="t-k" x="63" y="252">4 report</text><text class="t-t" x="63" y="278">History</text></g>
+            <g id="l-ans" class="node tone-ok"><rect class="box" x="640" y="228" width="180" height="64" rx="12"/><text class="t-k" x="658" y="252">no tool calls</text><text class="t-t" x="658" y="278">Answer</text></g>
+          </svg>
+        </div>
+        <figcaption class="diagram-side" id="loop-cap">
+          <div class="diagram-controls">
+            <button class="ctl" type="button" data-act="toggle" aria-pressed="true"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause</span></button>
+            <button class="ctl" type="button" data-act="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg></button>
+            <button class="ctl" type="button" data-act="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+            <span class="count" aria-live="polite">1 / 6</span>
+          </div>
+          <ol class="steps">
+            <li data-nodes="l-ask l-read" data-path="la1" data-slot-round="1"><b>Ask.</b> Send the whole conversation plus the tool menu. Each menu entry is the tool's own <code>SCHEMA</code>, sent as is.</li>
+            <li data-nodes="l-read l-act" data-path="la2" data-tone="tool" data-slot-round="1"><b>Read.</b> The reply carries a call: <code>search_docs</code> with a query about the memory budget. The loop checks the reply's content, not its <code>finish_reason</code> label.</li>
+            <li data-nodes="l-act l-rep" data-path="la3" data-tone="tool" data-slot-round="1"><b>Act.</b> The loop runs the Python function itself. If the arguments are broken JSON, that error goes back to the model as the tool result, so it can fix it.</li>
+            <li data-nodes="l-rep l-ask" data-path="la4" data-slot-round="2"><b>Report.</b> The chunks and their source path are added to the history as a tool message. Round two starts.</li>
+            <li data-nodes="l-ask l-read" data-path="la1" data-slot-round="2"><b>Ask again,</b> now with the search result in the conversation.</li>
+            <li data-nodes="l-read l-ans" data-path="lx" data-tone="ok" data-slot-round="2" data-hold="2400"><b>No tool calls: that is the answer.</b> Every exit goes through one <code>_finish</code>, so the trace totals are always filled in. After ten rounds the loop stops and says why.</li>
+          </ol>
+          <p class="diagram-note">Why the content and not the label: OVMS documents that on the NPU <code>finish_reason</code> is always <code>"stop"</code>, even when a tool call was decoded.</p>
+        </figcaption>
+      </figure>
+      <div class="prose after-fig">
+        <p><strong>Memory is just a list.</strong> A model forgets everything between calls, so <code>agent/session.py</code> keeps the conversation and resends it each time. It is thread-safe because the terminal UI streams an answer on one thread while you can save or load on another; it copies the list under a lock and writes the file outside it.</p>
+        <p><strong>Small models get some slack.</strong> Arguments wrapped in a Markdown code fence are unwrapped before parsing, and a slightly wrong file path is swapped for the closest real file, always with a note in front of the result saying so.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l4" aria-labelledby="l4-t">
+      <p class="layer-tag"><b>Layer 4</b> Provider abstraction</p>
+      <h2 class="h2" id="l4-t">Sockets and plugs</h2>
+      <div class="prose">
+        <p><code>providers/base.py</code> defines four abstract classes: the sockets. Each concrete class beside it is a plug. The config names a plug as a string, so swapping a backend is a YAML edit and nothing above this layer changes.</p>
+      </div>
+      <div class="socket-grid">
+        <div class="socket"><h3 class="h4">LLMProvider</h3><ul><li><code>ovms</code> <span>OpenAI SDK to OVMS <code>/v3</code>. Can call tools.</span></li><li><code>genai</code> <span>openvino_genai in your process. No tools, no server.</span></li></ul></div>
+        <div class="socket"><h3 class="h4">EmbeddingsProvider</h3><ul><li><code>genai</code> <span>Local text embedding pipeline, bge-small.</span></li><li><code>ovms</code> <span>OVMS <code>/v3/embeddings</code>.</span></li></ul></div>
+        <div class="socket"><h3 class="h4">RetrieverProvider</h3><ul><li><code>sqlite-vec</code> <span>Vectors and text on disk; survives restarts.</span></li><li><code>memory</code> <span>numpy in memory; leaves nothing behind.</span></li></ul></div>
+        <div class="socket"><h3 class="h4">VLMProvider</h3><ul><li><code>genai</code> <span>OpenVINO VLMPipeline, used by <code>describe_image</code>.</span></li></ul></div>
+      </div>
+
+      <h3 class="h3 sub-h" id="rag">Document search, end to end</h3>
+      <div class="prose">
+        <p>RAG means retrieval-augmented generation: find the right passages first, then let the model answer from them. OVAT does it in two phases. <code>ovat index</code> runs once; <code>search_docs</code> runs whenever the model asks.</p>
+      </div>
+      <figure class="diagram wide cols-3 minw-640" data-seq aria-labelledby="rag-cap">
+        <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+          <svg class="dg" viewBox="0 0 1100 370" role="img" aria-labelledby="rag-t rag-d">
+            <title id="rag-t">Index once, then search</title>
+            <desc id="rag-d">Indexing reads a folder, slices files into overlapping chunks, embeds each with bge-small into 384 numbers and stores them in sqlite-vec. A search embeds the question with the same model, finds the nearest chunks and returns text with source paths.</desc>
+            <defs>
+              <marker id="ah-r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+            </defs>
+            <text class="t-c" x="20" y="24">ovat index, once</text>
+            <text class="t-c" x="20" y="236">search_docs, on every question</text>
+            <path id="rw-1" class="wire" d="M240 88 H296" marker-end="url(#ah-r)"/>
+            <path id="rw-2" class="wire" d="M520 88 H576" marker-end="url(#ah-r)"/>
+            <path id="rw-3" class="wire" d="M800 88 H856" marker-end="url(#ah-r)"/>
+            <path id="qw-1" class="wire" d="M240 300 H296" marker-end="url(#ah-r)"/>
+            <path id="qw-2" class="wire" d="M520 300 H576" marker-end="url(#ah-r)"/>
+            <path id="qw-db" class="wire" d="M970 136 C970 196 690 186 690 248" marker-end="url(#ah-r)"/>
+            <path id="qw-3" class="wire" d="M800 300 H856" marker-end="url(#ah-r)"/>
+
+            <g id="r-docs" class="node"><rect class="box" x="20" y="40" width="220" height="96" rx="12"/><text class="t-k" x="40" y="70">a folder</text><text class="t-t" x="40" y="100">Your docs</text><text class="t-s" x="40" y="122">.txt and .md</text></g>
+            <g id="r-chunk" class="node"><rect class="box" x="300" y="40" width="220" height="96" rx="12"/><text class="t-k" x="320" y="70">rag/indexer.py</text><text class="t-t" x="320" y="100">Chunks</text><text class="t-s" x="320" y="122">512 chars, 64 overlap</text></g>
+            <g id="r-emb" class="node"><rect class="box" x="580" y="40" width="220" height="96" rx="12"/><text class="t-k" x="600" y="70">embeddings_genai.py</text><text class="t-t" x="600" y="100">bge-small</text><text class="t-s" x="600" y="122">384 numbers each</text></g>
+            <g id="r-db" class="node"><rect class="box" x="860" y="40" width="220" height="96" rx="12"/><text class="t-k" x="880" y="70">retriever_sqlitevec.py</text><text class="t-t" x="880" y="100">sqlite-vec</text><text class="t-s" x="880" y="122">ovat_index.db</text></g>
+            <g id="q-ask" class="node tone-tool"><rect class="box" x="20" y="252" width="220" height="96" rx="12"/><text class="t-k" x="40" y="282">the model calls</text><text class="t-t" x="40" y="312">search_docs</text><text class="t-s" x="40" y="334">query, top_k = 5</text></g>
+            <g id="q-emb" class="node"><rect class="box" x="300" y="252" width="220" height="96" rx="12"/><text class="t-k" x="320" y="282">same embedder</text><text class="t-t" x="320" y="312">bge-small</text><text class="t-s" x="320" y="334">question to numbers</text></g>
+            <g id="q-near" class="node"><rect class="box" x="580" y="252" width="220" height="96" rx="12"/><text class="t-k" x="600" y="282">vector search</text><text class="t-t" x="600" y="312">Nearest chunks</text><text class="t-s" x="600" y="334">closest in meaning</text></g>
+            <g id="q-out" class="node tone-ok"><rect class="box" x="860" y="252" width="220" height="96" rx="12"/><text class="t-k" x="880" y="282">tool result</text><text class="t-t" x="880" y="312">Text + source</text><text class="t-s" x="880" y="334">printed as sources:</text></g>
+          </svg>
+        </div>
+        <figcaption class="diagram-side" id="rag-cap">
+          <div class="diagram-controls">
+            <button class="ctl" type="button" data-act="toggle" aria-pressed="true"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause</span></button>
+            <button class="ctl" type="button" data-act="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg></button>
+            <button class="ctl" type="button" data-act="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+            <span class="count" aria-live="polite">1 / 6</span>
+          </div>
+          <ol class="steps">
+            <li data-nodes="r-docs r-chunk" data-path="rw-1"><b>Read the folder.</b> <code>ovat index</code> walks every .txt and .md file under it.</li>
+            <li data-nodes="r-chunk r-emb" data-path="rw-2"><b>Slice into chunks.</b> 512 characters each, with 64 shared with the next, so a sentence on a boundary is whole in at least one chunk.</li>
+            <li data-nodes="r-emb r-db" data-path="rw-3"><b>Store meaning as numbers.</b> bge-small turns each chunk into 384 numbers. Re-indexing a file replaces its old chunks, so running it twice adds nothing.</li>
+            <li data-nodes="q-ask q-emb" data-path="qw-1" data-tone="tool"><b>Later, the model asks.</b> It calls <code>search_docs</code>, and the question is embedded with the same model.</li>
+            <li data-nodes="q-emb q-near r-db" data-path="qw-2 qw-db"><b>Find the closest chunks.</b> Close in meaning, not in spelling. sqlite-vec returns the top k.</li>
+            <li data-nodes="q-near q-out" data-path="qw-3" data-tone="ok" data-hold="2200"><b>Return text and its source path.</b> OVAT prints the paths itself as <code>sources:</code> rather than hoping the model cites them.</li>
+          </ol>
+        </figcaption>
+      </figure>
+      <div class="prose after-fig">
+        <p><strong>One fix worth knowing.</strong> On SQLite older than 3.38 (Ubuntu 22.04 ships 3.37) a <code>LIMIT ?</code> never reached the vector table, so search returned nothing and the agent answered confidently with no citation. The query now uses sqlite-vec's own <code>k = ?</code> form, and CI runs on Ubuntu 22.04 to keep it that way.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l5" aria-labelledby="l5-t">
+      <p class="layer-tag"><b>Layer 5</b> Tools and MCP</p>
+      <h2 class="h2" id="l5-t">Three built-in tools, and any MCP server</h2>
+      <div class="prose">
+        <p>Each built-in tool follows one pattern: a plain <code>*_impl()</code> function you can unit test, a <code>SCHEMA</code> dictionary beside it that is the tool's contract, and a FastMCP wrapper so the same file also runs as a standalone MCP server.</p>
+        <p><abbr title="Model Context Protocol">MCP</abbr> is a standard way for a program to offer tools to any agent. OVAT is an MCP client too: declare <code>type: mcp_stdio</code>, and the factory starts the server, asks it which tools it offers, and hands them to the loop in the same shape as the built-ins. The loop cannot tell them apart.</p>
+      </div>
+      <div class="tool-table table-wrap">
+        <table>
+          <caption class="sr-only">Built-in tools</caption>
+          <thead><tr><th scope="col">Tool</th><th scope="col">In</th><th scope="col">Out</th><th scope="col">Runs on</th></tr></thead>
+          <tbody>
+            <tr><td><code>search_docs</code></td><td>a question, <code>top_k</code> (default 5)</td><td>matching chunks with their source path</td><td>your index, via the embedder</td></tr>
+            <tr><td><code>transcribe</code></td><td>a path to an audio file</td><td>the transcript</td><td>Whisper, CPU by default</td></tr>
+            <tr><td><code>describe_image</code></td><td>a path to an image</td><td>a description</td><td>a vision model; Qwen3.5 is one export for text and vision</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose after-fig">
+        <p><strong>The MCP client is sync over async.</strong> The <code>mcp</code> SDK is asynchronous, the loop is not. Each server gets one background thread with one event loop and one manager coroutine that connects, serves and unwinds. Closing sets an event and lets that coroutine unwind itself, because the SDK's cancel scopes must be entered and left by the same task.</p>
+        <p><strong>A separate process needs the config, not the object.</strong> An MCP server is a new Python process, and objects do not cross that line. An MCP-served <code>search_docs</code> was stuck in stub mode, 104 characters of placeholder, while the built-in path returned 1932 real ones from the same index. The server now takes <code>--config</code> and builds its own retriever.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l6" aria-labelledby="l6-t">
+      <p class="layer-tag"><b>Layer 6</b> Orchestration</p>
+      <h2 class="h2" id="l6-t">Not built, on purpose</h2>
+      <div class="prose">
+        <p>Agent-to-agent (A2A) orchestration was a stretch goal in the proposal, and the core toolkit was always meant to work without it. The owner scoped it out. It is listed here so the numbering matches the design document.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l7" aria-labelledby="l7-t">
+      <p class="layer-tag"><b>Layer 7</b> Observability</p>
+      <h2 class="h2" id="l7-t">Measurements that do not lie</h2>
+      <div class="prose">
+        <p>Where a number comes from (a source) and where it goes (a sink) are separate contracts, so any source feeds any sink. Six sources and three sinks need nine small classes and one collector, not eighteen wirings. The collector ticks on its own thread, so a stuck sensor cannot slow the agent.</p>
+      </div>
+      <figure class="diagram wide minw-640" data-ambient aria-label="Telemetry sources feed a collector that writes to sinks">
+        <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+          <svg class="dg" viewBox="0 0 1000 360" role="img" aria-labelledby="tel-t tel-d" data-lanes="ts-0>tk-0 ts-1>tk-1 ts-3>tk-1 ts-5>tk-2">
+            <title id="tel-t">Telemetry: sources, collector, sinks</title>
+            <desc id="tel-d">Six sources (agent trace, process memory, system, NPU, Intel hardware, OVMS log) feed one collector, which writes to a JSON Lines file, a live buffer for the terminal UI, and a fan-out sink.</desc>
+            <defs>
+              <marker id="ah-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+            </defs>
+            <path id="ts-0" class="wire" d="M280 43 C336 43 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="ts-1" class="wire" d="M280 99 C336 99 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="ts-2" class="wire" d="M280 155 C336 155 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="ts-3" class="wire" d="M280 211 C336 211 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="ts-4" class="wire" d="M280 267 C336 267 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="ts-5" class="wire" d="M280 323 C336 323 330 180 386 180" marker-end="url(#ah-t)"/>
+            <path id="tk-0" class="wire" d="M610 180 C664 180 662 82 716 82" marker-end="url(#ah-t)"/>
+            <path id="tk-1" class="wire" d="M610 180 H716" marker-end="url(#ah-t)"/>
+            <path id="tk-2" class="wire" d="M610 180 C664 180 662 278 716 278" marker-end="url(#ah-t)"/>
+
+            <g class="node"><rect class="box" x="20" y="20" width="260" height="46" rx="10"/><text class="t-m" x="38" y="49">AgentTraceSource</text></g>
+            <g class="node"><rect class="box" x="20" y="76" width="260" height="46" rx="10"/><text class="t-m" x="38" y="105">ProcessMemorySource</text></g>
+            <g class="node"><rect class="box" x="20" y="132" width="260" height="46" rx="10"/><text class="t-m" x="38" y="161">SystemSource</text></g>
+            <g class="node"><rect class="box" x="20" y="188" width="260" height="46" rx="10"/><text class="t-m" x="38" y="217">NPUSource</text></g>
+            <g class="node"><rect class="box" x="20" y="244" width="260" height="46" rx="10"/><text class="t-m" x="38" y="273">IntelHardwareSource</text></g>
+            <g class="node"><rect class="box" x="20" y="300" width="260" height="46" rx="10"/><text class="t-m" x="38" y="329">OVMSLogSource</text></g>
+            <g class="node is-on"><rect class="box" x="390" y="130" width="220" height="100" rx="12"/><text class="t-k" x="410" y="160">telemetry/collector.py</text><text class="t-t" x="410" y="190">Collector</text><text class="t-s" x="410" y="212">ticks on a clock</text></g>
+            <g class="node"><rect class="box" x="720" y="50" width="260" height="64" rx="12"/><text class="t-m" x="738" y="76">JSONFileSink</text><text class="t-s" x="738" y="98">--telemetry run.jsonl</text></g>
+            <g class="node"><rect class="box" x="720" y="148" width="260" height="64" rx="12"/><text class="t-m" x="738" y="174">LiveBufferSink</text><text class="t-s" x="738" y="196">the TUI telemetry page</text></g>
+            <g class="node"><rect class="box" x="720" y="246" width="260" height="64" rx="12"/><text class="t-m" x="738" y="272">FanOutSink</text><text class="t-s" x="738" y="294">one feed, many sinks</text></g>
+          </svg>
+        </div>
+        <div class="diagram-side"><div class="diagram-controls"><span class="faint small">Samples flow from each source to the collector, then out to the sinks.</span><button class="ctl motion-ctl" type="button" data-act="motion" aria-pressed="false"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause motion</span></button></div></div>
+      </figure>
+      <div class="rules3">
+        <div><h3 class="h4">Absent is not zero</h3><p>No token count from the server is <code>null</code>, shown as a dash. A 0 would read as "used no tokens", and a benchmark built on it is quietly wrong.</p></div>
+        <div><h3 class="h4">An unavailable source says why</h3><p>On macOS the Intel row reads "Intel Unified Telemetry does not run on macOS" instead of showing zeros. A missing sensor and an idle one look the same in a graph.</p></div>
+        <div><h3 class="h4">Peak memory is sampled during the run</h3><p>A reading taken afterwards misses the peak, because Python has already freed the big allocations. With OVMS serving, the model's memory lives in the server process, not in OVAT.</p></div>
+      </div>
+      <div class="prose after-fig">
+        <p><code>ovat bench</code> runs each engine in a fresh process for the same reason. In one shared process the native engine read 465.8 MB when it ran first and 1155.6 MB when it ran last. A benchmark that changes its answer when you reorder the inputs is not measuring the inputs.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l8" aria-labelledby="l8-t">
+      <p class="layer-tag"><b>Layer 8</b> Deployment and serving</p>
+      <h2 class="h2" id="l8-t">Getting OVMS installed, started and stopped</h2>
+      <div class="prose">
+        <p><strong><code>ovat setup</code></strong> picks the right OVMS archive for your OS (and, on Linux, your distribution), checks its SHA-256, and unpacks it into <code>~/.ovat/ovms</code>. Nothing is added to <code>PATH</code>. It always takes the <code>python_on</code> build: the <code>python_off</code> build cannot do tool calling, which gives an agent that answers fluently and never calls a tool. The pinned version is OVMS 2026.4.1.</p>
+        <p>It is a command rather than part of <code>pip install</code> because the archive is 126 to 185 MB, Linux needs three different builds, wheels have no post-install step, and macOS has no build at all.</p>
+      </div>
+      <h3 class="h3 sub-h">Where OVAT looks for the server, in order</h3>
+      <ol class="locator">
+        <li><code>model.ovms_binary</code><span>in your YAML</span></li>
+        <li><code>OVAT_OVMS</code><span>environment variable</span></li>
+        <li><code>PATH</code><span>the classic place</span></li>
+        <li><code>./ovms</code> <code>~/.ovat/ovms</code> <code>~/ovms_windows</code> <code>~/ovms</code> <code>C:\ovms</code><span>known folders</span></li>
+      </ol>
+      <div class="rules3">
+        <div><h3 class="h4">A stall budget, not a deadline</h3><p>The first <code>ovat serve</code> downloads the model, about 185 s for Qwen3.5-4B and longer on a slow link. The clock resets whenever the log or the model folder grows, and gives up only after 300 s of no progress at all.</p></div>
+        <div><h3 class="h4">Logs go to a file</h3><p>A pipe nobody reads fills its buffer, around 64 KB, and the server freezes. OVMS writes to <code>ovms.log</code> instead.</p></div>
+        <div><h3 class="h4">Stop checks identity</h3><p><code>ovat serve --stop</code> reads <code>ovms.pid</code> and confirms the process really is OVMS before signalling it, because a stale PID can belong to another program.</p></div>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="l9" aria-labelledby="l9-t">
+      <p class="layer-tag"><b>Layer 9</b> OpenVINO runtime and hardware</p>
+      <h2 class="h2" id="l9-t">Each model goes to the right chip</h2>
+      <div class="prose">
+        <p><code>core/device_manager.py</code> asks OpenVINO which devices exist, then applies a routing table. The same code runs on a Mac and an AI PC; only the device list changes. Pick a machine to see the routes.</p>
+      </div>
+      <figure class="diagram minw-560" data-routes data-autoplay="4600" aria-label="Device routing by available hardware">
+        <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+          <svg class="dg" viewBox="0 0 900 330" role="img" aria-labelledby="dev-t dev-d">
+            <title id="dev-t">Device routing</title>
+            <desc id="dev-d">The LLM goes to the GPU when one exists, embeddings go to the NPU when one exists, Whisper stays on the CPU, and everything falls back to the CPU.</desc>
+            <defs>
+              <marker id="ah-d" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+            </defs>
+            <path id="dw-llm-cpu" class="wire" data-route d="M260 56 C448 56 448 56 636 56" marker-end="url(#ah-d)"/>
+            <path id="dw-llm-gpu" class="wire" data-route d="M260 56 C448 56 448 166 636 166" marker-end="url(#ah-d)"/>
+            <path id="dw-emb-cpu" class="wire" data-route d="M260 166 C448 166 448 56 636 56" marker-end="url(#ah-d)"/>
+            <path id="dw-emb-npu" class="wire" data-route d="M260 166 C448 166 448 276 636 276" marker-end="url(#ah-d)"/>
+            <path id="dw-whi-cpu" class="wire" data-route d="M260 276 C448 276 448 56 636 56" marker-end="url(#ah-d)"/>
+
+            <g id="m-llm" class="node"><rect class="box" x="20" y="20" width="240" height="72" rx="12"/><text class="t-k" x="40" y="48">chat and tool calls</text><text class="t-t" x="40" y="76">LLM</text></g>
+            <g id="m-emb" class="node"><rect class="box" x="20" y="130" width="240" height="72" rx="12"/><text class="t-k" x="40" y="158">document search</text><text class="t-t" x="40" y="186">Embeddings</text></g>
+            <g id="m-whi" class="node"><rect class="box" x="20" y="240" width="240" height="72" rx="12"/><text class="t-k" x="40" y="268">transcribe tool</text><text class="t-t" x="40" y="296">Whisper</text></g>
+            <g id="d-cpu" class="node"><rect class="box" x="640" y="20" width="240" height="72" rx="12"/><text class="t-k" x="660" y="48">always present</text><text class="t-t" x="660" y="76">CPU</text></g>
+            <g id="d-gpu" class="node"><rect class="box" x="640" y="130" width="240" height="72" rx="12"/><text class="t-k" x="660" y="158">Intel Arc</text><text class="t-t" x="660" y="186">GPU</text></g>
+            <g id="d-npu" class="node"><rect class="box" x="640" y="240" width="240" height="72" rx="12"/><text class="t-k" x="660" y="268">Intel AI Boost</text><text class="t-t" x="660" y="296">NPU</text></g>
+          </svg>
+        </div>
+        <div class="diagram-side">
+          <div class="diagram-controls">
+            <div class="seg seg-1" role="tablist" aria-label="Pick a machine">
+              <button type="button" role="tab" id="dt-mac" aria-controls="dp-mac" aria-selected="true" data-wires="dw-llm-cpu dw-emb-cpu dw-whi-cpu" data-on="m-llm m-emb m-whi d-cpu" data-off="d-gpu d-npu">CPU only</button>
+              <button type="button" role="tab" id="dt-gpu" aria-controls="dp-gpu" aria-selected="false" tabindex="-1" data-wires="dw-llm-gpu dw-emb-cpu dw-whi-cpu" data-on="m-llm m-emb m-whi d-cpu d-gpu" data-off="d-npu">CPU and GPU</button>
+              <button type="button" role="tab" id="dt-npu" aria-controls="dp-npu" aria-selected="false" tabindex="-1" data-wires="dw-llm-gpu dw-emb-npu dw-whi-cpu" data-on="m-llm m-emb m-whi d-cpu d-gpu d-npu">CPU, GPU and NPU</button>
+            </div>
+        <button class="ctl motion-ctl" type="button" data-act="motion" aria-pressed="false"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause motion</span></button>
+          </div>
+          <div class="engine-detail single" id="dp-mac" role="tabpanel" aria-labelledby="dt-mac">
+            <p class="muted small">A Mac or a plain laptop. OpenVINO reports <code>['CPU']</code>, so every model runs on the CPU. Low-bit weights keep it in memory.</p>
+          </div>
+          <div class="engine-detail single" id="dp-gpu" role="tabpanel" aria-labelledby="dt-gpu" hidden>
+            <p class="muted small">A GPU is found, so the LLM moves there: it handles changing input sizes, the KV cache and tool calling on any export. Embeddings and Whisper stay on the CPU.</p>
+          </div>
+          <div class="engine-detail single" id="dp-npu" role="tabpanel" aria-labelledby="dt-npu" hidden>
+            <p class="muted small">A full Intel AI PC. Embeddings move to the NPU: small, fixed-shape and low power. The LLM stays on the GPU by default; Whisper is small enough for the CPU.</p>
+          </div>
+          <p class="diagram-note">The LLM can run on the NPU too, with tool calling, from a channel-wise INT4 export (<code>-int4-cw-ov</code>). See <a href="results.html#npu">the NPU results</a>.</p>
+        </div>
+      </figure>
+      <div class="table-wrap after-fig">
+        <table>
+          <caption class="sr-only">What the NPU needs to serve an LLM</caption>
+          <thead><tr><th scope="col">To serve an LLM on the NPU</th><th scope="col">Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td>A channel-wise symmetric INT4 export, the <code>-int4-cw-ov</code> family</td><td>The stock <code>-int4-ov</code> exports fail to compile on the NPU before the first token.</td></tr>
+            <tr><td>A prompt length cap, set with <code>--max_prompt_len</code></td><td>OVMS defaults to 1024 tokens on the NPU; OVAT raises it to 4096 because an agent prompt grows every round.</td></tr>
+            <tr><td>No batching, no beam search</td><td>Requests are handled one at a time.</td></tr>
+            <tr><td>KV cache settings are ignored</td><td>The NPU runs a fixed-shape pipeline instead, with a hard total-length cap.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="failures" aria-labelledby="fail-t">
+      <p class="layer-tag"><b>Across layers</b> Failure design</p>
+      <h2 class="h2" id="fail-t">Four ways a tool call goes wrong, each with a name</h2>
+      <div class="prose">
+        <p>All four end the same way: the agent answers fluently and has called nothing. That is the hardest kind of broken to notice, so the loop detects each one and sets a flag in the trace. <code>ovat bench</code> scores on those flags, not on the answer text.</p>
+      </div>
+      <div class="tree">
+        <div class="tree-row"><span class="flag f-warn">truncated</span><p>The reply was cut at <code>max_tokens</code> (4096 by default), so any tool-call markup is a fragment. Detected from <code>finish_reason: "length"</code>, so it is never blamed on the parser.</p></div>
+        <div class="tree-row"><span class="flag f-fail">undecoded_tool_call</span><p>Raw <code>&lt;tool_call&gt;</code> markup reached the answer: no parser matched, or the model wrote the call malformed. Usually the wrong <code>tool_parser</code>.</p></div>
+        <div class="tree-row"><span class="flag f-fail">empty_answer</span><p>Nothing is left once the reasoning is removed. The parser swallowed the reply.</p></div>
+        <div class="tree-row"><span class="flag f-ok">a real answer</span><p>Text remains, with no markup in it. The run exits 0. Every other case exits non-zero, writes its trace, and cleans up.</p></div>
+      </div>
+      <div class="prose after-fig">
+        <p>The broken markup is deliberately not repaired into a tool call. Guessing at broken output trades a loud failure for a silent wrong answer.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="rules" aria-labelledby="rules-t">
+      <p class="layer-tag"><b>Across layers</b> Design rules</p>
+      <h2 class="h2" id="rules-t">Four rules, each paid for by a real bug</h2>
+      <div class="rules3 rules4">
+        <div><h3 class="h4">Optional stays optional</h3><p>The terminal UI and the three frameworks are extras. A test fails if a base install imports textual, langchain, llama_index or the Agents SDK.</p></div>
+        <div><h3 class="h4">The core ignores presentation</h3><p>The loop never imports the CLI. Text helpers both need live in a neutral <code>ovat/text.py</code>.</p></div>
+        <div><h3 class="h4">One place per fact</h3><p>Colours in <code>ui.PALETTE</code>, tool contracts in each <code>SCHEMA</code>, the backend in <code>LLMBackend</code>, config loading in <code>_load_config</code>.</p></div>
+        <div><h3 class="h4">Errors are for people</h3><p>A failure becomes a sentence the model or the person can act on, never a bare traceback on the CLI or in the UI.</p></div>
+      </div>
+    </section>
+
+    <section class="arch-sec tight-end" aria-label="Keep reading">
+      <div class="next-up">
+        <a class="next-card" href="guide.html"><span>Next</span><strong>Use it, step by step</strong><p>Install, serve, run, chat, bench, the TUI and MCP.</p></a>
+        <a class="next-card" href="codebase.html"><span>Or</span><strong>Open the codebase map</strong><p>Every module in <code>ovat/</code>, explained and linked.</p></a>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="OVAT Navigate, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg><span class="brand-word">ovat</span></a>
+        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="guide.html">Guide</a></li>
+          <li><a href="results.html">Measured results</a></li>
+          <li><a href="codebase.html">Codebase map</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Project</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat" rel="noopener">Source on GitHub</a></li>
+          <li><a href="https://pypi.org/project/ovat/" rel="noopener">ovat on PyPI</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md" rel="noopener">ARCHITECTURE.md</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/workflow_yaml_reference.md" rel="noopener">workflow.yml reference</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>About</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate" rel="noopener">Site source</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/blob/main/SECURITY.md" rel="noopener">Security</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/tree/main/assets/fonts" rel="noopener">Font licenses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Describes OVAT 1.1.1. Apache 2.0.</span>
+      <span>Not an official Intel or OpenVINO site. Intel and OpenVINO are trademarks of Intel Corporation.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

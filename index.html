@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#070a10">
+<title>OVAT Navigate</title>
+<meta name="description" content="A visual guide to OVAT, the OpenVINO Agentic Toolkit: one YAML file and one command give you a tool-calling AI agent on your own Intel AI PC.">
+<link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OVAT Navigate">
+<meta property="og:description" content="A visual guide to OVAT, the OpenVINO Agentic Toolkit: one YAML file and one command give you a tool-calling AI agent on your own Intel AI PC.">
+<meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/flow.js" defer></script>
+<script src="assets/js/terminal.js" defer></script>
+</head>
+<body class="sheet">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg>
+      <span class="brand-word">ovat</span>
+      <span class="brand-tag">navigate</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="guide.html">Guide</a></li><li><a href="results.html">Results</a></li><li><a href="codebase.html">Codebase</a></li></ul>
+    </nav>
+    <div class="top-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme"><svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
+      <a class="icon-btn" href="https://github.com/Lagmator22/ovat" rel="noopener" aria-label="OVAT on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 22 12.2C22 6.6 17.5 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">OpenVINO Agentic Toolkit</p>
+      <h1 class="display">One YAML file.<br>One command.<br><span class="lit">A local agent.</span></h1>
+      <p class="lede">OVAT turns a tool-calling AI agent into a config file. You describe the model, the tools and the behaviour in <code>workflow.yml</code>, run <code>ovat run</code>, and the agent answers on your own Intel hardware. <strong>No API keys, no cloud, nothing leaves the machine.</strong></p>
+      <div class="hero-actions">
+        <div class="install"><span class="prompt" aria-hidden="true">$</span><span id="pip-cmd">pip install ovat</span>
+          <button class="copy-btn" type="button" data-copy="pip install ovat" aria-label="Copy the install command"><span class="copy-label">Copy</span></button>
+        </div>
+        <a class="btn btn-primary" href="guide.html">Start the guide <span class="arr" aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="hero-meta" aria-label="Project facts">
+        <span><i aria-hidden="true"></i>v1.1.1 on PyPI</span>
+        <span>Python 3.10 to 3.14</span>
+        <span>Apache 2.0</span>
+        <span>GSoC 2026, OpenVINO project 18</span>
+      </div>
+    </div>
+
+    <div class="term" data-term>
+      <div class="term-bar">
+        <div class="term-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="term-title">examples/rag</span>
+        <div class="term-tabs" role="tablist" aria-label="Terminal examples">
+          <button class="term-tab" role="tab" id="tt-run" aria-controls="sc-run" aria-selected="true" type="button">run</button>
+          <button class="term-tab" role="tab" id="tt-dry" aria-controls="sc-dry" aria-selected="false" tabindex="-1" type="button">dry-run</button>
+          <button class="term-tab" role="tab" id="tt-doc" aria-controls="sc-doc" aria-selected="false" tabindex="-1" type="button">doctor</button>
+        </div>
+      </div>
+      <div class="term-body">
+        <div id="sc-run" role="tabpanel" aria-labelledby="tt-run" data-scene data-title="ovat run, the RAG example">
+          <div class="ln" data-k="cmd"><span class="t-prompt">$ </span><span class="t-cmd">ovat run examples/rag/workflow.yml -i "What is OVAT's memory budget?"</span></div>
+          <div class="ln" data-delay="700"><span class="t-dim">engine:</span> <span class="t-bold">native loop (loop.py)</span></div>
+          <div class="ln" data-delay="2600">On the minimal tier a full agent run fits in 8 GB. That is the target the project set itself; the number to trust on your own machine is the one <span class="t-bold">ovat run --telemetry</span> reports there.</div>
+          <div class="ln" data-delay="500">&nbsp;</div>
+          <div class="ln" data-delay="120"><span class="t-dim">sources:</span> examples/rag/docs/ovat-facts.md</div>
+        </div>
+        <div id="sc-dry" role="tabpanel" aria-labelledby="tt-dry" data-scene data-title="ovat run --dry-run, no server needed" hidden>
+          <div class="ln" data-k="cmd"><span class="t-prompt">$ </span><span class="t-cmd">ovat run examples/workflow.yml --dry-run</span></div>
+          <div class="ln" data-delay="900"><span class="t-ok">Built agent</span>  model=Qwen3.5-4B-int4-ov  tools=['search_docs', 'transcribe']  max_iterations=10</div>
+          <div class="ln" data-delay="120"><span class="t-warn">dry-run:</span> not calling the model.</div>
+        </div>
+        <div id="sc-doc" role="tabpanel" aria-labelledby="tt-doc" data-scene data-title="ovat doctor on a Mac, trimmed" hidden>
+          <div class="ln" data-k="cmd"><span class="t-prompt">$ </span><span class="t-cmd">ovat doctor examples/workflow.yml</span></div>
+          <div class="ln" data-delay="1100"><span class="t-ok">&#10003; ok  </span> Python            3.11.15 (3.10+ required)</div>
+          <div class="ln" data-delay="140"><span class="t-ok">&#10003; ok  </span> Local GenAI       openvino_genai 2026.4.1: local models run here</div>
+          <div class="ln" data-delay="140"><span class="t-ok">&#10003; ok  </span> OpenVINO devices  CPU</div>
+          <div class="ln" data-delay="140"><span class="t-ok">&#10003; ok  </span> Device routing    best here: LLM&rarr;CPU emb&rarr;CPU whisper&rarr;CPU</div>
+          <div class="ln" data-delay="140"><span class="t-warn">! warn</span> OVMS serving      OVMS does not run on macOS; develop + chat locally here</div>
+          <div class="ln" data-delay="140"><span class="t-ok">&#10003; ok  </span> Workflow config   model=Qwen3.5-4B-int4-ov  agent=native</div>
+          <div class="ln" data-delay="140"><span class="t-warn">! warn</span> OVMS reachable    nothing answering at :8000/v3; start it with 'ovat serve'</div>
+          <div class="ln" data-delay="260"><span class="t-dim">Yellow rows are heads-ups, not blockers; each says what to do about it.</span></div>
+        </div>
+      </div>
+      <div class="term-foot">
+        <span>Replayed from real CLI output in the OVAT repo and docs.</span>
+        <span class="term-acts"><button type="button" data-act="pause" aria-pressed="false">Pause</button><button type="button" data-act="replay">Replay</button></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="flow-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">The whole idea in one picture</p>
+      <h2 class="h2" id="flow-title">How one question travels through OVAT</h2>
+      <p class="lede">Follow the light. A question enters as a command, becomes a checked config, gets wired into an agent, and loops between the model and your tools until there is an answer. Press any step to stop on it.</p>
+    </div>
+
+    <figure class="diagram wide minw-640" data-seq aria-labelledby="flow-cap">
+      <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+        <svg class="dg" viewBox="0 0 1170 514" role="img" aria-labelledby="flow-svg-t flow-svg-d">
+          <title id="flow-svg-t">The OVAT request flow</title>
+          <desc id="flow-svg-d">ovat run hands workflow.yml to the config loader, the factory builds an agent engine, the engine asks OVMS, OVMS runs the model on the device, tools run in Python, and a reply with no tool calls becomes the answer.</desc>
+          <defs>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+          </defs>
+          <g class="legend-g" transform="translate(920 40)">
+            <circle class="core-legend" cx="8" cy="10" r="5"/>
+            <text class="t-c" x="24" y="15">the request</text>
+            <circle class="core-legend tool" cx="8" cy="40" r="5"/>
+            <text class="t-c" x="24" y="45">a tool runs</text>
+            <circle class="core-legend ok" cx="8" cy="70" r="5"/>
+            <text class="t-c" x="24" y="75">the answer</text>
+          </g>
+
+          <path id="pw-1" class="wire" d="M250 78 H316" marker-end="url(#ah)"/>
+          <path id="pw-2" class="wire" d="M550 78 H616" marker-end="url(#ah)"/>
+          <path id="pw-3" class="wire" d="M735 126 V210" marker-end="url(#ah)"/>
+          <path id="pw-4" class="wire" d="M850 248 H916" marker-end="url(#ah)"/>
+          <path id="pw-5" class="wire" d="M920 280 H854" marker-end="url(#ah)"/>
+          <path id="pw-6" class="wire" d="M1010 310 V394" marker-end="url(#ah)"/>
+          <path id="pw-7" class="wire" d="M1060 398 V314" marker-end="url(#ah)"/>
+          <path id="pw-8" class="wire" d="M620 248 H554" marker-end="url(#ah)"/>
+          <path id="pw-9" class="wire" d="M550 280 H616" marker-end="url(#ah)"/>
+          <path id="pw-10" class="wire" d="M735 310 V394" marker-end="url(#ah)"/>
+
+          <g id="pn-cli" class="node"><rect class="box" x="20" y="30" width="230" height="96" rx="12"/>
+            <text class="t-k" x="40" y="60">cli/main.py</text><text class="t-t" x="40" y="90">ovat run</text><text class="t-s" x="40" y="112">--input "..."</text></g>
+          <g id="pn-cfg" class="node"><rect class="box" x="320" y="30" width="230" height="96" rx="12"/>
+            <text class="t-k" x="340" y="60">config/workflow.py</text><text class="t-t" x="340" y="90">workflow.yml</text><text class="t-s" x="340" y="112">checked, strict</text></g>
+          <g id="pn-fac" class="node"><rect class="box" x="620" y="30" width="230" height="96" rx="12"/>
+            <text class="t-k" x="640" y="60">agent/factory.py</text><text class="t-t" x="640" y="90">build_agent()</text><text class="t-s" x="640" y="112">model + tools + RAG</text></g>
+          <g id="pn-eng" class="node"><rect class="box" x="620" y="214" width="230" height="96" rx="12"/>
+            <text class="t-k" x="640" y="244">1 of 4 engines</text><text class="t-t" x="640" y="274">Agent loop</text><text class="t-s" x="640" y="296">agent.type</text></g>
+          <g id="pn-tools" class="node tone-tool"><rect class="box" x="320" y="214" width="230" height="96" rx="12"/>
+            <text class="t-k" x="340" y="244">tools/</text><text class="t-t" x="340" y="274">Your tools</text><text class="t-s" x="340" y="296">builtin or MCP</text></g>
+          <g id="pn-ovms" class="node"><rect class="box" x="920" y="214" width="230" height="96" rx="12"/>
+            <text class="t-k" x="940" y="244">model server</text><text class="t-t" x="940" y="274">OVMS /v3</text><text class="t-s" x="940" y="296">decodes tool_calls</text></g>
+          <g id="pn-dev" class="node"><rect class="box" x="920" y="398" width="230" height="96" rx="12"/>
+            <text class="t-k" x="940" y="428">model.device</text><text class="t-t" x="940" y="458">Intel CPU, GPU, NPU</text><text class="t-s" x="940" y="480">OpenVINO runtime</text></g>
+          <g id="pn-ans" class="node tone-ok"><rect class="box" x="620" y="398" width="230" height="96" rx="12"/>
+            <text class="t-k" x="640" y="428">no tool calls</text><text class="t-t" x="640" y="458">Answer</text><text class="t-s" x="640" y="480">+ sources, trace</text></g>
+        </svg>
+      </div>
+      <figcaption class="diagram-side" id="flow-cap">
+        <div class="diagram-controls">
+          <button class="ctl" type="button" data-act="toggle" aria-pressed="true"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause</span></button>
+          <button class="ctl" type="button" data-act="prev" aria-label="Previous step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg></button>
+          <button class="ctl" type="button" data-act="next" aria-label="Next step"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg></button>
+          <span class="count" aria-live="polite">1 / 8</span>
+        </div>
+        <ol class="steps">
+          <li data-nodes="pn-cli pn-cfg" data-path="pw-1"><b>You type one command.</b> The CLI hands your file to <code>_load_config()</code>, the one place a workflow is ever loaded.</li>
+          <li data-nodes="pn-cfg pn-fac" data-path="pw-2"><b>The YAML becomes a checked object.</b> Unknown keys are errors, so a typo like <code>max_iteration</code> fails by name instead of being ignored.</li>
+          <li data-nodes="pn-fac pn-eng" data-path="pw-3"><b>The factory wires the agent.</b> It builds the model client, the tools and the optional document search, then returns one of four engines.</li>
+          <li data-nodes="pn-eng pn-ovms" data-path="pw-4"><b>The engine asks the model.</b> It sends the conversation plus a menu of tools to OVMS, which speaks the OpenAI chat format on <code>/v3</code>.</li>
+          <li data-nodes="pn-ovms pn-dev" data-path="pw-6 pw-7"><b>The model runs on your hardware.</b> OVMS uses OpenVINO on the device you named. Its tool parser turns the model's text into a list of tool calls.</li>
+          <li data-nodes="pn-ovms pn-eng" data-path="pw-5"><b>The reply comes back.</b> If it carries tool calls, the engine has work to do. If not, it is the answer.</li>
+          <li data-nodes="pn-eng pn-tools" data-path="pw-8 pw-9" data-tone="tool"><b>Your tool runs in Python, on your machine.</b> The model never runs code; it only asks. The result goes into the conversation and the engine asks the model again.</li>
+          <li data-nodes="pn-eng pn-ans" data-path="pw-10" data-tone="ok" data-hold="2200"><b>No tool calls means done.</b> OVAT prints the answer, lists the source files it saw, and can write a trace of every turn.</li>
+        </ol>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="words-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Plain words first</p>
+      <h2 class="h2" id="words-title">Six terms, so the rest makes sense</h2>
+    </div>
+    <dl class="ledger">
+      <div><dt>Agent</dt><dd><p>A language model that can ask for your functions to be run. It reads the result and keeps going until it can answer.</p></dd></div>
+      <div><dt>Tool call</dt><dd><p>The model's request to run a function, written as structured text: a name plus arguments. Your code runs it, never the model.</p></dd></div>
+      <div><dt>Tool parser</dt><dd><p>The piece inside the model server that reads that text and turns it into a real call. Qwen3.5 needs <code>qwen3coder</code>; Qwen3 needs <code>hermes3</code>.</p></dd></div>
+      <div><dt>OVMS</dt><dd><p>OpenVINO Model Server. It loads the model, runs it on CPU, GPU or NPU and answers like the OpenAI API. OVAT starts and stops it for you.</p></dd></div>
+      <div><dt>openvino_genai</dt><dd><p>The library that runs a model inside your own Python process. OVAT uses it for local chat with no server, including on a Mac.</p></dd></div>
+      <div><dt>Intel AI PC</dt><dd><p>A laptop or desktop with an Intel CPU, an Arc GPU and an NPU, a chip built for AI work. OVAT routes each model to the right one.</p></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="before-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Why it exists</p>
+      <h2 class="h2" id="before-title">The loop every project rewrites, replaced by a file</h2>
+      <p class="lede">On the left is the smallest honest tool-calling agent against a local server, from the OVAT walkthrough. It still has no iteration cap, no error handling, no history and no server management. On the right is the same agent in OVAT.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-label"><span class="h4">By hand</span><span class="faint small mono">Python, about 30 lines</span></div>
+        <div class="code">
+          <div class="code-head"><span>agent.py</span></div>
+<pre><code><span class="k">from</span> openai <span class="k">import</span> OpenAI
+client = OpenAI(base_url=<span class="s">"http://localhost:8000/v3"</span>, api_key=<span class="s">"not-needed"</span>)
+
+tools = [{<span class="s">"type"</span>: <span class="s">"function"</span>, <span class="s">"function"</span>: {
+    <span class="s">"name"</span>: <span class="s">"search_docs"</span>,
+    <span class="s">"description"</span>: <span class="s">"Search the user's local documents"</span>,
+    <span class="s">"parameters"</span>: {<span class="s">"type"</span>: <span class="s">"object"</span>,
+                   <span class="s">"properties"</span>: {<span class="s">"query"</span>: {<span class="s">"type"</span>: <span class="s">"string"</span>}},
+                   <span class="s">"required"</span>: [<span class="s">"query"</span>]}}}]   <span class="c"># hand-written schema</span>
+
+messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: question}]
+<span class="k">while</span> <span class="k">True</span>:                                    <span class="c"># the loop, by hand</span>
+    r = client.chat.completions.create(
+        model=<span class="s">"Qwen3.5-4B-int4-ov"</span>, messages=messages,
+        tools=tools, tool_choice=<span class="s">"auto"</span>)
+    choice = r.choices[<span class="n">0</span>]
+    <span class="k">if</span> choice.finish_reason != <span class="s">"tool_calls"</span>:
+        print(choice.message.content)
+        <span class="k">break</span>
+    messages.append(choice.message)
+    <span class="k">for</span> call <span class="k">in</span> choice.message.tool_calls:     <span class="c"># dispatch, by hand</span>
+        args = json.loads(call.function.arguments)  <span class="c"># may be malformed</span>
+        result = run_my_tool(call.function.name, args)
+        messages.append({<span class="s">"role"</span>: <span class="s">"tool"</span>,
+                         <span class="s">"tool_call_id"</span>: call.id,
+                         <span class="s">"content"</span>: str(result)})</code></pre>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label"><span class="h4">With OVAT</span><span class="faint small mono">YAML, then one command</span></div>
+        <div class="code">
+          <div class="code-head"><span>workflow.yml</span><button class="copy-btn" type="button" data-copy-from="#yaml-min" aria-label="Copy workflow.yml"><span class="copy-label">Copy</span></button></div>
+<pre><code id="yaml-min"><span class="k">model:</span>
+  <span class="k">name:</span> <span class="s">Qwen3.5-4B-int4-ov</span>
+  <span class="k">device:</span> <span class="s">GPU</span>
+  <span class="k">tool_parser:</span> <span class="s">qwen3coder</span>
+<span class="k">tools:</span>
+  - <span class="k">name:</span> <span class="s">search_docs</span>
+    <span class="k">type:</span> <span class="s">builtin</span>
+<span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">native</span>
+  <span class="k">max_iterations:</span> <span class="n">10</span></code></pre>
+          <div class="code-head"><span>terminal</span></div>
+<pre><code><span class="p">$</span> ovat serve workflow.yml
+<span class="p">$</span> ovat run workflow.yml -i <span class="s">"what do my notes say about Q3?"</span></code></pre>
+        </div>
+        <ul class="handles" aria-label="What OVAT handles for you">
+          <li><span><b>The loop</b>, with a <code>max_iterations</code> cap so a confused model cannot spin forever.</span></li>
+          <li><span><b>Tool schemas</b>, read from each tool's own <code>SCHEMA</code>, never written twice.</span></li>
+          <li><span><b>Broken tool arguments</b>, sent back to the model as a sentence it can fix.</span></li>
+          <li><span><b>The server</b>: <code>ovat serve</code> starts OVMS, <code>--stop</code> ends it.</span></li>
+          <li><span><b>Silent failures</b>, like a tool call that was never decoded, named in the trace.</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted small">The loop, the tool schemas, the history, the iteration cap and the error messages become the toolkit's job. Moving from a 16 GB GPU box to an 8 GB CPU laptop is a three-line edit: compare <a href="https://github.com/Lagmator22/ovat/blob/main/examples/workflow.yml" rel="noopener">examples/workflow.yml</a> with <a href="https://github.com/Lagmator22/ovat/blob/main/examples/minimal.yml" rel="noopener">examples/minimal.yml</a>.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="eng-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">One config, four engines</p>
+      <h2 class="h2" id="eng-title">Change one word, keep everything else</h2>
+      <p class="lede"><code>agent.type</code> picks the loop that drives your tools. The model, the tools and the prompt stay the same, and all four talk to the same server through one shared description of it.</p>
+    </div>
+    <figure class="diagram minw-560" data-routes data-autoplay="5200" aria-label="Four agent engines share one backend">
+  <p class="svg-scroll-hint" aria-hidden="true">Drag the drawing sideways to see all of it.</p>
+      <div class="diagram-stage">
+    <svg class="dg" viewBox="0 0 900 380" role="img" aria-labelledby="eng-svg-t eng-svg-d">
+      <title id="eng-svg-t">Four engines, one backend</title>
+      <desc id="eng-svg-d">native, react, llamaindex and openai-agents each connect to LLMBackend, one shared description of the OVMS connection, which talks to the same OVMS server.</desc>
+      <defs>
+        <marker id="ah-e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <path id="ew-native" class="wire" d="M260 52 C312 52 296 178 346 178" marker-end="url(#ah-e)"/>
+      <path id="ew-react" class="wire" d="M260 140 C306 140 302 186 346 186" marker-end="url(#ah-e)"/>
+      <path id="ew-llama" class="wire" d="M260 228 C306 228 302 194 346 194" marker-end="url(#ah-e)"/>
+      <path id="ew-oai" class="wire" d="M260 316 C312 316 296 202 346 202" marker-end="url(#ah-e)"/>
+      <path id="ew-b" class="wire" d="M580 190 H646" marker-end="url(#ah-e)"/>
+
+      <g id="e-native" class="node"><rect class="box" x="20" y="20" width="240" height="64" rx="12"/><text class="t-k" x="40" y="44">agent/loop.py</text><text class="t-t" x="40" y="72">native</text></g>
+      <g id="e-react" class="node"><rect class="box" x="20" y="108" width="240" height="64" rx="12"/><text class="t-k" x="40" y="132">LangChain</text><text class="t-t" x="40" y="160">react</text></g>
+      <g id="e-llama" class="node"><rect class="box" x="20" y="196" width="240" height="64" rx="12"/><text class="t-k" x="40" y="220">LlamaIndex</text><text class="t-t" x="40" y="248">llamaindex</text></g>
+      <g id="e-oai" class="node"><rect class="box" x="20" y="284" width="240" height="64" rx="12"/><text class="t-k" x="40" y="308">OpenAI Agents SDK</text><text class="t-t" x="40" y="336">openai-agents</text></g>
+      <g id="e-be" class="node"><rect class="box" x="350" y="140" width="230" height="100" rx="12"/><text class="t-k" x="370" y="170">providers/backend.py</text><text class="t-t" x="370" y="200">LLMBackend</text><text class="t-s" x="370" y="222">one shared description</text></g>
+      <g id="e-ov" class="node"><rect class="box" x="650" y="140" width="230" height="100" rx="12"/><text class="t-k" x="670" y="170">the same server</text><text class="t-t" x="670" y="200">OVMS /v3</text><text class="t-s" x="670" y="222">same model, same tools</text></g>
+    </svg>
+  </div>
+  <div class="diagram-side">
+    <div class="diagram-controls">
+      <div class="seg" role="tablist" aria-label="Pick an engine">
+        <button type="button" role="tab" id="et-native" aria-controls="ep-native" aria-selected="true" data-wires="ew-native ew-b" data-lanes="ew-native>ew-b>!ew-b>!ew-native" data-on="e-native e-be e-ov"><code>native</code></button>
+        <button type="button" role="tab" id="et-react" aria-controls="ep-react" aria-selected="false" tabindex="-1" data-wires="ew-react ew-b" data-lanes="ew-react>ew-b>!ew-b>!ew-react" data-on="e-react e-be e-ov"><code>react</code></button>
+        <button type="button" role="tab" id="et-llama" aria-controls="ep-llama" aria-selected="false" tabindex="-1" data-wires="ew-llama ew-b" data-lanes="ew-llama>ew-b>!ew-b>!ew-llama" data-on="e-llama e-be e-ov"><code>llamaindex</code></button>
+        <button type="button" role="tab" id="et-oai" aria-controls="ep-oai" aria-selected="false" tabindex="-1" data-wires="ew-oai ew-b" data-lanes="ew-oai>ew-b>!ew-b>!ew-oai" data-on="e-oai e-be e-ov"><code>openai-agents</code></button>
+      </div>
+        <button class="ctl motion-ctl" type="button" data-act="motion" aria-pressed="false"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause motion</span></button>
+    </div>
+    <div class="engine-detail" id="ep-native" role="tabpanel" aria-labelledby="et-native">
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">native</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>OVAT's own loop in <code>agent/loop.py</code>. No extra library.</dd>
+        <dt>Run</dt><dd><code>--native</code></dd>
+        <dt>Install</dt><dd>Included in <code>pip install ovat</code></dd>
+        <dt>Tokens</dt><dd>The only engine that records token counts per turn.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-react" role="tabpanel" aria-labelledby="et-react" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">react</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>LangChain's <code>create_agent</code> with a <code>ChatOpenAI</code> model pointed at OVMS.</dd>
+        <dt>Run</dt><dd><code>--react</code> or <code>--langchain</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[langchain]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded. Shown as a dash, never as 0.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-llama" role="tabpanel" aria-labelledby="et-llama" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">llamaindex</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>LlamaIndex's <code>FunctionAgent</code> with an <code>OpenAILike</code> model. Both <code>is_chat_model</code> and <code>is_function_calling_model</code> must be set, or it quietly stops calling tools.</dd>
+        <dt>Run</dt><dd><code>--llamaindex</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[llamaindex]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded.</dd>
+      </dl>
+    </div>
+    <div class="engine-detail" id="ep-oai" role="tabpanel" aria-labelledby="et-oai" hidden>
+      <div class="code"><pre><code><span class="k">agent:</span>
+  <span class="k">type:</span> <span class="s">openai-agents</span></code></pre></div>
+      <dl>
+        <dt>What</dt><dd>The OpenAI Agents SDK, kept on your machine by three settings: an explicit client on the <code>/v3</code> URL, the Chat Completions model, and tracing turned off.</dd>
+        <dt>Run</dt><dd><code>--openai-agents</code> or <code>--openai-sdk</code></dd>
+        <dt>Install</dt><dd><code>pip install "ovat[openai-agents]"</code></dd>
+        <dt>Tokens</dt><dd>Not recorded.</dd>
+      </dl>
+    </div>
+  </div>
+</figure>
+
+  </div>
+</section>
+
+<section class="section" aria-labelledby="num-title">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Measured, not claimed</p>
+      <h2 class="h2" id="num-title">What the AI PC runs showed</h2>
+      <p class="lede">Every figure below was measured on an Intel LunarLake AI PC (Arc 140V GPU and NPU) and is written down in the OVAT repo with how it was taken.</p>
+    </div>
+    <div class="figures">
+      <div class="figure"><span class="big num">56<small>/60</small></span><span class="vs">vs 42/60 on OVMS 2026.2.1</span><p>Right answers, 15 tool questions through all four engines, on the pinned OVMS 2026.4.1. McNemar p = 0.0001.</p></div>
+      <div class="figure"><span class="big num">4.9<small> GB</small></span><span class="vs">vs 17.3 GB before</span><p>Peak memory of the GPU model server across the same run, after moving to 2026.4.1.</p></div>
+      <div class="figure"><span class="big">NPU</span><span class="vs">tool calls work</span><p>A real tool-calling agent run on the NPU, from a channel-wise INT4 export (<code>-int4-cw-ov</code>).</p></div>
+      <div class="figure"><span class="big num">800<small>+</small></span><span class="vs">tests, 4 CI platforms</span><p>Ubuntu 22.04 and 24.04, Windows and macOS on every push. No server needed to run them.</p></div>
+    </div>
+    <p class="row"><a class="btn btn-ghost" href="results.html">See every measurement <span class="arr" aria-hidden="true">&rarr;</span></a></p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="where-title">
+  <div class="wrap split">
+    <div class="stack">
+      <p class="eyebrow">Where it runs</p>
+      <h2 class="h2" id="where-title">Build on a Mac, serve on an AI PC</h2>
+      <p class="lede">OVMS ships for x86-64 Windows and Linux only. On macOS everything except serving works, and <code>ovat chat</code> answers from your documents with a local model and no server.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">Platform support</caption>
+        <thead><tr><th scope="col">Command</th><th scope="col">macOS</th><th scope="col">Windows 11</th><th scope="col">Linux</th></tr></thead>
+        <tbody>
+          <tr><td><code>init</code> <code>doctor</code> <code>index</code> <code>setup</code> <code>telemetry</code></td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td><code>chat</code> and the terminal UI</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td><code>serve</code> <code>models</code> <code>run</code> <code>bench</code></td><td class="no">No</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
+          <tr><td>GPU and NPU</td><td class="no">CPU only</td><td class="yes">Verified</td><td class="part">Untested</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section tight" aria-labelledby="next-title">
+  <div class="wrap stack">
+    <h2 class="sr-only" id="next-title">Keep reading</h2>
+    <div class="next-up">
+      <a class="next-card" href="architecture.html"><span>Architecture</span><strong>Nine layers, each with a reason</strong><p>The agent loop, the four engines, document search, telemetry and device routing, animated.</p></a>
+      <a class="next-card" href="guide.html"><span>Guide</span><strong>From pip install to your first answer</strong><p>Every command in order, the anatomy of workflow.yml, and how to add an MCP tool.</p></a>
+      <a class="next-card" href="codebase.html"><span>Codebase</span><strong>A map of every module</strong><p>Click any file in the ovat package to see what it does, why, and where it lives on GitHub.</p></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html" aria-label="OVAT Navigate, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
+  <circle class="bm-ring" cx="16" cy="16" r="8"/>
+  <circle class="bm-dot" cx="24" cy="16" r="3"/>
+</svg><span class="brand-word">ovat</span></a>
+        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul>
+          <li><a href="architecture.html">Architecture</a></li>
+          <li><a href="guide.html">Guide</a></li>
+          <li><a href="results.html">Measured results</a></li>
+          <li><a href="codebase.html">Codebase map</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Project</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat" rel="noopener">Source on GitHub</a></li>
+          <li><a href="https://pypi.org/project/ovat/" rel="noopener">ovat on PyPI</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md" rel="noopener">ARCHITECTURE.md</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat/blob/main/docs/workflow_yaml_reference.md" rel="noopener">workflow.yml reference</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>About</h2>
+        <ul>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate" rel="noopener">Site source</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/blob/main/SECURITY.md" rel="noopener">Security</a></li>
+          <li><a href="https://github.com/Lagmator22/ovat-navigate/tree/main/assets/fonts" rel="noopener">Font licenses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Describes OVAT 1.1.1. Apache 2.0.</span>
+      <span>Not an official Intel or OpenVINO site. Intel and OpenVINO are trademarks of Intel Corporation.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=0de802bb">
+<link rel="stylesheet" href="assets/css/site.css?v=a11a8b94">
 <script src="assets/js/theme.js?v=49b2f04b"></script>
 <script src="assets/js/site.js?v=70fa122c" defer></script>
 </head>
@@ -174,8 +174,7 @@
 <pre><code><span class="p">$</span> ovat bench workflow.yml -i <span class="s">"What can you do?"</span> --out report.json
 <span class="p">$</span> ovat bench workflow.yml -i <span class="s">"..."</span> --repeat 5     <span class="c"># success rate and medians</span></code></pre>
       </div>
-      <figure class="shot"><img src="assets/media/bench-rag.webp" width="1600" height="274" loading="lazy" decoding="async" alt="ovat bench on the RAG example: native, react, llamaindex and openai-agents all ok. Answer times 14.6, 164.9, 17.6 and 10.3 seconds; peak memory 465 to 605 MB; only native reports tokens, 1522 in and 390 out."><figcaption>The RAG example on the AI PC, Qwen3.5-4B on the GPU. All four engines answer ok.</figcaption></figure>
-      <figure class="shot"><img src="assets/media/bench-docqa.webp" width="1600" height="284" loading="lazy" decoding="async" alt="ovat bench on the document Q and A example: all four engines ok, answer times 14.1 to 22.0 seconds, peak memory 466.8 to 618.0 MB, tokens reported only by native."><figcaption>The document Q&amp;A example: all four ok again. A dash means unknown, never zero: only the native loop gets token counts back.</figcaption></figure>
+      <figure class="shot"><img src="assets/media/screens/bench-tokens-all-four.webp" width="1058" height="286" loading="lazy" decoding="async" alt="ovat bench on the RAG example on the Intel AI PC, Qwen3.5-4B-int4-ov: native, react, llamaindex and openai-agents all ok. Answer times 18.6, 14.7, 9.7 and 8.0 seconds; peak memory 454.1 to 664.4 MB; tokens in and out 2002/485, 1410/387, 1456/224 and 1418/218; tool calls 2, 1, 1 and 1."><figcaption>The RAG example on the AI PC, Qwen3.5-4B on the GPU. All four engines answer ok, and all four record prompt and completion tokens from OVMS's <code>usage</code> field, plus tool counts. A dash would mean unknown, never zero.</figcaption></figure>
       <div class="prose">
         <p>Each engine runs in its own fresh process, so one engine's memory does not leak into the next one's number. A failing engine becomes a row with the reason written under the table, not a crash.</p>
       </div>
@@ -252,7 +251,7 @@
   <div class="anno-notes" aria-label="What each part does">
 <button type="button" data-key="name" aria-pressed="false"><span class="key">model.name</span><span class="txt">The model OVMS serves. The only required field in the whole file.</span></button>
 <button type="button" data-key="source" aria-pressed="false"><span class="key">model.source_model</span><span class="txt">The Hugging Face id that <code>ovat serve</code> downloads on the first run. These OpenVINO exports need no conversion.</span></button>
-<button type="button" data-key="device" aria-pressed="false"><span class="key">model.device</span><span class="txt"><code>CPU</code>, <code>GPU</code> or <code>NPU</code>. The default is CPU. The NPU needs a channel-wise INT4 export.</span></button>
+<button type="button" data-key="device" aria-pressed="false"><span class="key">model.device</span><span class="txt"><code>CPU</code>, <code>GPU</code> or <code>NPU</code>. The default is CPU, and any model can run on any device. OpenVINO publishes models optimised per device on Hugging Face; for NPU serving in OVMS, the export OVAT has measured working is the channel-wise <code>-int4-cw-ov</code> one.</span></button>
 <button type="button" data-key="parser" aria-pressed="false"><span class="key">model.tool_parser</span><span class="txt">How OVMS decodes tool calls. <code>qwen3coder</code> for Qwen3.5, <code>hermes3</code> for Qwen3. Omit it and OVAT derives it from the model name.</span></button>
 <button type="button" data-key="search" aria-pressed="false"><span class="key">tools: search_docs</span><span class="txt">Semantic search over your indexed documents. Without a <code>rag:</code> section it answers in a clearly marked stub mode.</span></button>
 <button type="button" data-key="transcribe" aria-pressed="false"><span class="key">tools: transcribe</span><span class="txt">Speech to text with Whisper. A tool can name its own model folder and device, separate from the agent's.</span></button>
@@ -354,7 +353,7 @@ mcp = FastMCP(<span class="s">"word_count"</span>)
     <section class="arch-sec tight-end" aria-label="Keep reading">
       <div class="next-up">
         <a class="next-card" href="results.html"><span>Next</span><strong>See what was measured</strong><p>Accuracy, memory, determinism and the NPU, on a real AI PC.</p></a>
-        <a class="next-card" href="architecture.html"><span>Or</span><strong>How it works inside</strong><p>The nine layers, animated.</p></a>
+        <a class="next-card" href="architecture.html"><span>Or</span><strong>How it works inside</strong><p>Each part and what it does, animated.</p></a>
       </div>
     </section>
   </div>

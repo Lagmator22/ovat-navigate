@@ -136,14 +136,14 @@ def build(name: str) -> str:
                           list(zip(WEEKS, LINES)), 15000, [(0, "0"), (5000, "5k"), (10000, "10k"), (15000, "15k")],
                           MONTHS, "lines in ovat/", cls="b", dur=3800, fmt=lambda v: f"{v:,}")
     if name == "bench-scatter":
-        # ovat bench examples/document-qa.yml -i "What is OVMS?" on the AI PC
-        # (bench-docqa screenshot in assets/media).
-        pts = [(22.016, 466.8, "native", "", "end"), (18.588, 502.3, "react", "t", "end"),
-               (19.297, 618.0, "llamaindex", "o", "end"), (14.101, 485.3, "openai-agents", "w", "start")]
+        # ovat bench examples/rag/workflow.yml on the AI PC
+        # (assets/media/screens/bench-tokens-all-four.webp).
+        pts = [(18.608, 454.1, "native", "", "end"), (14.691, 664.4, "react", "t", "start"),
+               (9.654, 591.1, "llamaindex", "o", "start"), (8.022, 470.9, "openai-agents", "w", "start")]
         return scatter("c-bench", "Answer time against peak memory, one run per engine",
-                       "native 22.0 s and 466.8 MB, react 18.6 s and 502.3 MB, llamaindex 19.3 s and 618.0 MB, openai-agents 14.1 s and 485.3 MB.",
-                       pts, (12, 24), (440, 640), [(12, "12"), (15, "15"), (18, "18"), (21, "21"), (24, "24 s")],
-                       [(450, "450"), (500, "500"), (550, "550"), (600, "600")], "answer time, seconds", "peak MB", dur=1400)
+                       "native 18.6 s and 454.1 MB, react 14.7 s and 664.4 MB, llamaindex 9.7 s and 591.1 MB, openai-agents 8.0 s and 470.9 MB.",
+                       pts, (6, 21), (440, 680), [(6, "6"), (9, "9"), (12, "12"), (15, "15"), (18, "18"), (21, "21 s")],
+                       [(450, "450"), (500, "500"), (550, "550"), (600, "600"), (650, "650")], "answer time, seconds", "peak MB", dur=1400)
     if name == "npu-cap":
         pts = [(28, 2101, "28 + 2101", "", "start"), (1529, 600, "1529 + 600", "t", "start")]
         return scatter("c-npu", "Prompt tokens against reply tokens on the NPU",

@@ -136,8 +136,7 @@ nav: guide
 <pre><code><span class="p">$</span> ovat bench workflow.yml -i <span class="s">"What can you do?"</span> --out report.json
 <span class="p">$</span> ovat bench workflow.yml -i <span class="s">"..."</span> --repeat 5     <span class="c"># success rate and medians</span></code></pre>
       </div>
-      <figure class="shot"><img src="assets/media/bench-rag.webp" width="1600" height="274" loading="lazy" decoding="async" alt="ovat bench on the RAG example: native, react, llamaindex and openai-agents all ok. Answer times 14.6, 164.9, 17.6 and 10.3 seconds; peak memory 465 to 605 MB; only native reports tokens, 1522 in and 390 out."><figcaption>The RAG example on the AI PC, Qwen3.5-4B on the GPU. All four engines answer ok.</figcaption></figure>
-      <figure class="shot"><img src="assets/media/bench-docqa.webp" width="1600" height="284" loading="lazy" decoding="async" alt="ovat bench on the document Q and A example: all four engines ok, answer times 14.1 to 22.0 seconds, peak memory 466.8 to 618.0 MB, tokens reported only by native."><figcaption>The document Q&amp;A example: all four ok again. A dash means unknown, never zero: only the native loop gets token counts back.</figcaption></figure>
+      <figure class="shot"><img src="assets/media/screens/bench-tokens-all-four.webp" width="1058" height="286" loading="lazy" decoding="async" alt="ovat bench on the RAG example on the Intel AI PC, Qwen3.5-4B-int4-ov: native, react, llamaindex and openai-agents all ok. Answer times 18.6, 14.7, 9.7 and 8.0 seconds; peak memory 454.1 to 664.4 MB; tokens in and out 2002/485, 1410/387, 1456/224 and 1418/218; tool calls 2, 1, 1 and 1."><figcaption>The RAG example on the AI PC, Qwen3.5-4B on the GPU. All four engines answer ok, and all four record prompt and completion tokens from OVMS's <code>usage</code> field, plus tool counts. A dash would mean unknown, never zero.</figcaption></figure>
       <div class="prose">
         <p>Each engine runs in its own fresh process, so one engine's memory does not leak into the next one's number. A failing engine becomes a row with the reason written under the table, not a crash.</p>
       </div>
@@ -296,7 +295,7 @@ mcp = FastMCP(<span class="s">"word_count"</span>)
     <section class="arch-sec tight-end" aria-label="Keep reading">
       <div class="next-up">
         <a class="next-card" href="results.html"><span>Next</span><strong>See what was measured</strong><p>Accuracy, memory, determinism and the NPU, on a real AI PC.</p></a>
-        <a class="next-card" href="architecture.html"><span>Or</span><strong>How it works inside</strong><p>The nine layers, animated.</p></a>
+        <a class="next-card" href="architecture.html"><span>Or</span><strong>How it works inside</strong><p>Each part and what it does, animated.</p></a>
       </div>
     </section>
   </div>

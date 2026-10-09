@@ -38,7 +38,7 @@
         <dt>What</dt><dd>OVAT's own loop in <code>agent/loop.py</code>. No extra library.</dd>
         <dt>Run</dt><dd><code>--native</code></dd>
         <dt>Install</dt><dd>Included in <code>pip install ovat</code></dd>
-        <dt>Tokens</dt><dd>The only engine that records token counts per turn.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, per turn, plus tool counts.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-react" role="tabpanel" aria-labelledby="et-react" hidden>
@@ -48,7 +48,7 @@
         <dt>What</dt><dd>LangChain's <code>create_agent</code> with a <code>ChatOpenAI</code> model pointed at OVMS.</dd>
         <dt>Run</dt><dd><code>--react</code> or <code>--langchain</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[langchain]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded. Shown as a dash, never as 0.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run from LangChain's <code>usage_metadata</code>, plus tool counts.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-llama" role="tabpanel" aria-labelledby="et-llama" hidden>
@@ -58,7 +58,7 @@
         <dt>What</dt><dd>LlamaIndex's <code>FunctionAgent</code> with an <code>OpenAILike</code> model. Both <code>is_chat_model</code> and <code>is_function_calling_model</code> must be set, or it quietly stops calling tools.</dd>
         <dt>Run</dt><dd><code>--llamaindex</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[llamaindex]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run, plus tool counts. Requests are sent unstreamed so every reply carries its usage.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-oai" role="tabpanel" aria-labelledby="et-oai" hidden>
@@ -68,7 +68,7 @@
         <dt>What</dt><dd>The OpenAI Agents SDK, kept on your machine by three settings: an explicit client on the <code>/v3</code> URL, the Chat Completions model, and tracing turned off.</dd>
         <dt>Run</dt><dd><code>--openai-agents</code> or <code>--openai-sdk</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[openai-agents]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run from <code>raw_responses</code>, plus tool counts.</dd>
       </dl>
     </div>
   </div>

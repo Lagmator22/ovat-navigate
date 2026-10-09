@@ -18,7 +18,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=0de802bb">
+<link rel="stylesheet" href="assets/css/site.css?v=a11a8b94">
 <script src="assets/js/theme.js?v=49b2f04b"></script>
 <script src="assets/js/site.js?v=70fa122c" defer></script>
 <script src="assets/js/flow.js?v=3ea808fc" defer></script>
@@ -68,7 +68,7 @@
       <figcaption>
         <span class="demo-len">6:21</span>
         <span>The end-term demo on an Intel AI PC: indexing and a RAG answer, the same question through all four engines, a run trace and <code>ovat bench</code>, then the terminal UI chatting with audio, image and document tools.</span>
-        <span class="demo-note">One honest note: some answers in the four-engine run misread the memory budget as 128 MB. The note they cite says a full run fits in 8 GB.</span>
+        <span class="demo-note">One note: some answers in the four-engine run misread the memory budget as 128 MB. The note they cite says a full run fits in 8 GB.</span>
       </figcaption>
     </figure>
   </div>
@@ -221,7 +221,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2 class="h2" id="before-title">The loop every project rewrites, replaced by a file</h2>
-      <p class="lede">On the left is the smallest honest tool-calling agent against a local server, from the OVAT walkthrough. It still has no iteration cap, no error handling, no history and no server management. On the right is the same agent in OVAT.</p>
+      <p class="lede">On the left is the smallest working tool-calling agent against a local server, from the OVAT walkthrough. It still has no iteration cap, no error handling, no history and no server management. On the right is the same agent in OVAT.</p>
     </div>
     <div class="compare">
       <div class="compare-col">
@@ -335,7 +335,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
         <dt>What</dt><dd>OVAT's own loop in <code>agent/loop.py</code>. No extra library.</dd>
         <dt>Run</dt><dd><code>--native</code></dd>
         <dt>Install</dt><dd>Included in <code>pip install ovat</code></dd>
-        <dt>Tokens</dt><dd>The only engine that records token counts per turn.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, per turn, plus tool counts.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-react" role="tabpanel" aria-labelledby="et-react" hidden>
@@ -345,7 +345,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
         <dt>What</dt><dd>LangChain's <code>create_agent</code> with a <code>ChatOpenAI</code> model pointed at OVMS.</dd>
         <dt>Run</dt><dd><code>--react</code> or <code>--langchain</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[langchain]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded. Shown as a dash, never as 0.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run from LangChain's <code>usage_metadata</code>, plus tool counts.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-llama" role="tabpanel" aria-labelledby="et-llama" hidden>
@@ -355,7 +355,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
         <dt>What</dt><dd>LlamaIndex's <code>FunctionAgent</code> with an <code>OpenAILike</code> model. Both <code>is_chat_model</code> and <code>is_function_calling_model</code> must be set, or it quietly stops calling tools.</dd>
         <dt>Run</dt><dd><code>--llamaindex</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[llamaindex]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run, plus tool counts. Requests are sent unstreamed so every reply carries its usage.</dd>
       </dl>
     </div>
     <div class="engine-detail" id="ep-oai" role="tabpanel" aria-labelledby="et-oai" hidden>
@@ -365,7 +365,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
         <dt>What</dt><dd>The OpenAI Agents SDK, kept on your machine by three settings: an explicit client on the <code>/v3</code> URL, the Chat Completions model, and tracing turned off.</dd>
         <dt>Run</dt><dd><code>--openai-agents</code> or <code>--openai-sdk</code></dd>
         <dt>Install</dt><dd><code>pip install "ovat[openai-agents]"</code></dd>
-        <dt>Tokens</dt><dd>Not recorded.</dd>
+        <dt>Tokens</dt><dd>Prompt and completion tokens from OVMS's <code>usage</code> field, summed per run from <code>raw_responses</code>, plus tool counts.</dd>
       </dl>
     </div>
   </div>
@@ -416,7 +416,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
   <div class="wrap stack">
     <h2 class="sr-only" id="next-title">Keep reading</h2>
     <div class="next-up">
-      <a class="next-card" href="architecture.html"><span>Architecture</span><strong>Nine layers, each with a reason</strong><p>The agent loop, the four engines, document search, telemetry and device routing, animated.</p></a>
+      <a class="next-card" href="architecture.html"><span>Architecture</span><strong>What each part does</strong><p>The agent loop, the four engines, document search, telemetry and device routing, animated.</p></a>
       <a class="next-card" href="guide.html"><span>Guide</span><strong>From pip install to your first answer</strong><p>Every command in order, the anatomy of workflow.yml, and how to add an MCP tool.</p></a>
       <a class="next-card" href="codebase.html"><span>Codebase</span><strong>A map of every module</strong><p>Click any file in the ovat package to see what it does, why, and where it lives on GitHub.</p></a>
     </div>

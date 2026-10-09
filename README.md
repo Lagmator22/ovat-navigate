@@ -9,7 +9,7 @@ Live at **https://lagmator22.github.io/ovat-navigate/**
 | Page | What it covers |
 | --- | --- |
 | [Overview](https://lagmator22.github.io/ovat-navigate/) | What OVAT is, the request flow, the four engines, headline results |
-| [Architecture](https://lagmator22.github.io/ovat-navigate/architecture.html) | The nine layers, with animated diagrams of the loop, RAG, telemetry and device routing |
+| [Architecture](https://lagmator22.github.io/ovat-navigate/architecture.html) | What each part does, with animated diagrams of the loop, RAG, telemetry and device routing |
 | [Guide](https://lagmator22.github.io/ovat-navigate/guide.html) | Install, serve, run, chat, bench, the terminal UI, workflow.yml, MCP tools |
 | [Results](https://lagmator22.github.io/ovat-navigate/results.html) | Measurements from an Intel LunarLake AI PC |
 | [Codebase](https://lagmator22.github.io/ovat-navigate/codebase.html) | A clickable map of every module in the `ovat` package |

@@ -165,7 +165,7 @@
     var step = marks.length ? dur / marks.length : 0;
     marks.forEach(function (m, k) { m.style.transitionDelay = Math.round(k * step) + "ms"; });
     w.querySelectorAll(".ln, .cap").forEach(function (ln) {
-      ln.style.transition = "stroke-dashoffset " + dur + "ms linear";
+      ln.style.transition = "stroke-dashoffset " + dur + "ms cubic-bezier(0.65, 0, 0.35, 1)";
     });
     w.style.setProperty("--area-delay", Math.round(dur * 0.6) + "ms");
     window.requestAnimationFrame(function () {

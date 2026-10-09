@@ -41,12 +41,66 @@
     return g;
   }
 
+  /* Give every node a blurred halo and every wire a dashed "live" copy.
+     Both start at opacity 0 and fade, so lighting up is never a one-frame
+     change of stroke pattern or colour. */
+  var glowCount = 0;
+  function enhance(svg) {
+    if (svg.getAttribute("data-enhanced")) return;
+    svg.setAttribute("data-enhanced", "1");
+    glowCount += 1;
+    var fid = "soft-glow-" + glowCount;
+    var defs = svg.querySelector("defs");
+    if (!defs) { defs = document.createElementNS(SVGNS, "defs"); svg.insertBefore(defs, svg.firstChild); }
+    var f = document.createElementNS(SVGNS, "filter");
+    f.setAttribute("id", fid);
+    f.setAttribute("x", "-30%"); f.setAttribute("y", "-60%");
+    f.setAttribute("width", "160%"); f.setAttribute("height", "220%");
+    var blur = document.createElementNS(SVGNS, "feGaussianBlur");
+    blur.setAttribute("stdDeviation", "6");
+    f.appendChild(blur);
+    defs.appendChild(f);
+    $$(".node", svg).forEach(function (n) {
+      var box = $(".box", n);
+      if (!box) return;
+      var halo = box.cloneNode(false);
+      halo.setAttribute("class", "halo");
+      halo.setAttribute("filter", "url(#" + fid + ")");
+      halo.setAttribute("aria-hidden", "true");
+      n.insertBefore(halo, box);
+    });
+    $$(".wire", svg).forEach(function (w) {
+      var live = document.createElementNS(SVGNS, "path");
+      live.setAttribute("class", "wire-live");
+      live.setAttribute("d", w.getAttribute("d"));
+      live.setAttribute("aria-hidden", "true");
+      w.parentNode.insertBefore(live, w.nextSibling);
+    });
+  }
+
+  /* Light nodes one after another: --d is each node's own delay. */
+  function lightNodes(ids, tone, delays) {
+    ids.forEach(function (id, k) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.style.setProperty("--d", Math.round(delays[k] || 0) + "ms");
+      el.classList.add("is-on");
+      setTone(el, tone);
+    });
+  }
+  function dimAll(svg) {
+    $$(".node.is-on, .wire.is-on", svg).forEach(function (el) {
+      el.style.setProperty("--d", "0ms");
+      el.classList.remove("is-on");
+    });
+  }
+
   function setTone(el, tone) {
     ["signal", "tool", "ok"].forEach(function (t) { el.classList.remove("tone-" + t); });
     if (tone && tone !== "signal") el.classList.add("tone-" + tone);
   }
 
-  function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
 
   /* Move `packet` along `path` over `dur` ms. Returns {promise, cancel}. */
   function travel(path, packet, dur, reverse) {
@@ -158,17 +212,26 @@
       });
     });
 
-    function paint(i) {
+    function travelTime(li) {
+      return words(li.getAttribute("data-path")).reduce(function (t, raw) {
+        var path = document.getElementById(raw.replace(/^!/, ""));
+        return t + (path && path.getTotalLength ? Math.max(520, path.getTotalLength() / speed) : 0);
+      }, 0);
+    }
+
+    function paint(i, animated) {
       var li = items[i];
       var tone = li.getAttribute("data-tone") || "signal";
-      $$(".node.is-on, .wire.is-on", svg).forEach(function (el) {
-        el.classList.remove("is-on");
-        setTone(el, null);
+      dimAll(svg);
+      var ids = words(li.getAttribute("data-nodes"));
+      /* The first box lights now; each later box lights as the signal
+         reaches it, or 200 ms after the one before when nothing travels. */
+      var trip = animated && !reduce ? travelTime(li) : 0;
+      var delays = ids.map(function (_, k) {
+        if (k === 0) return 0;
+        return trip ? Math.max(200 * k, trip * k / (ids.length - 1) - 120) : 200 * k;
       });
-      words(li.getAttribute("data-nodes")).forEach(function (id) {
-        var el = svg.getElementById ? svg.getElementById(id) : document.getElementById(id);
-        if (el) { el.classList.add("is-on"); setTone(el, tone); }
-      });
+      lightNodes(ids, tone, delays);
       words(li.getAttribute("data-path")).forEach(function (raw) {
         var el = document.getElementById(raw.replace(/^!/, ""));
         if (el) { el.classList.add("is-on"); setTone(el, tone); }
@@ -192,7 +255,7 @@
       killToken(token);
       packet.classList.remove("is-moving");
       index = (i + items.length) % items.length;
-      paint(index);
+      paint(index, false);
       if (animate && playing && runner.isRunning()) run(index);
     }
 
@@ -223,7 +286,7 @@
         if (!ok || tok.cancelled) return;
         packet.classList.remove("is-moving");
         index = (index + 1) % items.length;
-        paint(index);
+        paint(index, true);
         run(index);
       });
     }
@@ -240,7 +303,7 @@
     function pause() { playing = false; killToken(token); packet.classList.remove("is-moving"); syncButton(); }
     function play() { playing = true; syncButton(); if (runner.isRunning()) run(index); }
 
-    var runner = whileVisible(fig, function () { if (playing) run(index); },
+    var runner = whileVisible(fig, function () { if (playing) { paint(index, true); run(index); } },
                               function () { killToken(token); packet.classList.remove("is-moving"); });
 
     if (toggleBtn) toggleBtn.addEventListener("click", function () { if (playing) pause(); else play(); });
@@ -249,7 +312,8 @@
     if (next) next.addEventListener("click", function () { pause(); show(index + 1, false); });
     if (prev) prev.addEventListener("click", function () { pause(); show(index - 1, false); });
 
-    paint(0);
+    enhance(svg);
+    paint(0, false);
     syncButton();
   }
 
@@ -285,18 +349,16 @@
       $$(".wire", svg).forEach(function (w) {
         if (w.hasAttribute("data-route")) w.classList.add("is-hidden");
         w.classList.remove("is-on");
-        setTone(w, null);
       });
-      $$(".node", svg).forEach(function (n) { n.classList.remove("is-on", "is-off"); setTone(n, null); });
+      dimAll(svg);
+      $$(".node", svg).forEach(function (n) { n.classList.remove("is-off"); });
       var tone = tab.getAttribute("data-tone") || "signal";
       words(tab.getAttribute("data-wires")).forEach(function (raw) {
         var w = document.getElementById(raw.replace(/^!/, ""));
         if (w) { w.classList.remove("is-hidden"); w.classList.add("is-on"); setTone(w, tone); }
       });
-      words(tab.getAttribute("data-on")).forEach(function (id) {
-        var n = document.getElementById(id);
-        if (n) { n.classList.add("is-on"); setTone(n, tone); }
-      });
+      var onIds = words(tab.getAttribute("data-on"));
+      lightNodes(onIds, tone, onIds.map(function (_, k) { return k * 180; }));
       words(tab.getAttribute("data-off")).forEach(function (id) {
         var n = document.getElementById(id);
         if (n) n.classList.add("is-off");
@@ -383,6 +445,7 @@
       pool.forEach(function (p) { p.classList.remove("is-moving"); });
     });
 
+    enhance(svg);
     var start = tabs.findIndex(function (t) { return t.getAttribute("aria-selected") === "true"; });
     apply(start < 0 ? 0 : start);
   }
@@ -394,6 +457,7 @@
     var svg = $("svg", fig);
     var lanes = words(svg.getAttribute("data-lanes"));
     var token = null;
+    enhance(svg);
     var packets = lanes.map(function (lane) {
       var tone = (lane.split("@")[1]) || "signal";
       return makePacket(svg, tone);

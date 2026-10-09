@@ -1096,3 +1096,88 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
 .display .lit, .display .soft { color: inherit; }
 .plot-wrap { max-width: 820px; }
 .arch-body .chart-row { grid-template-columns: minmax(0, 1fr); }
+
+/* =====================================================================
+   Smooth motion. Nothing flips state in one frame: every highlight fades
+   up from dark (and back down) on a soft ease, and sequential elements are
+   staggered. Mostly opacity, transform and filter, so it holds 60 fps.
+   ===================================================================== */
+:root {
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-glow: cubic-bezier(0.45, 0.05, 0.35, 1);
+  --fade-in: 800ms;
+  --fade-out: 1100ms;
+}
+
+/* Diagram nodes: the box tints, its border warms up and a blurred halo
+   (injected by flow.js) rises from 0 to full opacity. */
+.dg .node { transition: opacity var(--fade-out) var(--ease-glow); }
+.dg .node .box { transition: stroke var(--fade-out) var(--ease-glow), fill var(--fade-out) var(--ease-glow); }
+.dg .node.is-on .box { transition: stroke var(--fade-in) var(--ease-glow) var(--d, 0ms), fill var(--fade-in) var(--ease-glow) var(--d, 0ms); }
+.dg .node text { transition: fill var(--fade-out) var(--ease-glow); }
+.dg .node.is-on text { transition: fill var(--fade-in) var(--ease-glow) var(--d, 0ms); }
+.dg .halo { fill: none; stroke: var(--signal); stroke-width: 7; opacity: 0; transition: opacity var(--fade-out) var(--ease-glow); pointer-events: none; }
+.dg .node.is-on .halo { opacity: 0.6; transition: opacity var(--fade-in) var(--ease-glow) var(--d, 0ms); }
+.dg .node.tone-tool .halo { stroke: var(--tool); }
+.dg .node.tone-ok .halo { stroke: var(--ok); }
+:root[data-theme="light"] .dg .node.is-on .halo { opacity: 0.35; }
+
+/* Wires: the base line eases its colour; a dashed live copy (flow.js) fades
+   in over it and keeps marching, so the dash pattern never pops in. */
+.dg .wire { transition: stroke var(--fade-out) var(--ease-glow), opacity var(--fade-out) var(--ease-glow); }
+.dg .wire.is-on { stroke-dasharray: none; animation: none; transition: stroke var(--fade-in) var(--ease-glow), opacity var(--fade-in) var(--ease-glow); }
+.dg .wire-live { fill: none; stroke: var(--signal); stroke-width: 1.8; stroke-dasharray: 6 7; opacity: 0; pointer-events: none;
+  animation: march 0.9s linear infinite; transition: opacity var(--fade-out) var(--ease-glow); }
+.dg .wire.is-on + .wire-live { opacity: 1; transition: opacity var(--fade-in) var(--ease-glow); }
+.dg .wire.tone-tool + .wire-live { stroke: var(--tool); }
+.dg .wire.tone-ok + .wire-live { stroke: var(--ok); }
+.dg .wire.is-hidden + .wire-live { opacity: 0; }
+.dg .packet { transition: opacity 450ms var(--ease-soft); }
+
+/* Step lists, tabs and cards ease both ways. */
+.steps li { transition: color var(--fade-out) var(--ease-glow), background-color var(--fade-out) var(--ease-glow); }
+.steps li.is-current { transition: color var(--fade-in) var(--ease-glow), background-color var(--fade-in) var(--ease-glow); }
+.steps li::before { transition: background-color var(--fade-out) var(--ease-glow), border-color var(--fade-out) var(--ease-glow), color var(--fade-out) var(--ease-glow); }
+.steps li.is-current::before { transition-duration: var(--fade-in); }
+.seg button { transition: background-color 500ms var(--ease-soft), color 500ms var(--ease-soft), box-shadow 500ms var(--ease-soft); }
+.term-tab { transition: color 450ms var(--ease-soft), border-color 450ms var(--ease-soft), background-color 450ms var(--ease-soft); }
+.mod { transition: background-color 500ms var(--ease-soft), box-shadow 500ms var(--ease-soft), opacity 600ms var(--ease-soft); }
+.mod-bar i { transition: background-color 500ms var(--ease-soft); }
+.chip-btn, .ctl, .icon-btn, .copy-btn, .detail-related button { transition: color 350ms var(--ease-soft), border-color 350ms var(--ease-soft), background-color 350ms var(--ease-soft); }
+.btn { transition: background-color 350ms var(--ease-soft), border-color 350ms var(--ease-soft), color 350ms var(--ease-soft), transform 250ms var(--ease-soft); }
+.next-card { transition: background-color 500ms var(--ease-soft); }
+.next-card strong { transition: color 500ms var(--ease-soft); }
+.layer-stack a { transition: border-color 500ms var(--ease-soft), transform 500ms var(--ease-soft), background-color 500ms var(--ease-soft); }
+.anno-line, .anno-notes button { transition: background-color 450ms var(--ease-soft); }
+.anno-notes .key, .anno-notes .txt { transition: color 450ms var(--ease-soft); }
+.toc a { transition: color 450ms var(--ease-soft), border-color 450ms var(--ease-soft); }
+
+/* Menu: the glow eases in over ~350 ms and out a little slower. */
+.nav a { transition: color 450ms var(--ease-soft), background-color 450ms var(--ease-soft), border-color 450ms var(--ease-soft), box-shadow 500ms var(--ease-soft), text-shadow 500ms var(--ease-soft); }
+.nav a:hover, .nav a:focus-visible { transition-duration: 350ms; }
+
+/* Content that appears (terminal lines, tab panels, the module panel)
+   fades up instead of popping in. */
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.term-body .ln:not([hidden]) { animation: fade-up 480ms var(--ease-soft) both; }
+.engine-detail:not([hidden]) { animation: fade-up 520ms var(--ease-soft) both; }
+.detail-head, .detail-body { animation: fade-up 520ms var(--ease-soft) both; }
+.detail-body { animation-delay: 90ms; }
+.mod.is-trace { transition: background-color 600ms var(--ease-soft), box-shadow 600ms var(--ease-soft); }
+
+/* Charts: bars grow on an eased curve; points scale and fade in. */
+.js .anim-in .hbar-fill, .js .anim-in .stack-bar, .js .anim-in .vbar-fill { transition-duration: 900ms !important; transition-timing-function: var(--ease-soft) !important; }
+.plot .mk { transform-box: fill-box; transform-origin: center; }
+.plot .bar.mk { transform-origin: 50% 100%; }
+.js .plot-ready .mk { opacity: 0; transform: scale(0.4); }
+.js .plot-ready .bar.mk { transform: scaleY(0); }
+.js .plot-in .mk { opacity: 1; transform: none; transition: opacity 520ms var(--ease-soft), transform 720ms var(--ease-soft); }
+.js .anim-ready .dot { transform: scale(0.5); }
+.js .anim-in .dot { transform: none; transition: opacity 500ms var(--ease-soft), transform 600ms var(--ease-soft); transition-delay: calc(var(--i, 0) * 160ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dg .wire-live { animation: none; stroke-dasharray: none; }
+  .term-body .ln, .engine-detail, .detail-head, .detail-body { animation: none !important; }
+}
+:root.reduce-motion .dg .wire-live { animation: none; stroke-dasharray: none; }

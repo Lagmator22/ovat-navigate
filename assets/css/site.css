@@ -1181,3 +1181,14 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
   .term-body .ln, .engine-detail, .detail-head, .detail-body { animation: none !important; }
 }
 :root.reduce-motion .dg .wire-live { animation: none; stroke-dasharray: none; }
+
+/* The demo video in the hero, and screenshots in the docs. */
+.demo { margin: 0; border: 1px solid var(--line-strong); background: var(--term-bg); box-shadow: var(--shadow); scroll-margin-top: 88px; }
+.demo-video { display: block; width: 100%; height: auto; aspect-ratio: 3024 / 1904; background: #000; }
+.demo figcaption { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; padding: 12px 14px; border-top: 1px solid var(--line-strong); background: var(--bg-raised); font-size: 14px; color: var(--fg-muted); }
+.demo-len { font: 600 13px var(--f-mono); color: var(--tool-ink); padding-right: 14px; border-right: 1px dashed var(--line-strong); grid-row: span 2; }
+.demo-note { grid-column: 2; font-size: 13px; color: var(--fg-faint); }
+.shot { border-radius: 0; }
+.shot img { background: var(--term-bg); }
+.arch-sec > .shot, .guide-step .shot { margin: 0; }
+.shots-2 { align-items: start; }

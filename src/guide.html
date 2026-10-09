@@ -74,6 +74,7 @@ nav: guide
           <h3 class="h3">Check the machine and the config</h3>
           <div class="code"><pre><code><span class="p">$</span> ovat doctor workflow.yml</code></pre></div>
           <p>A table of checks: Python, dependencies, OpenVINO devices, device routing, OVMS, and your config. Green is fine, yellow is a heads-up with the fix written next to it, red needs fixing.</p>
+          <figure class="shot"><img src="assets/media/doctor-rag.webp" width="1400" height="788" loading="lazy" decoding="async" alt="ovat doctor on the AI PC for the RAG example: twelve checks, all ok, including CPU, GPU and NPU detected, all three framework engines installed, OVMS found where ovat setup put it, and OVMS reachable."><figcaption>On the Intel AI PC, for <code>examples/rag/workflow.yml</code>: 12 ok, all clear.</figcaption></figure>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Prove the wiring, with no server</h3>
@@ -135,10 +136,8 @@ nav: guide
 <pre><code><span class="p">$</span> ovat bench workflow.yml -i <span class="s">"What can you do?"</span> --out report.json
 <span class="p">$</span> ovat bench workflow.yml -i <span class="s">"..."</span> --repeat 5     <span class="c"># success rate and medians</span></code></pre>
       </div>
-      <figure class="shot">
-        <img src="assets/media/ovat-bench-four-engines.gif" width="1000" height="628" loading="lazy" alt="A real session on the AI PC: ovat doctor shows every check ok with CPU, GPU and NPU detected, ovat serve starts OVMS on the GPU, and ovat bench prints a table in which native, react, llamaindex and openai-agents all answer ok.">
-        <figcaption>Recorded on an Intel AI PC (LunarLake, Arc 140V GPU) serving Qwen3.5-4B-int4-ov: doctor, serve, then bench. The dashes are deliberate: only the native loop gets token counts back.</figcaption>
-      </figure>
+      <figure class="shot"><img src="assets/media/bench-rag.webp" width="1600" height="274" loading="lazy" decoding="async" alt="ovat bench on the RAG example: native, react, llamaindex and openai-agents all ok. Answer times 14.6, 164.9, 17.6 and 10.3 seconds; peak memory 465 to 605 MB; only native reports tokens, 1522 in and 390 out."><figcaption>The RAG example on the AI PC, Qwen3.5-4B on the GPU. All four engines answer ok.</figcaption></figure>
+      <figure class="shot"><img src="assets/media/bench-docqa.webp" width="1600" height="284" loading="lazy" decoding="async" alt="ovat bench on the document Q and A example: all four engines ok, answer times 14.1 to 22.0 seconds, peak memory 466.8 to 618.0 MB, tokens reported only by native."><figcaption>The document Q&amp;A example: all four ok again. A dash means unknown, never zero: only the native loop gets token counts back.</figcaption></figure>
       <div class="prose">
         <p>Each engine runs in its own fresh process, so one engine's memory does not leak into the next one's number. A failing engine becomes a row with the reason written under the table, not a crash.</p>
       </div>
@@ -154,6 +153,10 @@ nav: guide
       </div>
       <div class="prose">
         <p>The trace records every turn: the tool calls with their sources, token counts, latency, and the failure flags (<code>truncated</code>, <code>undecoded_tool_call</code>, <code>empty_answer</code>). A failed run still writes its trace and exits non-zero. Unknown values stay <code>null</code>, never 0.</p>
+        <p><code>ovat telemetry</code> and the terminal UI's telemetry page read the same sources. On the AI PC every source is live, including Intel's own counters for package and rail power:</p>
+      </div>
+      <figure class="shot"><img src="assets/media/telemetry-live.webp" width="1400" height="638" loading="lazy" decoding="async" alt="The telemetry page in the OVAT terminal UI on the AI PC: big readouts for NPU, KV cache, system RAM, OVAT memory and OVAT CPU, then a table of live numbers with now, min, max and mean, including intel rows for package power and NPU bandwidth. Every source says live."><figcaption>The live page: system, process, NPU, OVMS and Intel sources all live.</figcaption></figure>
+      <div class="prose">
         <p><strong>One caveat on memory:</strong> <code>--trace</code> measures the OVAT process. With OVMS serving, the model lives in the server process. For Qwen3.5-4B that was measured at 4.3 GB steady and 6.5 GB peak, while the trace said about 0.45 GB. On the local <code>ovat chat</code> path the trace is the model.</p>
       </div>
     </section>
@@ -163,6 +166,8 @@ nav: guide
       <div class="prose">
         <p>Install the <code>tui</code> extra, then run <code>ovat</code> with no arguments. Anything you type runs as a real command in your environment; typing <code>/</code> opens a menu of OVAT shortcuts. Chat runs inside the app: the model loads once, answers stream, and conversations are saved in <code>.ovat/sessions/</code>.</p>
       </div>
+      <figure class="shot"><img src="assets/media/tui-launcher.webp" width="1600" height="354" loading="lazy" decoding="async" alt="The OVAT terminal UI launcher: the OVAT, powered by OpenVINO OVMS masthead, a list of recent updates, the Intel mark, and an output pane that says any command runs in the venv and slash opens OVAT shortcuts."><figcaption>The launcher. Type <code>/</code> for shortcuts, or any command to run it in your environment.</figcaption></figure>
+      <figure class="shot"><img src="assets/media/tui-chat-tools.webp" width="1600" height="399" loading="lazy" decoding="async" alt="The chat screen switched to OVMS with tools. The question asks about an audio file, an image and the documents; the answer gives the transcript, describes the Intel logo, and reports what document search returned. A footer lists the tools used: transcribe, describe_image and search_docs."><figcaption>One question, three tools: <code>transcribe</code>, <code>describe_image</code> and <code>search_docs</code>. This workflow has no <code>rag:</code> section, so document search answers in its marked stub mode, and the answer says so.</figcaption></figure>
       <div class="charts-2">
         <div class="table-wrap">
           <table>

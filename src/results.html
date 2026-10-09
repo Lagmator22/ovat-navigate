@@ -222,10 +222,10 @@ nav: results
       <div class="chart">
         <div class="chart-head">
           <h3 class="h3">Four engines, one question, one server</h3>
-          <p>The recorded <code>ovat bench</code> run in the OVAT README: Qwen3.5-4B on the Arc 140V GPU, each engine in its own process. One run per engine, so read it as a snapshot, not a ranking.</p>
+          <p>An <code>ovat bench</code> run of the document Q&amp;A example (the screenshot is in the <a href="guide.html#bench">guide</a>): Qwen3.5-4B on the Arc 140V GPU, each engine in its own process. One run per engine, so read it as a snapshot, not a ranking.</p>
         </div>
         <!--#chart bench-scatter-->
-        <div class="chart-foot"><p>Build time was 0.646 s for native, 2.09 s for react, 1.282 s for llamaindex and 1.154 s for openai-agents. All four answered ok. Only native reported tokens: 2022 in, 511 out.</p></div>
+        <div class="chart-foot"><p>Build time was 0.66 s for native, 2.045 s for react, 1.373 s for llamaindex and 1.164 s for openai-agents. All four answered ok. Only native reported tokens: 2022 in, 568 out. On the RAG example the same four answered in 14.6, 164.9, 17.6 and 10.3 s, so a single run says little about which engine is faster.</p></div>
       </div>
     </section>
 

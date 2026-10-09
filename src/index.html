@@ -21,6 +21,26 @@ scripts: flow.js terminal.js
       </div>
     </div>
 
+    <figure class="demo" id="demo">
+      <video class="demo-video" controls muted playsinline preload="metadata" poster="assets/media/ovat-demo-poster.jpg" width="3024" height="1904">
+        <source src="assets/media/ovat-demo.mp4" type="video/mp4">
+        <a href="assets/media/ovat-demo.mp4">Download the OVAT demo video (MP4, 12.5 MB)</a>
+      </video>
+      <figcaption>
+        <span class="demo-len">6:21</span>
+        <span>The end-term demo on an Intel AI PC: indexing and a RAG answer, the same question through all four engines, a run trace and <code>ovat bench</code>, then the terminal UI chatting with audio, image and document tools.</span>
+        <span class="demo-note">One honest note: some answers in the four-engine run misread the memory budget as 128 MB. The note they cite says a full run fits in 8 GB.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section tight" aria-labelledby="replay-t">
+  <div class="wrap split">
+    <div class="stack">
+      <h2 class="h2" id="replay-t">What a run prints</h2>
+      <p class="lede">The commands from the guide, replayed as text: a RAG answer with its source, a dry run that needs no server, and <code>ovat doctor</code> on a Mac.</p>
+    </div>
     <div class="term" data-term>
       <div class="term-bar">
         <div class="term-dots" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -63,6 +83,7 @@ scripts: flow.js terminal.js
     </div>
   </div>
 </section>
+
 
 <section class="section" aria-labelledby="flow-title">
   <div class="wrap">

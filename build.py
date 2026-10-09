@@ -22,6 +22,8 @@ import pathlib
 import re
 import sys
 
+import charts
+
 ROOT = pathlib.Path(__file__).resolve().parent
 SRC = ROOT / "src"
 BASE_URL = "https://lagmator22.github.io/ovat-navigate/"
@@ -43,11 +45,10 @@ NAV = [
     ("codebase", "codebase.html", "Codebase"),
 ]
 
-BRAND_MARK = """<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
-  <circle class="bm-ring" cx="16" cy="16" r="8"/>
-  <circle class="bm-dot" cx="24" cy="16" r="3"/>
-</svg>"""
+BRAND_MARK = (
+    '<img class="brand-mark-img logo-dark" src="assets/media/ovat-mark-dark.png" width="28" height="28" alt="">'
+    '<img class="brand-mark-img logo-light" src="assets/media/ovat-mark-light.png" width="28" height="28" alt="">'
+)
 
 ICON_SUN = """<svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>"""
 ICON_MOON = """<svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>"""
@@ -82,8 +83,18 @@ FOOTER = f"""<footer class="foot">
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="OVAT Navigate, home">{BRAND_MARK}<span class="brand-word">ovat</span></a>
+        <a class="foot-logo" href="index.html" aria-label="OVAT Navigate, home">
+          <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+          <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+        </a>
         <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+        <div class="made-for">
+          <picture>
+            <source srcset="assets/media/intel-static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="assets/media/intel.gif" width="800" height="600" loading="lazy" alt="The Intel logo">
+          </picture>
+          <p class="faint">Built for Intel AI PCs: a Core Ultra CPU, an Arc GPU and an NPU. This is the Intel mark OVAT's own terminal UI shows.</p>
+        </div>
       </div>
       <div>
         <h2>This site</h2>
@@ -120,11 +131,17 @@ FOOTER = f"""<footer class="foot">
 </footer>"""
 
 
+def _v(rel: str) -> str:
+    """Cache-busting version for an asset: the first 8 hex of its SHA-1."""
+    import hashlib
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+
+
 def page(body: str, meta: dict, filename: str) -> str:
     title = meta["title"]
     desc = meta["description"]
     scripts = "".join(
-        f'\n<script src="assets/js/{s}" defer></script>' for s in meta.get("scripts", "").split()
+        f'\n<script src="assets/js/{s}?v={_v("assets/js/" + s)}" defer></script>' for s in meta.get("scripts", "").split()
     )
     canonical = BASE_URL + ("" if filename == "index.html" else filename)
     return f"""<!doctype html>
@@ -143,12 +160,13 @@ def page(body: str, meta: dict, filename: str) -> str:
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
-<script src="assets/js/theme.js"></script>
-<script src="assets/js/site.js" defer></script>{scripts}
+<link rel="stylesheet" href="assets/css/site.css?v={_v("assets/css/site.css")}">
+<script src="assets/js/theme.js?v={_v("assets/js/theme.js")}"></script>
+<script src="assets/js/site.js?v={_v("assets/js/site.js")}" defer></script>{scripts}
 </head>
 <body class="sheet">
 {header(meta.get("nav", "none"))}
@@ -163,7 +181,29 @@ def page(body: str, meta: dict, filename: str) -> str:
 
 META_RE = re.compile(r"^\s*<!--(.*?)-->", re.S)
 INCLUDE_RE = re.compile(r"<!--#include ([a-z0-9-]+)-->")
+CHART_RE = re.compile(r"<!--#chart ([a-z0-9-]+)-->")
 BANNED = {"\u2014": "em dash", "\u2013": "en dash", "\u00b7": "middle dot"}
+
+
+CODE_OPEN_RE = re.compile(r'<div class="code"( data-label="([^"]*)")?>(?!\s*<div class="code-head")')
+
+
+def normalise_code_boxes(body: str) -> str:
+    """Every code box gets the same header bar. The label comes from
+    data-label, or is inferred: a shell prompt means a terminal."""
+    def fix(m):
+        nxt = body.find("</pre>", m.end())
+        chunk = body[m.end():nxt]
+        label = m.group(2)
+        if not label:
+            if '<span class="p">$</span>' in chunk:
+                label = "terminal"
+            elif '<span class="k">agent:</span>' in chunk or '<span class="k">tools:</span>' in chunk:
+                label = "workflow.yml"
+            else:
+                label = "code"
+        return f'<div class="code"><div class="code-head"><span>{label}</span></div>'
+    return CODE_OPEN_RE.sub(fix, body)
 
 
 def main() -> int:
@@ -180,6 +220,8 @@ def main() -> int:
             meta[k.strip()] = v.strip()
         body = INCLUDE_RE.sub(lambda mm: (SRC / "partials" / f"{mm.group(1)}.html")
                               .read_text(encoding="utf-8"), text[m.end():])
+        body = CHART_RE.sub(lambda mm: charts.build(mm.group(1)), body)
+        body = normalise_code_boxes(body)
         out = page(body, meta, src.name)
         for ch, name in BANNED.items():
             if ch in out:

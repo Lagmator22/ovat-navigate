@@ -7,20 +7,17 @@ scripts: flow.js terminal.js
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">OpenVINO Agentic Toolkit</p>
+      <div class="hero-logo">
+        <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+        <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+      </div>
       <h1 class="display">One YAML file.<br>One command.<br><span class="lit">A local agent.</span></h1>
       <p class="lede">OVAT turns a tool-calling AI agent into a config file. You describe the model, the tools and the behaviour in <code>workflow.yml</code>, run <code>ovat run</code>, and the agent answers on your own Intel hardware. <strong>No API keys, no cloud, nothing leaves the machine.</strong></p>
       <div class="hero-actions">
         <div class="install"><span class="prompt" aria-hidden="true">$</span><span id="pip-cmd">pip install ovat</span>
           <button class="copy-btn" type="button" data-copy="pip install ovat" aria-label="Copy the install command"><span class="copy-label">Copy</span></button>
         </div>
-        <a class="btn btn-primary" href="guide.html">Start the guide <span class="arr" aria-hidden="true">&rarr;</span></a>
-      </div>
-      <div class="hero-meta" aria-label="Project facts">
-        <span><i aria-hidden="true"></i>v1.1.1 on PyPI</span>
-        <span>Python 3.10 to 3.14</span>
-        <span>Apache 2.0</span>
-        <span>GSoC 2026, OpenVINO project 18</span>
+        <a class="btn btn-primary" href="guide.html">Start the guide</a>
       </div>
     </div>
 
@@ -70,7 +67,7 @@ scripts: flow.js terminal.js
 <section class="section" aria-labelledby="flow-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">The whole idea in one picture</p>
+      <p class="eyebrow">how-it-works</p>
       <h2 class="h2" id="flow-title">How one question travels through OVAT</h2>
       <p class="lede">Follow the light. A question enters as a command, becomes a checked config, gets wired into an agent, and loops between the model and your tools until there is an answer. Press any step to stop on it.</p>
     </div>
@@ -104,21 +101,21 @@ scripts: flow.js terminal.js
           <path id="pw-9" class="wire" d="M550 280 H616" marker-end="url(#ah)"/>
           <path id="pw-10" class="wire" d="M735 310 V394" marker-end="url(#ah)"/>
 
-          <g id="pn-cli" class="node"><rect class="box" x="20" y="30" width="230" height="96" rx="12"/>
+          <g id="pn-cli" class="node"><rect class="box" x="20" y="30" width="230" height="96"/>
             <text class="t-k" x="40" y="60">cli/main.py</text><text class="t-t" x="40" y="90">ovat run</text><text class="t-s" x="40" y="112">--input "..."</text></g>
-          <g id="pn-cfg" class="node"><rect class="box" x="320" y="30" width="230" height="96" rx="12"/>
+          <g id="pn-cfg" class="node"><rect class="box" x="320" y="30" width="230" height="96"/>
             <text class="t-k" x="340" y="60">config/workflow.py</text><text class="t-t" x="340" y="90">workflow.yml</text><text class="t-s" x="340" y="112">checked, strict</text></g>
-          <g id="pn-fac" class="node"><rect class="box" x="620" y="30" width="230" height="96" rx="12"/>
+          <g id="pn-fac" class="node"><rect class="box" x="620" y="30" width="230" height="96"/>
             <text class="t-k" x="640" y="60">agent/factory.py</text><text class="t-t" x="640" y="90">build_agent()</text><text class="t-s" x="640" y="112">model + tools + RAG</text></g>
-          <g id="pn-eng" class="node"><rect class="box" x="620" y="214" width="230" height="96" rx="12"/>
+          <g id="pn-eng" class="node"><rect class="box" x="620" y="214" width="230" height="96"/>
             <text class="t-k" x="640" y="244">1 of 4 engines</text><text class="t-t" x="640" y="274">Agent loop</text><text class="t-s" x="640" y="296">agent.type</text></g>
-          <g id="pn-tools" class="node tone-tool"><rect class="box" x="320" y="214" width="230" height="96" rx="12"/>
+          <g id="pn-tools" class="node tone-tool"><rect class="box" x="320" y="214" width="230" height="96"/>
             <text class="t-k" x="340" y="244">tools/</text><text class="t-t" x="340" y="274">Your tools</text><text class="t-s" x="340" y="296">builtin or MCP</text></g>
-          <g id="pn-ovms" class="node"><rect class="box" x="920" y="214" width="230" height="96" rx="12"/>
+          <g id="pn-ovms" class="node"><rect class="box" x="920" y="214" width="230" height="96"/>
             <text class="t-k" x="940" y="244">model server</text><text class="t-t" x="940" y="274">OVMS /v3</text><text class="t-s" x="940" y="296">decodes tool_calls</text></g>
-          <g id="pn-dev" class="node"><rect class="box" x="920" y="398" width="230" height="96" rx="12"/>
+          <g id="pn-dev" class="node"><rect class="box" x="920" y="398" width="230" height="96"/>
             <text class="t-k" x="940" y="428">model.device</text><text class="t-t" x="940" y="458">Intel CPU, GPU, NPU</text><text class="t-s" x="940" y="480">OpenVINO runtime</text></g>
-          <g id="pn-ans" class="node tone-ok"><rect class="box" x="620" y="398" width="230" height="96" rx="12"/>
+          <g id="pn-ans" class="node tone-ok"><rect class="box" x="620" y="398" width="230" height="96"/>
             <text class="t-k" x="640" y="428">no tool calls</text><text class="t-t" x="640" y="458">Answer</text><text class="t-s" x="640" y="480">+ sources, trace</text></g>
         </svg>
       </div>
@@ -147,7 +144,6 @@ scripts: flow.js terminal.js
 <section class="section" aria-labelledby="words-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">Plain words first</p>
       <h2 class="h2" id="words-title">Six terms, so the rest makes sense</h2>
     </div>
     <dl class="ledger">
@@ -164,7 +160,6 @@ scripts: flow.js terminal.js
 <section class="section" aria-labelledby="before-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">Why it exists</p>
       <h2 class="h2" id="before-title">The loop every project rewrites, replaced by a file</h2>
       <p class="lede">On the left is the smallest honest tool-calling agent against a local server, from the OVAT walkthrough. It still has no iteration cap, no error handling, no history and no server management. On the right is the same agent in OVAT.</p>
     </div>
@@ -215,7 +210,8 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
 <span class="k">agent:</span>
   <span class="k">type:</span> <span class="s">native</span>
   <span class="k">max_iterations:</span> <span class="n">10</span></code></pre>
-          <div class="code-head"><span>terminal</span></div>
+        </div>
+        <div class="code">
 <pre><code><span class="p">$</span> ovat serve workflow.yml
 <span class="p">$</span> ovat run workflow.yml -i <span class="s">"what do my notes say about Q3?"</span></code></pre>
         </div>
@@ -235,7 +231,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
 <section class="section" aria-labelledby="eng-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">One config, four engines</p>
+      <p class="eyebrow">four-engines</p>
       <h2 class="h2" id="eng-title">Change one word, keep everything else</h2>
       <p class="lede"><code>agent.type</code> picks the loop that drives your tools. The model, the tools and the prompt stay the same, and all four talk to the same server through one shared description of it.</p>
     </div>
@@ -246,7 +242,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
 <section class="section" aria-labelledby="num-title">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">Measured, not claimed</p>
+      <p class="eyebrow">measured</p>
       <h2 class="h2" id="num-title">What the AI PC runs showed</h2>
       <p class="lede">Every figure below was measured on an Intel LunarLake AI PC (Arc 140V GPU and NPU) and is written down in the OVAT repo with how it was taken.</p>
     </div>
@@ -256,14 +252,13 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
       <div class="figure"><span class="big">NPU</span><span class="vs">tool calls work</span><p>A real tool-calling agent run on the NPU, from a channel-wise INT4 export (<code>-int4-cw-ov</code>).</p></div>
       <div class="figure"><span class="big num">800<small>+</small></span><span class="vs">tests, 4 CI platforms</span><p>Ubuntu 22.04 and 24.04, Windows and macOS on every push. No server needed to run them.</p></div>
     </div>
-    <p class="row"><a class="btn btn-ghost" href="results.html">See every measurement <span class="arr" aria-hidden="true">&rarr;</span></a></p>
+    <p class="row"><a class="btn btn-ghost" href="results.html">See every measurement</a></p>
   </div>
 </section>
 
 <section class="section" aria-labelledby="where-title">
   <div class="wrap split">
     <div class="stack">
-      <p class="eyebrow">Where it runs</p>
       <h2 class="h2" id="where-title">Build on a Mac, serve on an AI PC</h2>
       <p class="lede">OVMS ships for x86-64 Windows and Linux only. On macOS everything except serving works, and <code>ovat chat</code> answers from your documents with a local model and no server.</p>
     </div>

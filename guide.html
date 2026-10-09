@@ -14,23 +14,20 @@
 <meta property="og:title" content="OVAT Guide">
 <meta property="og:description" content="Install OVAT, start the model server, run your first agent, chat locally on a Mac, compare engines, use the terminal UI, write workflow.yml and add an MCP tool.">
 <meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/guide.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
-<script src="assets/js/theme.js"></script>
-<script src="assets/js/site.js" defer></script>
+<link rel="stylesheet" href="assets/css/site.css?v=ce62d2af">
+<script src="assets/js/theme.js?v=49b2f04b"></script>
+<script src="assets/js/site.js?v=bb3e17f9" defer></script>
 </head>
 <body class="sheet">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-inner">
     <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
-  <circle class="bm-ring" cx="16" cy="16" r="8"/>
-  <circle class="bm-dot" cx="24" cy="16" r="3"/>
-</svg>
+      <img class="brand-mark-img logo-dark" src="assets/media/ovat-mark-dark.png" width="28" height="28" alt=""><img class="brand-mark-img logo-light" src="assets/media/ovat-mark-light.png" width="28" height="28" alt="">
       <span class="brand-word">ovat</span>
       <span class="brand-tag">navigate</span>
     </a>
@@ -46,7 +43,7 @@
 <main id="main">
 <section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">Guide</p>
+    <p class="eyebrow">guide</p>
     <h1 class="display">From <span class="lit">pip install</span><br>to a real answer.</h1>
     <p class="lede">Every command in the order you will need it. Each step says what it does and what you should see. If anything goes wrong, <code>ovat doctor</code> is the fastest diagnosis: every yellow row says what to do.</p>
   </div>
@@ -94,8 +91,8 @@
         <div class="code-head"><span>everything at once</span><button class="copy-btn" type="button" data-copy='pip install "ovat[langchain,llamaindex,openai-agents,tui]"' aria-label="Copy"><span class="copy-label">Copy</span></button></div>
 <pre><code><span class="p">$</span> pip install <span class="s">"ovat[langchain,llamaindex,openai-agents,tui]"</span></code></pre>
       </div>
-      <p class="callout"><strong>Linux needs two system packages first.</strong> A minimal image has no Python, and OVMS needs <code>libxml2</code>. On Ubuntu: <code>sudo apt install -y python3 python3-venv python3-pip libxml2 curl</code>. On RHEL 9: <code>sudo dnf install -y python3 python3-pip libxml2 curl</code>.</p>
-      <p class="callout"><strong>Using a GPU or NPU?</strong> Update the driver first. An old driver usually shows up as the device being missing from <code>ovat doctor</code>, not as an error. On Windows also install the Visual C++ Redistributable, which OVMS needs to start at all.</p>
+      <div class="callout" data-tag="linux"><p><strong>Linux needs two system packages first.</strong> A minimal image has no Python, and OVMS needs <code>libxml2</code>. On Ubuntu: <code>sudo apt install -y python3 python3-venv python3-pip libxml2 curl</code>. On RHEL 9: <code>sudo dnf install -y python3 python3-pip libxml2 curl</code>.</p></div>
+      <div class="callout" data-tag="drivers"><p><strong>Using a GPU or NPU?</strong> Update the driver first. An old driver usually shows up as the device being missing from <code>ovat doctor</code>, not as an error. On Windows also install the Visual C++ Redistributable, which OVMS needs to start at all.</p></div>
     </section>
 
     <section class="arch-sec" id="first-run" aria-labelledby="first-t">
@@ -103,39 +100,39 @@
       <ol class="guide-steps">
         <li class="guide-step"><div>
           <h3 class="h3">Install the model server, once</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat setup</code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat setup</code></pre></div>
           <p>Picks the right OVMS archive for your OS, checks its SHA-256, and unpacks it into <code>~/.ovat/ovms</code>. No <code>PATH</code> edit, no environment variable. Running it again does nothing. On macOS it explains that there is no build and what to use instead.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Write a starter config</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat init workflow.yml</code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat init workflow.yml</code></pre></div>
           <p>Writes a <code>workflow.yml</code> tuned to this machine, with the device it detected.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Check the machine and the config</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat doctor workflow.yml</code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat doctor workflow.yml</code></pre></div>
           <p>A table of checks: Python, dependencies, OpenVINO devices, device routing, OVMS, and your config. Green is fine, yellow is a heads-up with the fix written next to it, red needs fixing.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Prove the wiring, with no server</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat run workflow.yml --dry-run
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat run workflow.yml --dry-run
 <span class="t-ok-c">Built agent</span>  model=Qwen3.5-4B-int4-ov  tools=['search_docs', 'transcribe']  max_iterations=10
 <span class="t-warn-c">dry-run:</span> not calling the model.</code></pre></div>
           <p>Builds the whole agent and stops before calling the model. Works on any machine, including a Mac.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Start OVMS</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat serve workflow.yml</code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat serve workflow.yml</code></pre></div>
           <p>The first time, this downloads the model: 3.5 GB for the default. It shows elapsed time and only gives up after five minutes with no progress at all, so a slow connection is fine. When OVMS is ready, the prompt comes back and the server keeps running in the background. Its process ID is saved in <code>ovms.pid</code> and its log in <code>ovms.log</code>.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Ask something</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat run workflow.yml -i <span class="s">"summarise my notes"</span></code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat run workflow.yml -i <span class="s">"summarise my notes"</span></code></pre></div>
           <p>The first line says which engine ran. Then comes the answer, and, when a document search ran, a <code>sources:</code> line that OVAT prints from the tool results itself. Add <code>--react</code>, <code>--llamaindex</code> or <code>--openai-sdk</code> to try another engine without editing the file.</p>
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Give it your documents</h3>
-          <div class="code"><pre><code><span class="c"># the embedder is the one model you convert yourself</span>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="c"># the embedder is the one model you convert yourself</span>
 <span class="p">$</span> pip install <span class="s">"ovat[convert]"</span>
 <span class="p">$</span> optimum-cli export openvino --model BAAI/bge-small-en-v1.5 \
     --task feature-extraction models/bge-small-en-v1.5
@@ -145,7 +142,7 @@
         </div></li>
         <li class="guide-step"><div>
           <h3 class="h3">Shut it down</h3>
-          <div class="code"><pre><code><span class="p">$</span> ovat serve workflow.yml --stop</code></pre></div>
+          <div class="code"><div class="code-head"><span>terminal</span></div><pre><code><span class="p">$</span> ovat serve workflow.yml --stop</code></pre></div>
           <p>Stops the OVMS that <code>serve</code> started, after checking the saved process really is OVMS.</p>
         </div></li>
       </ol>
@@ -234,7 +231,7 @@
           </table>
         </div>
       </div>
-      <p class="callout info">The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p>
+      <div class="callout info" data-tag="note"><p>The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p></div>
     </section>
 
     <section class="arch-sec" id="yaml" aria-labelledby="yaml-t">
@@ -263,7 +260,7 @@
   </div>
 </div>
 
-      <p class="callout"><strong>Name your tool parser.</strong> The wrong one fails silently: the agent answers fluently and never calls a tool. If you leave the field out, OVAT derives it from the model name, and falls back to <code>hermes3</code> for families it does not know.</p>
+      <div class="callout" data-tag="parser"><p><strong>Name your tool parser.</strong> The wrong one fails silently: the agent answers fluently and never calls a tool. If you leave the field out, OVAT derives it from the model name, and falls back to <code>hermes3</code> for families it does not know.</p></div>
     </section>
 
     <section class="arch-sec" id="mcp" aria-labelledby="mcp-t">
@@ -362,12 +359,18 @@ mcp = FastMCP(<span class="s">"word_count"</span>)
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="OVAT Navigate, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
-  <circle class="bm-ring" cx="16" cy="16" r="8"/>
-  <circle class="bm-dot" cx="24" cy="16" r="3"/>
-</svg><span class="brand-word">ovat</span></a>
+        <a class="foot-logo" href="index.html" aria-label="OVAT Navigate, home">
+          <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+          <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+        </a>
         <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+        <div class="made-for">
+          <picture>
+            <source srcset="assets/media/intel-static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="assets/media/intel.gif" width="800" height="600" loading="lazy" alt="The Intel logo">
+          </picture>
+          <p class="faint">Built for Intel AI PCs: a Core Ultra CPU, an Arc GPU and an NPU. This is the Intel mark OVAT's own terminal UI shows.</p>
+        </div>
       </div>
       <div>
         <h2>This site</h2>

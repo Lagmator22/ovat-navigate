@@ -57,7 +57,45 @@
       fallback();
     }
   }
+  /* Every code box gets a Copy button in its header bar. */
+  document.querySelectorAll(".code").forEach(function (box) {
+    var head = box.querySelector(".code-head");
+    if (!head || head.querySelector(".copy-btn")) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "copy-btn";
+    b.setAttribute("data-copy-box", "");
+    var label = head.textContent.trim();
+    b.setAttribute("aria-label", "Copy " + (label || "code"));
+    var l = document.createElement("span");
+    l.className = "copy-label";
+    l.textContent = "Copy";
+    b.appendChild(l);
+    head.appendChild(b);
+  });
+
+  /* A terminal block copies only its commands, without the "$ " prompts. */
+  function commandsOnly(text) {
+    var lines = text.split("\n");
+    if (!lines.some(function (x) { return /^\$ /.test(x); })) return text;
+    var out = [];
+    var cont = false;
+    lines.forEach(function (x) {
+      if (/^\$ /.test(x)) { out.push(x.slice(2)); cont = /\\$/.test(x); }
+      else if (cont) { out.push(x); cont = /\\$/.test(x); }
+    });
+    return out.join("\n");
+  }
+
   document.addEventListener("click", function (ev) {
+    var boxBtn = ev.target.closest ? ev.target.closest("[data-copy-box]") : null;
+    if (boxBtn) {
+      var box = boxBtn.closest(".code");
+      var pres = box ? box.querySelectorAll("pre") : [];
+      var all = Array.prototype.map.call(pres, function (pr) { return pr.textContent; }).join("\n");
+      copyText(commandsOnly(all).replace(/\s+$/, "") + "\n", boxBtn);
+      return;
+    }
     var btn = ev.target.closest ? ev.target.closest("[data-copy], [data-copy-from]") : null;
     if (!btn) return;
     var text = btn.getAttribute("data-copy");
@@ -88,6 +126,12 @@
     });
   });
 
+  /* Bars in a chart take turns: each gets its own position in the queue. */
+  document.querySelectorAll(".anim").forEach(function (c) {
+    var bars = c.querySelectorAll(".hbar-fill, .vbar-fill, .stack-bar");
+    Array.prototype.forEach.call(bars, function (b, i) { b.style.setProperty("--i", String(i)); });
+  });
+
   /* ---- charts draw themselves when they scroll into view ----
      At rest (no JS, reduced motion, or already on screen) they are drawn. */
   var charts = Array.prototype.slice.call(document.querySelectorAll(".anim"));
@@ -106,6 +150,45 @@
       if (r.top > vh * 0.9) {
         c.classList.add("anim-ready");
         io.observe(c);
+      }
+    });
+  }
+
+  /* ---- SVG plots: drawn point by point, bar by bar ----
+     A plot below the fold starts hidden and plays over data-dur ms when it
+     scrolls into view. Already on screen, reduced motion or no JS: drawn. */
+  var plots = Array.prototype.slice.call(document.querySelectorAll(".plot-wrap"));
+  function playPlot(w) {
+    var dur = parseInt(w.getAttribute("data-dur") || "2400", 10);
+    var marks = Array.prototype.slice.call(w.querySelectorAll(".mk"));
+    marks.sort(function (a, b) { return (+a.getAttribute("data-i")) - (+b.getAttribute("data-i")); });
+    var step = marks.length ? dur / marks.length : 0;
+    marks.forEach(function (m, k) { m.style.transitionDelay = Math.round(k * step) + "ms"; });
+    w.querySelectorAll(".ln, .cap").forEach(function (ln) {
+      ln.style.transition = "stroke-dashoffset " + dur + "ms linear";
+    });
+    w.style.setProperty("--area-delay", Math.round(dur * 0.6) + "ms");
+    window.requestAnimationFrame(function () {
+      w.classList.add("plot-in");
+      w.querySelectorAll(".ln, .cap").forEach(function (ln) { ln.style.strokeDashoffset = "0"; });
+    });
+  }
+  if (!reduceMotion && "IntersectionObserver" in window && plots.length) {
+    var vh2 = window.innerHeight || 800;
+    var pio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { pio.unobserve(e.target); playPlot(e.target); }
+      });
+    }, { threshold: 0.35 });
+    plots.forEach(function (w) {
+      if (w.getBoundingClientRect().top > vh2 * 0.85) {
+        w.querySelectorAll(".ln, .cap").forEach(function (ln) {
+          var len = Math.ceil(ln.getTotalLength ? ln.getTotalLength() : 2000);
+          ln.style.strokeDasharray = len;
+          ln.style.strokeDashoffset = len;
+        });
+        w.classList.add("plot-ready");
+        pio.observe(w);
       }
     });
   }

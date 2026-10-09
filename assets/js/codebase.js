@@ -134,8 +134,10 @@
     body.appendChild(el("h3", null, "What it does"));
     body.appendChild(el("p", null, m.what));
     if (m.why) {
-      body.appendChild(el("h3", null, "Why it is built this way"));
-      body.appendChild(el("p", "detail-why", m.why));
+      var why = el("div", "callout why");
+      why.setAttribute("data-tag", "why");
+      why.appendChild(el("p", null, m.why));
+      body.appendChild(why);
     }
     if (m.rel && m.rel.length) {
       body.appendChild(el("h3", null, "Works with"));
@@ -149,12 +151,9 @@
       });
       body.appendChild(rel);
     }
-    var link = el("a", "btn btn-ghost", "Open on GitHub ");
+    var link = el("a", "btn btn-ghost", "Open " + fileName(m.p) + " on GitHub");
     link.href = REPO + m.p;
     link.rel = "noopener";
-    var arr = el("span", "arr", "→");
-    arr.setAttribute("aria-hidden", "true");
-    link.appendChild(arr);
     body.appendChild(link);
     detail.appendChild(body);
     detail.setAttribute("aria-labelledby", "detail-title");

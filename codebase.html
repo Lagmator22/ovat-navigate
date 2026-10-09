@@ -14,25 +14,22 @@
 <meta property="og:title" content="OVAT Codebase Map">
 <meta property="og:description" content="An interactive map of every module in the ovat Python package: what each file does, why it is built that way, what it works with, and a link to it on GitHub.">
 <meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/codebase.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css">
-<script src="assets/js/theme.js"></script>
-<script src="assets/js/site.js" defer></script>
-<script src="assets/js/modules.js" defer></script>
-<script src="assets/js/codebase.js" defer></script>
+<link rel="stylesheet" href="assets/css/site.css?v=ce62d2af">
+<script src="assets/js/theme.js?v=49b2f04b"></script>
+<script src="assets/js/site.js?v=bb3e17f9" defer></script>
+<script src="assets/js/modules.js?v=2b4cf7d7" defer></script>
+<script src="assets/js/codebase.js?v=300abba8" defer></script>
 </head>
 <body class="sheet">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-inner">
     <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
-  <circle class="bm-ring" cx="16" cy="16" r="8"/>
-  <circle class="bm-dot" cx="24" cy="16" r="3"/>
-</svg>
+      <img class="brand-mark-img logo-dark" src="assets/media/ovat-mark-dark.png" width="28" height="28" alt=""><img class="brand-mark-img logo-light" src="assets/media/ovat-mark-light.png" width="28" height="28" alt="">
       <span class="brand-word">ovat</span>
       <span class="brand-tag">navigate</span>
     </a>
@@ -48,7 +45,7 @@
 <main id="main">
 <section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">Codebase</p>
+    <p class="eyebrow">codebase</p>
     <h1 class="display">Every module,<br><span class="soft">one click away.</span></h1>
     <p class="lede">The <code>ovat/</code> package, grouped by folder. Pick a file to see what it does, why it is built the way it is, and what it works with. The bar under each name is its size in lines. Or press <strong>Follow one ovat run</strong> to watch a request move through the files in order.</p>
   </div>
@@ -76,15 +73,27 @@
       </aside>
     </div>
     <noscript>
-      <p class="callout">The interactive map needs JavaScript. The same information is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md#file-map">file map in ARCHITECTURE.md</a>, and the code is browsable at <a href="https://github.com/Lagmator22/ovat/tree/main/ovat">github.com/Lagmator22/ovat/tree/main/ovat</a>.</p>
+      <div class="callout" data-tag="no js"><p>The interactive map needs JavaScript. The same information is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md#file-map">file map in ARCHITECTURE.md</a>, and the code is browsable at <a href="https://github.com/Lagmator22/ovat/tree/main/ovat">github.com/Lagmator22/ovat/tree/main/ovat</a>.</p></div>
     </noscript>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="sizes-t">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="sizes-t">Most files are small</h2>
+      <p class="lede">The same 48 modules by length. Forty are under 400 lines. The four long ones are the command line, the terminal UI launcher, its chat screen and the telemetry sources.</p>
+    </div>
+    <div class="chart">
+      <div class="plot-wrap" data-dur="3000"><svg class="plot" viewBox="0 0 640 320" role="img" aria-labelledby="c-mhist-t c-mhist-d"><title id="c-mhist-t">How long each module is</title><desc id="c-mhist-d">48 modules. Most are under 400 lines; four are over 1,000.</desc><line class="gr" x1="64" y1="268.0" x2="616" y2="268.0"/><text x="54" y="272.0" text-anchor="end">0</text><line class="gr" x1="64" y1="186.7" x2="616" y2="186.7"/><text x="54" y="190.7" text-anchor="end">10</text><line class="gr" x1="64" y1="105.3" x2="616" y2="105.3"/><text x="54" y="109.3" text-anchor="end">20</text><line class="gr" x1="64" y1="24.0" x2="616" y2="24.0"/><text x="54" y="28.0" text-anchor="end">30</text><line class="ax" x1="64.0" y1="268" x2="64.0" y2="273"/><text x="64.0" y="288" text-anchor="middle">0</text><line class="ax" x1="174.4" y1="268" x2="174.4" y2="273"/><text x="174.4" y="288" text-anchor="middle">400</text><line class="ax" x1="284.8" y1="268" x2="284.8" y2="273"/><text x="284.8" y="288" text-anchor="middle">800</text><line class="ax" x1="395.2" y1="268" x2="395.2" y2="273"/><text x="395.2" y="288" text-anchor="middle">1200</text><line class="ax" x1="505.6" y1="268" x2="505.6" y2="273"/><text x="505.6" y="288" text-anchor="middle">1600</text><line class="ax" x1="616.0" y1="268" x2="616.0" y2="273"/><text x="616.0" y="288" text-anchor="middle">2000</text><line class="ax" x1="64" y1="24" x2="64" y2="268"/><line class="ax" x1="64" y1="268" x2="616" y2="268"/><text x="340" y="312" text-anchor="middle">lines in the module</text><text x="14" y="146" text-anchor="middle" transform="rotate(-90 14 146)">modules</text><rect class="mk bar" data-i="0" x="65.5" y="24.0" width="52.2" height="244.0"><title>0 to 199: 30</title></rect><text class="mk val" data-i="0" x="91.6" y="18.0" text-anchor="middle">30</text><rect class="mk bar" data-i="1" x="120.7" y="186.7" width="52.2" height="81.3"><title>200 to 399: 10</title></rect><text class="mk val" data-i="1" x="146.8" y="180.7" text-anchor="middle">10</text><rect class="mk bar" data-i="2" x="175.9" y="235.5" width="52.2" height="32.5"><title>400 to 599: 4</title></rect><text class="mk val" data-i="2" x="202.0" y="229.5" text-anchor="middle">4</text><rect class="mk bar" data-i="5" x="341.5" y="259.9" width="52.2" height="8.1"><title>1000 to 1199: 1</title></rect><text class="mk val" data-i="5" x="367.6" y="253.9" text-anchor="middle">1</text><rect class="mk bar" data-i="6" x="396.7" y="251.7" width="52.2" height="16.3"><title>1200 to 1399: 2</title></rect><text class="mk val" data-i="6" x="422.8" y="245.7" text-anchor="middle">2</text><rect class="mk bar" data-i="9" x="562.3" y="259.9" width="52.2" height="8.1"><title>1800 to 1999: 1</title></rect><text class="mk val" data-i="9" x="588.4" y="253.9" text-anchor="middle">1</text></svg></div>
+      <div class="chart-foot"><p>Line counts are <code>wc -l</code> at OVAT 1.1.1, the same numbers as the bars in the map above.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="section" aria-labelledby="outside-t">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">Outside the package</p>
       <h2 class="h2" id="outside-t">The rest of the repository</h2>
     </div>
     <div class="rules3 rules4">
@@ -100,12 +109,18 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="OVAT Navigate, home"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <rect class="bm-frame" x="1" y="1" width="30" height="30" rx="8"/>
-  <circle class="bm-ring" cx="16" cy="16" r="8"/>
-  <circle class="bm-dot" cx="24" cy="16" r="3"/>
-</svg><span class="brand-word">ovat</span></a>
+        <a class="foot-logo" href="index.html" aria-label="OVAT Navigate, home">
+          <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+          <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
+        </a>
         <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+        <div class="made-for">
+          <picture>
+            <source srcset="assets/media/intel-static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="assets/media/intel.gif" width="800" height="600" loading="lazy" alt="The Intel logo">
+          </picture>
+          <p class="faint">Built for Intel AI PCs: a Core Ultra CPU, an Arc GPU and an NPU. This is the Intel mark OVAT's own terminal UI shows.</p>
+        </div>
       </div>
       <div>
         <h2>This site</h2>

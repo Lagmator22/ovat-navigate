@@ -6,7 +6,7 @@ scripts: modules.js codebase.js
 -->
 <section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">Codebase</p>
+    <p class="eyebrow">codebase</p>
     <h1 class="display">Every module,<br><span class="soft">one click away.</span></h1>
     <p class="lede">The <code>ovat/</code> package, grouped by folder. Pick a file to see what it does, why it is built the way it is, and what it works with. The bar under each name is its size in lines. Or press <strong>Follow one ovat run</strong> to watch a request move through the files in order.</p>
   </div>
@@ -34,15 +34,27 @@ scripts: modules.js codebase.js
       </aside>
     </div>
     <noscript>
-      <p class="callout">The interactive map needs JavaScript. The same information is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md#file-map">file map in ARCHITECTURE.md</a>, and the code is browsable at <a href="https://github.com/Lagmator22/ovat/tree/main/ovat">github.com/Lagmator22/ovat/tree/main/ovat</a>.</p>
+      <div class="callout" data-tag="no js"><p>The interactive map needs JavaScript. The same information is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/ARCHITECTURE.md#file-map">file map in ARCHITECTURE.md</a>, and the code is browsable at <a href="https://github.com/Lagmator22/ovat/tree/main/ovat">github.com/Lagmator22/ovat/tree/main/ovat</a>.</p></div>
     </noscript>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="sizes-t">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2" id="sizes-t">Most files are small</h2>
+      <p class="lede">The same 48 modules by length. Forty are under 400 lines. The four long ones are the command line, the terminal UI launcher, its chat screen and the telemetry sources.</p>
+    </div>
+    <div class="chart">
+      <!--#chart module-hist-->
+      <div class="chart-foot"><p>Line counts are <code>wc -l</code> at OVAT 1.1.1, the same numbers as the bars in the map above.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="section" aria-labelledby="outside-t">
   <div class="wrap">
     <div class="section-head">
-      <p class="eyebrow">Outside the package</p>
       <h2 class="h2" id="outside-t">The rest of the repository</h2>
     </div>
     <div class="rules3 rules4">

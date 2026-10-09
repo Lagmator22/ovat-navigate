@@ -6,7 +6,7 @@ scripts: flow.js
 -->
 <section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">Architecture</p>
+    <p class="eyebrow">architecture</p>
     <h1 class="display">Nine layers.<br><span class="soft">Each one has a reason.</span></h1>
     <p class="lede">OVAT sits between you and OpenVINO Model Server. OVMS does the inference. OVAT decides which model, which device, which parser and which tools, then runs the loop and the server for you. This page walks the layers in order, the way a request meets them.</p>
   </div>
@@ -101,11 +101,11 @@ scripts: flow.js
             <text class="t-big" x="300" y="274" text-anchor="middle" data-slot="round">1</text>
             <text class="t-c" x="300" y="304" text-anchor="middle">max_iterations: 10</text>
 
-            <g id="l-ask" class="node"><rect class="box" x="225" y="48" width="150" height="64" rx="12"/><text class="t-k" x="243" y="72">1 ask</text><text class="t-t" x="243" y="98">Model</text></g>
-            <g id="l-read" class="node"><rect class="box" x="405" y="228" width="150" height="64" rx="12"/><text class="t-k" x="423" y="252">2 read</text><text class="t-t" x="423" y="278">Reply</text></g>
-            <g id="l-act" class="node tone-tool"><rect class="box" x="225" y="408" width="150" height="64" rx="12"/><text class="t-k" x="243" y="432">3 act</text><text class="t-t" x="243" y="458">Run tool</text></g>
-            <g id="l-rep" class="node"><rect class="box" x="45" y="228" width="150" height="64" rx="12"/><text class="t-k" x="63" y="252">4 report</text><text class="t-t" x="63" y="278">History</text></g>
-            <g id="l-ans" class="node tone-ok"><rect class="box" x="640" y="228" width="180" height="64" rx="12"/><text class="t-k" x="658" y="252">no tool calls</text><text class="t-t" x="658" y="278">Answer</text></g>
+            <g id="l-ask" class="node"><rect class="box" x="225" y="48" width="150" height="64"/><text class="t-k" x="243" y="72">1 ask</text><text class="t-t" x="243" y="98">Model</text></g>
+            <g id="l-read" class="node"><rect class="box" x="405" y="228" width="150" height="64"/><text class="t-k" x="423" y="252">2 read</text><text class="t-t" x="423" y="278">Reply</text></g>
+            <g id="l-act" class="node tone-tool"><rect class="box" x="225" y="408" width="150" height="64"/><text class="t-k" x="243" y="432">3 act</text><text class="t-t" x="243" y="458">Run tool</text></g>
+            <g id="l-rep" class="node"><rect class="box" x="45" y="228" width="150" height="64"/><text class="t-k" x="63" y="252">4 report</text><text class="t-t" x="63" y="278">History</text></g>
+            <g id="l-ans" class="node tone-ok"><rect class="box" x="640" y="228" width="180" height="64"/><text class="t-k" x="658" y="252">no tool calls</text><text class="t-t" x="658" y="278">Answer</text></g>
           </svg>
         </div>
         <figcaption class="diagram-side" id="loop-cap">
@@ -168,14 +168,14 @@ scripts: flow.js
             <path id="qw-db" class="wire" d="M970 136 C970 196 690 186 690 248" marker-end="url(#ah-r)"/>
             <path id="qw-3" class="wire" d="M800 300 H856" marker-end="url(#ah-r)"/>
 
-            <g id="r-docs" class="node"><rect class="box" x="20" y="40" width="220" height="96" rx="12"/><text class="t-k" x="40" y="70">a folder</text><text class="t-t" x="40" y="100">Your docs</text><text class="t-s" x="40" y="122">.txt and .md</text></g>
-            <g id="r-chunk" class="node"><rect class="box" x="300" y="40" width="220" height="96" rx="12"/><text class="t-k" x="320" y="70">rag/indexer.py</text><text class="t-t" x="320" y="100">Chunks</text><text class="t-s" x="320" y="122">512 chars, 64 overlap</text></g>
-            <g id="r-emb" class="node"><rect class="box" x="580" y="40" width="220" height="96" rx="12"/><text class="t-k" x="600" y="70">embeddings_genai.py</text><text class="t-t" x="600" y="100">bge-small</text><text class="t-s" x="600" y="122">384 numbers each</text></g>
-            <g id="r-db" class="node"><rect class="box" x="860" y="40" width="220" height="96" rx="12"/><text class="t-k" x="880" y="70">retriever_sqlitevec.py</text><text class="t-t" x="880" y="100">sqlite-vec</text><text class="t-s" x="880" y="122">ovat_index.db</text></g>
-            <g id="q-ask" class="node tone-tool"><rect class="box" x="20" y="252" width="220" height="96" rx="12"/><text class="t-k" x="40" y="282">the model calls</text><text class="t-t" x="40" y="312">search_docs</text><text class="t-s" x="40" y="334">query, top_k = 5</text></g>
-            <g id="q-emb" class="node"><rect class="box" x="300" y="252" width="220" height="96" rx="12"/><text class="t-k" x="320" y="282">same embedder</text><text class="t-t" x="320" y="312">bge-small</text><text class="t-s" x="320" y="334">question to numbers</text></g>
-            <g id="q-near" class="node"><rect class="box" x="580" y="252" width="220" height="96" rx="12"/><text class="t-k" x="600" y="282">vector search</text><text class="t-t" x="600" y="312">Nearest chunks</text><text class="t-s" x="600" y="334">closest in meaning</text></g>
-            <g id="q-out" class="node tone-ok"><rect class="box" x="860" y="252" width="220" height="96" rx="12"/><text class="t-k" x="880" y="282">tool result</text><text class="t-t" x="880" y="312">Text + source</text><text class="t-s" x="880" y="334">printed as sources:</text></g>
+            <g id="r-docs" class="node"><rect class="box" x="20" y="40" width="220" height="96"/><text class="t-k" x="40" y="70">a folder</text><text class="t-t" x="40" y="100">Your docs</text><text class="t-s" x="40" y="122">.txt and .md</text></g>
+            <g id="r-chunk" class="node"><rect class="box" x="300" y="40" width="220" height="96"/><text class="t-k" x="320" y="70">rag/indexer.py</text><text class="t-t" x="320" y="100">Chunks</text><text class="t-s" x="320" y="122">512 chars, 64 overlap</text></g>
+            <g id="r-emb" class="node"><rect class="box" x="580" y="40" width="220" height="96"/><text class="t-k" x="600" y="70">embeddings_genai.py</text><text class="t-t" x="600" y="100">bge-small</text><text class="t-s" x="600" y="122">384 numbers each</text></g>
+            <g id="r-db" class="node"><rect class="box" x="860" y="40" width="220" height="96"/><text class="t-k" x="880" y="70">retriever_sqlitevec.py</text><text class="t-t" x="880" y="100">sqlite-vec</text><text class="t-s" x="880" y="122">ovat_index.db</text></g>
+            <g id="q-ask" class="node tone-tool"><rect class="box" x="20" y="252" width="220" height="96"/><text class="t-k" x="40" y="282">the model calls</text><text class="t-t" x="40" y="312">search_docs</text><text class="t-s" x="40" y="334">query, top_k = 5</text></g>
+            <g id="q-emb" class="node"><rect class="box" x="300" y="252" width="220" height="96"/><text class="t-k" x="320" y="282">same embedder</text><text class="t-t" x="320" y="312">bge-small</text><text class="t-s" x="320" y="334">question to numbers</text></g>
+            <g id="q-near" class="node"><rect class="box" x="580" y="252" width="220" height="96"/><text class="t-k" x="600" y="282">vector search</text><text class="t-t" x="600" y="312">Nearest chunks</text><text class="t-s" x="600" y="334">closest in meaning</text></g>
+            <g id="q-out" class="node tone-ok"><rect class="box" x="860" y="252" width="220" height="96"/><text class="t-k" x="880" y="282">tool result</text><text class="t-t" x="880" y="312">Text + source</text><text class="t-s" x="880" y="334">printed as sources:</text></g>
           </svg>
         </div>
         <figcaption class="diagram-side" id="rag-cap">
@@ -257,16 +257,16 @@ scripts: flow.js
             <path id="tk-1" class="wire" d="M610 180 H716" marker-end="url(#ah-t)"/>
             <path id="tk-2" class="wire" d="M610 180 C664 180 662 278 716 278" marker-end="url(#ah-t)"/>
 
-            <g class="node"><rect class="box" x="20" y="20" width="260" height="46" rx="10"/><text class="t-m" x="38" y="49">AgentTraceSource</text></g>
-            <g class="node"><rect class="box" x="20" y="76" width="260" height="46" rx="10"/><text class="t-m" x="38" y="105">ProcessMemorySource</text></g>
-            <g class="node"><rect class="box" x="20" y="132" width="260" height="46" rx="10"/><text class="t-m" x="38" y="161">SystemSource</text></g>
-            <g class="node"><rect class="box" x="20" y="188" width="260" height="46" rx="10"/><text class="t-m" x="38" y="217">NPUSource</text></g>
-            <g class="node"><rect class="box" x="20" y="244" width="260" height="46" rx="10"/><text class="t-m" x="38" y="273">IntelHardwareSource</text></g>
-            <g class="node"><rect class="box" x="20" y="300" width="260" height="46" rx="10"/><text class="t-m" x="38" y="329">OVMSLogSource</text></g>
-            <g class="node is-on"><rect class="box" x="390" y="130" width="220" height="100" rx="12"/><text class="t-k" x="410" y="160">telemetry/collector.py</text><text class="t-t" x="410" y="190">Collector</text><text class="t-s" x="410" y="212">ticks on a clock</text></g>
-            <g class="node"><rect class="box" x="720" y="50" width="260" height="64" rx="12"/><text class="t-m" x="738" y="76">JSONFileSink</text><text class="t-s" x="738" y="98">--telemetry run.jsonl</text></g>
-            <g class="node"><rect class="box" x="720" y="148" width="260" height="64" rx="12"/><text class="t-m" x="738" y="174">LiveBufferSink</text><text class="t-s" x="738" y="196">the TUI telemetry page</text></g>
-            <g class="node"><rect class="box" x="720" y="246" width="260" height="64" rx="12"/><text class="t-m" x="738" y="272">FanOutSink</text><text class="t-s" x="738" y="294">one feed, many sinks</text></g>
+            <g class="node"><rect class="box" x="20" y="20" width="260" height="46"/><text class="t-m" x="38" y="49">AgentTraceSource</text></g>
+            <g class="node"><rect class="box" x="20" y="76" width="260" height="46"/><text class="t-m" x="38" y="105">ProcessMemorySource</text></g>
+            <g class="node"><rect class="box" x="20" y="132" width="260" height="46"/><text class="t-m" x="38" y="161">SystemSource</text></g>
+            <g class="node"><rect class="box" x="20" y="188" width="260" height="46"/><text class="t-m" x="38" y="217">NPUSource</text></g>
+            <g class="node"><rect class="box" x="20" y="244" width="260" height="46"/><text class="t-m" x="38" y="273">IntelHardwareSource</text></g>
+            <g class="node"><rect class="box" x="20" y="300" width="260" height="46"/><text class="t-m" x="38" y="329">OVMSLogSource</text></g>
+            <g class="node is-on"><rect class="box" x="390" y="130" width="220" height="100"/><text class="t-k" x="410" y="160">telemetry/collector.py</text><text class="t-t" x="410" y="190">Collector</text><text class="t-s" x="410" y="212">ticks on a clock</text></g>
+            <g class="node"><rect class="box" x="720" y="50" width="260" height="64"/><text class="t-m" x="738" y="76">JSONFileSink</text><text class="t-s" x="738" y="98">--telemetry run.jsonl</text></g>
+            <g class="node"><rect class="box" x="720" y="148" width="260" height="64"/><text class="t-m" x="738" y="174">LiveBufferSink</text><text class="t-s" x="738" y="196">the TUI telemetry page</text></g>
+            <g class="node"><rect class="box" x="720" y="246" width="260" height="64"/><text class="t-m" x="738" y="272">FanOutSink</text><text class="t-s" x="738" y="294">one feed, many sinks</text></g>
           </svg>
         </div>
         <div class="diagram-side"><div class="diagram-controls"><span class="faint small">Samples flow from each source to the collector, then out to the sinks.</span><button class="ctl motion-ctl" type="button" data-act="motion" aria-pressed="false"><svg data-icon="pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg><svg data-icon="play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" hidden><path d="M4 2.5v11l9-5.5z"/></svg><span class="lbl">Pause motion</span></button></div></div>
@@ -323,12 +323,12 @@ scripts: flow.js
             <path id="dw-emb-npu" class="wire" data-route d="M260 166 C448 166 448 276 636 276" marker-end="url(#ah-d)"/>
             <path id="dw-whi-cpu" class="wire" data-route d="M260 276 C448 276 448 56 636 56" marker-end="url(#ah-d)"/>
 
-            <g id="m-llm" class="node"><rect class="box" x="20" y="20" width="240" height="72" rx="12"/><text class="t-k" x="40" y="48">chat and tool calls</text><text class="t-t" x="40" y="76">LLM</text></g>
-            <g id="m-emb" class="node"><rect class="box" x="20" y="130" width="240" height="72" rx="12"/><text class="t-k" x="40" y="158">document search</text><text class="t-t" x="40" y="186">Embeddings</text></g>
-            <g id="m-whi" class="node"><rect class="box" x="20" y="240" width="240" height="72" rx="12"/><text class="t-k" x="40" y="268">transcribe tool</text><text class="t-t" x="40" y="296">Whisper</text></g>
-            <g id="d-cpu" class="node"><rect class="box" x="640" y="20" width="240" height="72" rx="12"/><text class="t-k" x="660" y="48">always present</text><text class="t-t" x="660" y="76">CPU</text></g>
-            <g id="d-gpu" class="node"><rect class="box" x="640" y="130" width="240" height="72" rx="12"/><text class="t-k" x="660" y="158">Intel Arc</text><text class="t-t" x="660" y="186">GPU</text></g>
-            <g id="d-npu" class="node"><rect class="box" x="640" y="240" width="240" height="72" rx="12"/><text class="t-k" x="660" y="268">Intel AI Boost</text><text class="t-t" x="660" y="296">NPU</text></g>
+            <g id="m-llm" class="node"><rect class="box" x="20" y="20" width="240" height="72"/><text class="t-k" x="40" y="48">chat and tool calls</text><text class="t-t" x="40" y="76">LLM</text></g>
+            <g id="m-emb" class="node"><rect class="box" x="20" y="130" width="240" height="72"/><text class="t-k" x="40" y="158">document search</text><text class="t-t" x="40" y="186">Embeddings</text></g>
+            <g id="m-whi" class="node"><rect class="box" x="20" y="240" width="240" height="72"/><text class="t-k" x="40" y="268">transcribe tool</text><text class="t-t" x="40" y="296">Whisper</text></g>
+            <g id="d-cpu" class="node"><rect class="box" x="640" y="20" width="240" height="72"/><text class="t-k" x="660" y="48">always present</text><text class="t-t" x="660" y="76">CPU</text></g>
+            <g id="d-gpu" class="node"><rect class="box" x="640" y="130" width="240" height="72"/><text class="t-k" x="660" y="158">Intel Arc</text><text class="t-t" x="660" y="186">GPU</text></g>
+            <g id="d-npu" class="node"><rect class="box" x="640" y="240" width="240" height="72"/><text class="t-k" x="660" y="268">Intel AI Boost</text><text class="t-t" x="660" y="296">NPU</text></g>
           </svg>
         </div>
         <div class="diagram-side">

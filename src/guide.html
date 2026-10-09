@@ -5,7 +5,7 @@ nav: guide
 -->
 <section class="page-hero">
   <div class="wrap">
-    <p class="eyebrow">Guide</p>
+    <p class="eyebrow">guide</p>
     <h1 class="display">From <span class="lit">pip install</span><br>to a real answer.</h1>
     <p class="lede">Every command in the order you will need it. Each step says what it does and what you should see. If anything goes wrong, <code>ovat doctor</code> is the fastest diagnosis: every yellow row says what to do.</p>
   </div>
@@ -53,8 +53,8 @@ nav: guide
         <div class="code-head"><span>everything at once</span><button class="copy-btn" type="button" data-copy='pip install "ovat[langchain,llamaindex,openai-agents,tui]"' aria-label="Copy"><span class="copy-label">Copy</span></button></div>
 <pre><code><span class="p">$</span> pip install <span class="s">"ovat[langchain,llamaindex,openai-agents,tui]"</span></code></pre>
       </div>
-      <p class="callout"><strong>Linux needs two system packages first.</strong> A minimal image has no Python, and OVMS needs <code>libxml2</code>. On Ubuntu: <code>sudo apt install -y python3 python3-venv python3-pip libxml2 curl</code>. On RHEL 9: <code>sudo dnf install -y python3 python3-pip libxml2 curl</code>.</p>
-      <p class="callout"><strong>Using a GPU or NPU?</strong> Update the driver first. An old driver usually shows up as the device being missing from <code>ovat doctor</code>, not as an error. On Windows also install the Visual C++ Redistributable, which OVMS needs to start at all.</p>
+      <div class="callout" data-tag="linux"><p><strong>Linux needs two system packages first.</strong> A minimal image has no Python, and OVMS needs <code>libxml2</code>. On Ubuntu: <code>sudo apt install -y python3 python3-venv python3-pip libxml2 curl</code>. On RHEL 9: <code>sudo dnf install -y python3 python3-pip libxml2 curl</code>.</p></div>
+      <div class="callout" data-tag="drivers"><p><strong>Using a GPU or NPU?</strong> Update the driver first. An old driver usually shows up as the device being missing from <code>ovat doctor</code>, not as an error. On Windows also install the Visual C++ Redistributable, which OVMS needs to start at all.</p></div>
     </section>
 
     <section class="arch-sec" id="first-run" aria-labelledby="first-t">
@@ -193,7 +193,7 @@ nav: guide
           </table>
         </div>
       </div>
-      <p class="callout info">The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p>
+      <div class="callout info" data-tag="note"><p>The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p></div>
     </section>
 
     <section class="arch-sec" id="yaml" aria-labelledby="yaml-t">
@@ -202,7 +202,7 @@ nav: guide
         <p>Four sections: <code>model</code> (required), <code>tools</code>, <code>agent</code> and <code>rag</code>. Unknown keys are errors, so a typo fails immediately. Select a line or a note to see what it does. Every field, with its type and default, is in the <a href="https://github.com/Lagmator22/ovat/blob/main/docs/workflow_yaml_reference.md" rel="noopener">generated reference</a>.</p>
       </div>
       <!--#include anno-yaml-->
-      <p class="callout"><strong>Name your tool parser.</strong> The wrong one fails silently: the agent answers fluently and never calls a tool. If you leave the field out, OVAT derives it from the model name, and falls back to <code>hermes3</code> for families it does not know.</p>
+      <div class="callout" data-tag="parser"><p><strong>Name your tool parser.</strong> The wrong one fails silently: the agent answers fluently and never calls a tool. If you leave the field out, OVAT derives it from the model name, and falls back to <code>hermes3</code> for families it does not know.</p></div>
     </section>
 
     <section class="arch-sec" id="mcp" aria-labelledby="mcp-t">

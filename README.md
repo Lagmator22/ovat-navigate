@@ -26,6 +26,7 @@ loaded from another origin.
 src/*.html          page bodies, each with a small header block
 src/partials/       pieces shared by more than one page
 build.py            wraps every page in the shared header, footer and CSP
+charts.py           draws the SVG charts at build time from real numbers
 assets/css/site.css the whole design system, as tokens at the top
 assets/js/          theme, diagrams (flow.js), terminal replay, codebase map
 assets/fonts/       self-hosted fonts and their licenses
@@ -51,6 +52,22 @@ along the SVG paths and highlights nodes; the drawing is complete without it.
 Animation runs only while a diagram is on screen, every autoplaying piece has
 a pause control, and `prefers-reduced-motion` turns travelling motion off while
 keeping the step-by-step controls.
+
+## Charts
+
+`charts.py` turns real numbers into static SVG when the site is built: test
+and code growth counted from the OVAT repository's history, the recorded
+`ovat bench` run, the NPU length cap, and module and test-file sizes. Each
+number names its source in the code. A chart below the fold plots itself point
+by point, or bar by bar, when it scrolls into view; with reduced motion it is
+simply drawn.
+
+## Logos
+
+`assets/media/` holds the OVAT logo and the Intel marks from the OVAT
+repository (`docs/assets/ovat-logo.png`, `ovat/assets/intel*`). The logo was
+given a transparent background and a light-ink copy for the dark theme; the
+Intel animation plays once instead of looping.
 
 ## Fonts
 

@@ -22,14 +22,13 @@ scripts: flow.js terminal.js
     </div>
 
     <figure class="demo" id="demo">
-      <video class="demo-video" controls muted playsinline preload="metadata" poster="assets/media/ovat-demo-poster.jpg" width="3024" height="1904">
-        <source src="assets/media/ovat-demo.mp4" type="video/mp4">
-        <a href="assets/media/ovat-demo.mp4">Download the OVAT demo video (MP4, 12.5 MB)</a>
+      <video class="demo-video" controls muted playsinline preload="metadata" poster="assets/media/ovat-tour-poster.jpg" width="2400" height="1512">
+        <source src="assets/media/ovat-tour.mp4" type="video/mp4">
+        <a href="assets/media/ovat-tour.mp4">Download the OVAT demo video (MP4, 8 MB)</a>
       </video>
       <figcaption>
-        <span class="demo-len">6:21</span>
-        <span>The end-term demo on an Intel AI PC: indexing and a RAG answer, the same question through all four engines, a run trace and <code>ovat bench</code>, then the terminal UI chatting with audio, image and document tools.</span>
-        <span class="demo-note">One note: some answers in the four-engine run misread the memory budget as 128 MB. The note they cite says a full run fits in 8 GB.</span>
+        <span class="demo-len">5:03</span>
+        <span>Three recordings in one: the agent TUI with subagents and A2A on an Intel AI PC (0:00), the four engines with a run trace and <code>ovat bench</code> (0:58), and local voice dictation (4:03).</span>
       </figcaption>
     </figure>
   </div>
@@ -271,9 +270,20 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
       <div class="figure"><span class="big num">56<small>/60</small></span><span class="vs">vs 42/60 on OVMS 2026.2.1</span><p>Right answers, 15 tool questions through all four engines, on the pinned OVMS 2026.4.1. McNemar p = 0.0001.</p></div>
       <div class="figure"><span class="big num">4.9<small> GB</small></span><span class="vs">vs 17.3 GB before</span><p>Peak memory of the GPU model server across the same run, after moving to 2026.4.1.</p></div>
       <div class="figure"><span class="big">NPU</span><span class="vs">tool calls work</span><p>A real tool-calling agent run on the NPU, from a channel-wise INT4 export (<code>-int4-cw-ov</code>).</p></div>
-      <div class="figure"><span class="big num">800<small>+</small></span><span class="vs">tests, 4 CI platforms</span><p>Ubuntu 22.04 and 24.04, Windows and macOS on every push. No server needed to run them.</p></div>
+      <div class="figure"><span class="big num">1,500<small>+</small></span><span class="vs">test functions, 4 CI platforms</span><p>Ubuntu 22.04 and 24.04, Windows and macOS on every push. No server needed to run them.</p></div>
     </div>
     <p class="row"><a class="btn btn-ghost" href="results.html">See every measurement</a></p>
+  </div>
+</section>
+
+<section class="section tight" aria-labelledby="agent-t">
+  <div class="wrap split">
+    <div class="stack">
+      <h2 class="h2" id="agent-t">More than one agent</h2>
+      <p class="lede"><code>ovat agent</code> is a terminal app where the agent works in front of you. Tools ask before they run, subagents take on part of a job, and other agents can ask yours questions over A2A, on your machine, with a token.</p>
+      <p class="row"><a class="btn btn-ghost" href="guide.html#agent">Try the agent TUI</a> <a class="btn btn-ghost" href="architecture.html#agent">How it is built</a></p>
+    </div>
+    <figure class="shot"><img src="assets/media/screens/hero-agent-agents-table.webp" width="1720" height="418" loading="lazy" decoding="async" alt="The /agents screen: the A2A server is serving, four configured subagents, and a table with the team_docs call finished ok in 12.51 seconds with 1663 tokens."></figure>
   </div>
 </section>
 

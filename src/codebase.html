@@ -43,11 +43,11 @@ scripts: modules.js codebase.js
   <div class="wrap">
     <div class="section-head">
       <h2 class="h2" id="sizes-t">Most files are small</h2>
-      <p class="lede">The same 48 modules by length. Forty are under 400 lines. The four long ones are the command line, the terminal UI launcher, its chat screen and the telemetry sources.</p>
+      <p class="lede">The same 123 modules by length, with the copied terminal client left out. 104 are under 400 lines. The four over 1,000 are the command line, the launcher TUI, its chat screen and the telemetry sources.</p>
     </div>
     <div class="chart">
       <!--#chart module-hist-->
-      <div class="chart-foot"><p>Line counts are <code>wc -l</code> at OVAT 1.1.1, the same numbers as the bars in the map above.</p></div>
+      <div class="chart-foot"><p>Line counts are <code>wc -l</code> at OVAT 1.2.0, the same numbers as the bars in the map above.</p></div>
     </div>
   </div>
 </section>
@@ -58,9 +58,9 @@ scripts: modules.js codebase.js
       <h2 class="h2" id="outside-t">The rest of the repository</h2>
     </div>
     <div class="rules3 rules4">
-      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/tests" rel="noopener">tests/</a></h3><p>About 800 tests, no server needed. <code>live</code> tests need OVMS and <code>rag</code> tests need the embedder; both skip themselves. The UI is tested headless.</p></div>
-      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/examples" rel="noopener">examples/</a></h3><p>Runnable configs: minimal, rag, react, audio-multimodal, document-qa, document-qa-npu and plano. Each folder has its own README.</p></div>
-      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/docs" rel="noopener">docs/</a></h3><p><code>ARCHITECTURE.md</code>, the design record; the workflow reference, generated from the schema so it cannot drift; and the walkthrough.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/tests" rel="noopener">tests/</a></h3><p>About 1,500 test functions, no server needed. <code>live</code> tests need OVMS and <code>rag</code> tests need the embedder; both skip themselves. The UI is tested headless.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/examples" rel="noopener">examples/</a></h3><p>Runnable configs: minimal, rag, react, audio-multimodal, document-qa, document-qa-npu, plano, agent (the agent TUI, subagents and A2A) and coding (the agent TUI on your own project). Each folder has its own README.</p></div>
+      <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/tree/main/docs" rel="noopener">docs/</a></h3><p><code>ARCHITECTURE.md</code>, the design record; the workflow reference, generated from the schema so it cannot drift; and the agent TUI walk-through.</p></div>
       <div><h3 class="h4"><a href="https://github.com/Lagmator22/ovat/blob/main/AGENTS.md" rel="noopener">AGENTS.md</a></h3><p>Contributor rules and the list of landmines: each one cost a whole session once, with the measurement that found it.</p></div>
     </div>
   </div>

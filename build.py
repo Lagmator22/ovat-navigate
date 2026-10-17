@@ -124,7 +124,7 @@ FOOTER = f"""<footer class="foot">
       </div>
     </div>
     <div class="foot-base">
-      <span>Describes OVAT 1.2.0. Apache 2.0.</span>
+      <span>Describes OVAT 1.3.0. Apache 2.0.</span>
       <span>Not an official Intel or OpenVINO site. Intel and OpenVINO are trademarks of Intel Corporation.</span>
     </div>
   </div>

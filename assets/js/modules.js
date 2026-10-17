@@ -1,7 +1,7 @@
 /* The codebase map's data: one entry per module in the ovat/ package.
 
    Written from each module's own docstring, docs/ARCHITECTURE.md and
-   AGENTS.md in the OVAT repository at version 1.2.0 (main on 17 October 2026). Line counts are
+   AGENTS.md in the OVAT repository at version 1.3.0 (main on 17 October 2026). Line counts are
    `wc -l` of that tree. Empty __init__.py files are left out.
 
    Fields: p = path under ovat/, l = lines, g = group card, layer = layer

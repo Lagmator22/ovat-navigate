@@ -12,10 +12,10 @@ Live at **https://lagmator22.github.io/ovat-navigate/**
 | [Architecture](https://lagmator22.github.io/ovat-navigate/architecture.html) | What each part does, with animated diagrams of the loop, RAG, telemetry and device routing |
 | [Guide](https://lagmator22.github.io/ovat-navigate/guide.html) | Install, serve, run, chat, bench, the terminal UI, workflow.yml, MCP tools |
 | [Results](https://lagmator22.github.io/ovat-navigate/results.html) | Measurements from an Intel LunarLake AI PC |
-| [Codebase](https://lagmator22.github.io/ovat-navigate/codebase.html) | A clickable map of every module in the `ovat` package |
+| [Codebase](https://lagmator22.github.io/ovat-navigate/codebase.html) | A clickable map of every module in the `ovat` package, including the agent TUI, A2A and the agentic layer |
 
 Every fact on the site comes from the OVAT source code and its design notes
-(`docs/ARCHITECTURE.md`, `AGENTS.md`) at version 1.1.1.
+(`docs/ARCHITECTURE.md`, `AGENTS.md`) at version 1.2.0.
 
 ## How it is built
 

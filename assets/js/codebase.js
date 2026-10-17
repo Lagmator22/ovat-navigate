@@ -126,7 +126,7 @@
     var meta = el("div", "detail-meta");
     meta.appendChild(el("span", "tag layer", layerName[m.layer] || m.layer));
     meta.appendChild(el("span", "tag", m.l + " lines"));
-    if (m.layer === "tui") meta.appendChild(el("span", "tag tui", "tui extra"));
+    if (m.layer === "tui" || m.layer === "atui") meta.appendChild(el("span", "tag tui", "tui extra"));
     head.appendChild(meta);
     detail.appendChild(head);
 

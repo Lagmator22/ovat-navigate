@@ -1,6 +1,6 @@
 <!--
 title: OVAT Guide
-description: Install OVAT, start the model server, run your first agent, chat locally on a Mac, compare engines, use the terminal UI, write workflow.yml and add an MCP tool.
+description: Install OVAT, start the model server, run your first agent, chat locally on a Mac, compare engines, use the terminal UI and the agent TUI, write workflow.yml and add an MCP tool.
 nav: guide
 -->
 <section class="page-hero">
@@ -20,6 +20,7 @@ nav: guide
     <a href="#bench">Compare engines</a>
     <a href="#telemetry">Traces and telemetry</a>
     <a href="#tui">The terminal UI</a>
+    <a href="#agent">Agent TUI and A2A</a>
     <a href="#yaml">Writing workflow.yml</a>
     <a href="#mcp">Adding an MCP tool</a>
     <a href="#models">Picking a model</a>
@@ -198,6 +199,49 @@ nav: guide
         </div>
       </div>
       <div class="callout info" data-tag="note"><p>The CLI never needs the UI. <code>textual</code> and <code>pyfiglet</code> live only in the <code>tui</code> extra, and a test fails if a base install imports them.</p></div>
+    </section>
+
+    <section class="arch-sec" id="agent" aria-labelledby="agent-t">
+      <h2 class="h2" id="agent-t">The agent TUI, subagents and A2A</h2>
+      <div class="prose">
+        <p><code>ovat agent</code> is a terminal app for working with an agent: you type, it answers, and every tool call, approval and subagent is drawn as it happens. It needs <code>pip install "ovat[tui]"</code>, and <code>"ovat[tui,a2a]"</code> for the A2A parts. Start the model server in one terminal, then the agent in another:</p>
+      </div>
+      <pre class="code"><code>ovat serve examples/agent/workflow.yml
+ovat agent examples/agent/workflow.yml</code></pre>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-start.webp" width="1720" height="759" loading="lazy" decoding="async" alt="The OVAT agent TUI right after start on an Intel AI PC: the banner says Qwen3.5-4B-int4-ov on GPU, native engine, 1 tool and 4 subagents. The slash menu is open, and the bottom bar shows live CPU, GPU, NPU and RAM."></figure>
+      <div class="table-wrap after-fig">
+        <table>
+          <caption class="sr-only">Agent TUI commands</caption>
+          <thead><tr><th scope="col">Type</th><th scope="col">Does</th></tr></thead>
+          <tbody>
+            <tr><td><code>/help</code></td><td>Every key and every command</td></tr>
+            <tr><td><code>/agents</code></td><td>The subagents you have, and a live table of their calls</td></tr>
+            <tr><td><code>/model</code> <code>/config</code></td><td>Switch model; change settings, saved to <code>workflow.yml</code> with its comments kept</td></tr>
+            <tr><td><code>/serve</code></td><td>Offer this workflow to other agents over A2A, in the background</td></tr>
+            <tr><td><code>/trace</code> <code>/telemetry</code> <code>/doctor</code></td><td>The engine's trace, live numbers, and the doctor checks, inside the chat</td></tr>
+            <tr><td><code>!command</code></td><td>Run a shell command of your own and show it like a tool call</td></tr>
+            <tr><td><code>Ctrl+R</code></td><td>Dictate with local Whisper; while recording only <code>Ctrl+R</code> stops it</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="h3 sub-h">Approvals</h3>
+      <div class="prose">
+        <p>In <code>workflow.yml</code> each tool and subagent is <code>allow</code>, <code>ask</code> or <code>deny</code>. When one asks, the agent stops and shows one panel: allow once, for the session, always, or deny. "Always" is saved for this project in <code>~/.ovat/</code>, not in the project folder. Run the same workflow with <code>ovat run</code>, where nobody can answer, and <code>ask</code> counts as no.</p>
+      </div>
+      <figure class="shot"><img src="assets/media/screens/agent-approval-local-api.webp" width="1600" height="440" loading="lazy" decoding="async" alt="The approval panel in the agent TUI, asking whether to let the agent send a question to a model behind a local API, with the choices once, session, always and deny."></figure>
+      <h3 class="h3 sub-h">Subagents</h3>
+      <div class="prose after-fig">
+        <p>Add a <code>subagents:</code> list and the main agent gets one <code>delegate</code> tool. A subagent can be another workflow, a model behind any OpenAI-compatible API, or a remote agent over A2A. Open <code>/agents</code> to watch them work.</p>
+      </div>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-agents-table.webp" width="1720" height="418" loading="lazy" decoding="async" alt="The /agents screen: the A2A server is serving, four configured subagents, and a table with the team_docs call finished ok in 12.51 seconds with 1663 tokens."></figure>
+      <h3 class="h3 sub-h">Serving your agent over A2A</h3>
+      <div class="prose after-fig">
+        <p>Type <code>/serve</code>, or run <code>ovat a2a serve workflow.yml</code> in a second terminal. It listens on this machine only, wants a bearer token (made for you and kept in your own folder), and exposes only the tools you list under <code>a2a.server.expose_tools</code>. <code>ovat a2a card</code> shows what it would offer without starting anything, and <code>ovat a2a call</code> asks one question from the shell. To ask another agent from a workflow, add a tool with <code>type: a2a</code> and a <code>url</code>.</p>
+      </div>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-serve-and-a2a-answer.webp" width="1720" height="781" loading="lazy" decoding="async" alt="After /serve the A2A server listens on 127.0.0.1 port 9100, the TUI asks it a question through the team_docs subagent and gets a cited answer, and the bar shows a2a serving."></figure>
+      <div class="prose after-fig">
+        <p>Two ready-made folders to start from: <a href="https://github.com/Lagmator22/ovat/tree/main/examples/agent" rel="noopener"><code>examples/agent/</code></a> (subagents and A2A) and <a href="https://github.com/Lagmator22/ovat/tree/main/examples/coding" rel="noopener"><code>examples/coding/</code></a> (file, search, shell and web tools on your own project). Every screen is walked through in <a href="https://github.com/Lagmator22/ovat/blob/main/docs/AGENT_TUI.md" rel="noopener"><code>docs/AGENT_TUI.md</code></a>.</p>
+      </div>
     </section>
 
     <section class="arch-sec" id="yaml" aria-labelledby="yaml-t">

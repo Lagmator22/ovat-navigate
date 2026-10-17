@@ -231,7 +231,7 @@ nav: results
 
     <section class="arch-sec" id="tests" aria-labelledby="tests-t">
       <p class="layer-tag"><b>Quality</b> every push</p>
-      <h2 class="h2" id="tests-t">800+ tests, chosen platforms</h2>
+      <h2 class="h2" id="tests-t">1,500+ tests, chosen platforms</h2>
       <div class="prose">
         <p>The suite needs no server and no model; tests that do are marked and skip themselves. Every fix ships with a test that fails when the fix is backed out. The CI matrix is picked to open as many differences between machines at once as possible, because every bug the project shipped lived in a gap between two machines.</p>
       </div>
@@ -243,6 +243,7 @@ nav: results
             <tr><td>ubuntu-22.04</td><td class="num">3.10</td><td>The oldest of everything supported, including SQLite 3.37, where RAG was once silently empty.</td></tr>
             <tr><td>ubuntu-24.04</td><td class="num">3.12</td><td>A current Linux.</td></tr>
             <tr><td>windows-latest</td><td class="num">3.12</td><td>The only platform with <code>.exe</code> and backslash paths. The suite once passed only here.</td></tr>
+            <tr><td>windows-latest</td><td class="num">3.14</td><td>The newest Python supported.</td></tr>
             <tr><td>macos-latest</td><td class="num">3.13</td><td>The development platform.</td></tr>
           </tbody>
         </table>
@@ -253,14 +254,14 @@ nav: results
           <!--#chart tests-over-time-->
         </div>
         <div class="chart">
-          <div class="chart-head"><h3 class="h3">Lines in the package, week by week</h3><p>Python lines under <code>ovat/</code>, same snapshots.</p></div>
+          <div class="chart-head"><h3 class="h3">Lines in the package, week by week</h3><p>Python lines under <code>ovat/</code>, same snapshots. The copied terminal client (38,492 lines) is not counted. The jump on 17 October is the agent TUI, A2A and the coding tools landing on main.</p></div>
           <!--#chart lines-over-time-->
         </div>
       </div>
       <div class="chart">
-        <div class="chart-head"><h3 class="h3">Test functions per test file</h3><p>The 33 files in <code>tests/</code>, grouped in tens. Counts are <code>def test_</code> functions; pytest runs more cases than this, because some tests are parametrized.</p></div>
+        <div class="chart-head"><h3 class="h3">Test functions per test file</h3><p>The 59 files in <code>tests/</code>, grouped in tens. Counts are <code>def test_</code> functions; pytest runs more cases than this, because some tests are parametrized.</p></div>
         <!--#chart tests-hist-->
-        <div class="chart-foot"><p>The flat stretch from late August to early October is the project between review rounds. Counted with <code>git rev-list</code> and <code>git grep</code> on the OVAT repository on 9 October 2026.</p></div>
+        <div class="chart-foot"><p>The flat stretch from late August to early October is the project between review rounds. Counted with <code>git rev-list</code> and <code>git grep</code> on the OVAT repository on 17 October 2026.</p></div>
       </div>
       <div class="prose">
         <p>Two more jobs check what the suite itself cannot: that a base install imports no framework and no UI library, and that the built wheel installs and runs. Runners are not root on purpose: the OVMS installer once passed in every root environment and failed for the first real user.</p>

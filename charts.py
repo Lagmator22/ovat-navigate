@@ -105,35 +105,36 @@ def histogram(cid, title, desc, values, width, top, yticks, xlab, ylab, dur=2400
 # ---------------------------------------------------------------- the data
 
 # Weekly snapshots of the ovat repo's main branch (git rev-list --before),
-# counting `def test_` in tests/ and lines in ovat/*.py. Computed 2026-10-09.
+# counting `def test_` in tests/ and lines in ovat/**/*.py without the copied terminal client
+# (ovat/tui/vibe/, 38,492 lines). Computed 2026-10-17; the last two points are 16 and 17 October.
 WEEKS = ["06-05", "06-12", "06-19", "06-26", "07-03", "07-10", "07-17", "07-24", "07-31",
-         "08-07", "08-14", "08-21", "08-28", "09-04", "09-11", "09-18", "09-25", "10-02", "10-09"]
-TESTS = [12, 29, 29, 44, 112, 176, 176, 176, 499, 556, 684, 705, 705, 705, 705, 705, 705, 705, 807]
+         "08-07", "08-14", "08-21", "08-28", "09-04", "09-11", "09-18", "09-25", "10-02", "10-09", "10-16", "10-17"]
+TESTS = [12, 29, 29, 44, 112, 176, 176, 176, 499, 556, 684, 705, 705, 705, 705, 705, 705, 705, 807, 819, 1525]
 LINES = [458, 821, 821, 1159, 2701, 4013, 4013, 4013, 9256, 10134, 12459, 12654, 12654,
-         12654, 12654, 12654, 12654, 12654, 13700]
+         12654, 12654, 12654, 12654, 12654, 13700, 13906, 29753]
 MONTHS = [(0, "Jun"), (4, "Jul"), (9, "Aug"), (13, "Sep"), (17, "Oct")]
 
-# Test functions per file in tests/ on main (git grep -c), 33 files.
-TESTS_PER_FILE = [1, 4, 5, 5, 7, 8, 9, 9, 11, 11, 11, 12, 12, 13, 14, 15, 16, 21, 22, 23, 23,
-                  25, 26, 29, 30, 31, 32, 36, 38, 57, 76, 76, 99]
+# Test functions per file in tests/ on main (git grep -c), 59 files, 17 October 2026.
+TESTS_PER_FILE = [1, 3, 4, 4, 4, 5, 5, 5, 6, 7, 7, 8, 8, 8, 9, 9, 9, 11, 12, 12, 12, 13, 13, 15, 15, 15, 17, 17, 18, 19, 22, 23, 24, 25, 26, 28, 29, 29, 31, 31, 33, 33, 35, 36, 36, 38, 39, 40, 40, 48, 53, 57, 76, 82, 82, 104, 134]
 
 
 def module_sizes():
     """Line counts straight from the codebase map's own data file."""
     text = (ROOT / "assets/js/modules.js").read_text(encoding="utf-8")
-    return [int(n) for n in re.findall(r"\bl: (\d+)", text)]
+    # The copied terminal client (tui/vibe/) is one entry of 38,492 lines; it is not OVAT's own code.
+    return [int(n) for p, n in re.findall(r'p: "([^"]+)", l: (\d+)', text) if p != "tui/vibe/"]
 
 
 def build(name: str) -> str:
     if name == "tests-over-time":
         return line_chart("c-tests", "Test functions in the suite, week by week",
-                          "From 12 test functions on 5 June 2026 to 807 on 9 October 2026, counted weekly on main.",
-                          list(zip(WEEKS, TESTS)), 900, [(0, "0"), (300, "300"), (600, "600"), (900, "900")],
+                          "From 12 test functions on 5 June 2026 to 1,525 on 17 October 2026, counted weekly on main.",
+                          list(zip(WEEKS, TESTS)), 1600, [(0, "0"), (400, "400"), (800, "800"), (1200, "1,200"), (1600, "1,600")],
                           MONTHS, "test functions", dur=3800)
     if name == "lines-over-time":
         return line_chart("c-lines", "Lines of Python in the ovat package, week by week",
-                          "From 458 lines on 5 June 2026 to 13,700 on 9 October 2026, counted weekly on main.",
-                          list(zip(WEEKS, LINES)), 15000, [(0, "0"), (5000, "5k"), (10000, "10k"), (15000, "15k")],
+                          "From 458 lines on 5 June 2026 to 29,753 on 17 October 2026, counted weekly on main. The copied terminal client is not counted.",
+                          list(zip(WEEKS, LINES)), 30000, [(0, "0"), (10000, "10k"), (20000, "20k"), (30000, "30k")],
                           MONTHS, "lines in ovat/", cls="b", dur=3800, fmt=lambda v: f"{v:,}")
     if name == "bench-scatter":
         # ovat bench examples/rag/workflow.yml on the AI PC
@@ -153,13 +154,13 @@ def build(name: str) -> str:
                        "prompt tokens", "reply tokens", dur=1800, line=((0, 2129), (2129, 0), "prompt + reply = 2129"))
     if name == "tests-hist":
         return histogram("c-thist", "How many test functions each test file holds",
-                         "33 test files. Most hold fewer than 30 test functions; three hold 76 to 99.",
-                         TESTS_PER_FILE, 10, 100, [(0, "0"), (3, "3"), (6, "6"), (9, "9")],
+                         "59 test files. Most hold fewer than 40 test functions; four hold 76 or more.",
+                         TESTS_PER_FILE, 10, 140, [(0, "0"), (5, "5"), (10, "10"), (15, "15"), (20, "20")],
                          "test functions in the file", "files", dur=2200)
     if name == "module-hist":
         sizes = module_sizes()
         return histogram("c-mhist", "How long each module is",
-                         f"{len(sizes)} modules. Most are under 400 lines; four are over 1,000.",
-                         sizes, 200, 2000, [(0, "0"), (10, "10"), (20, "20"), (30, "30")],
+                         f"{len(sizes)} modules. Most are under 400 lines; four are over 1,000. The copied terminal client is left out.",
+                         sizes, 200, 2000, [(0, "0"), (20, "20"), (40, "40"), (60, "60"), (80, "80")],
                          "lines in the module", "modules", dur=3000)
     raise KeyError(name)

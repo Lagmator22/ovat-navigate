@@ -27,6 +27,7 @@ scripts: flow.js
     <a href="#serving">Serving the model</a>
     <a href="#devices">Devices</a>
     <a href="#telemetry">Telemetry</a>
+    <a href="#agent">Agent TUI and subagents</a>
     <a href="#a2a">Multi-agent (A2A)</a>
     <a href="#failures">When tool calls fail</a>
     <a href="#layers">Appendix: layer mapping</a>
@@ -45,7 +46,7 @@ scripts: flow.js
           <thead><tr><th scope="col">Term</th><th scope="col">Meaning</th></tr></thead>
           <tbody>
             <tr><th scope="row">Agent</th><td>A program where a language model can ask for your functions to be run, read the results, and then answer.</td></tr>
-            <tr><th scope="row">Tool</th><td>One of those functions, with a description the model reads. OVAT ships three: <code>search_docs</code>, <code>transcribe</code> and <code>describe_image</code>.</td></tr>
+            <tr><th scope="row">Tool</th><td>One of those functions, with a description the model reads. OVAT ships three for documents, audio and images (<code>search_docs</code>, <code>transcribe</code>, <code>describe_image</code>) and nine coding tools (<code>read_file</code>, <code>write_file</code>, <code>edit</code>, <code>grep</code>, <code>shell</code>, <code>todo</code>, <code>ask_user</code>, <code>web_fetch</code>, <code>web_search</code>).</td></tr>
             <tr><th scope="row">Tool call</th><td>The model's request to run a tool: a name plus JSON arguments. The model only writes the request; OVAT runs the Python function.</td></tr>
             <tr><th scope="row">Engine</th><td>The code that runs the agent loop. OVAT has four: its own <code>native</code> loop, LangChain (<code>react</code>), LlamaIndex and the OpenAI Agents SDK. You pick one with <code>agent.type</code>.</td></tr>
             <tr><th scope="row"><code>workflow.yml</code></th><td>The one config file that describes an agent: model, device, tools, engine and prompt.</td></tr>
@@ -58,6 +59,9 @@ scripts: flow.js
             <tr><th scope="row">NPU</th><td>Neural processing unit, the low-power AI accelerator in Intel Core Ultra chips.</td></tr>
             <tr><th scope="row">Tool parser</th><td>The OVMS setting (<code>--tool_parser</code>) that reads a tool call out of the model's text. The right one depends on the model family.</td></tr>
             <tr><th scope="row">KV cache</th><td>Memory the server keeps per request so it does not recompute earlier tokens. It grows with the conversation and the answer.</td></tr>
+            <tr><th scope="row">Subagent</th><td>Another agent the main agent can hand a whole task to: a second workflow in the same process, a model behind any OpenAI-compatible API, or an agent reached over A2A.</td></tr>
+            <tr><th scope="row">A2A</th><td>Agent2Agent, an open protocol for agents asking each other questions over HTTP. Each agent publishes a public card that says what it can do.</td></tr>
+            <tr><th scope="row">Approval</th><td>The pause before a tool runs. Each tool is <code>allow</code>, <code>ask</code> or <code>deny</code>; when it asks, a person answers once, for the session, or always.</td></tr>
             <tr><th scope="row">Trace</th><td>A JSON record of one run: latency and tokens, which tools ran, and whether the run failed. Written by <code>ovat run --trace</code>.</td></tr>
           </tbody>
         </table>
@@ -78,7 +82,7 @@ scripts: flow.js
             <tr><td>Config to a wired agent</td><td>Inference (OVMS or <code>openvino_genai</code> does it)</td></tr>
             <tr><td>Run the tool-calling loop</td><td>Model conversion (<code>optimum-cli</code>)</td></tr>
             <tr><td>Manage the OVMS process</td><td>Serve other people's traffic</td></tr>
-            <tr><td>Suggest a CPU, GPU or NPU device per model</td><td>Provide auth (it is a local dev tool)</td></tr>
+            <tr><td>Suggest a CPU, GPU or NPU device per model</td><td>Provide user accounts (the A2A server checks bearer tokens only)</td></tr>
             <tr><td>Register tools, local and MCP</td><td>Host anything</td></tr>
           </tbody>
         </table>
@@ -161,7 +165,7 @@ scripts: flow.js
       <p class="layer-tag"><b>Config</b> cli/main.py, config/workflow.py, cli/ui.py</p>
       <h2 class="h2" id="config-t">Commands and configuration</h2>
       <div class="prose">
-        <p>Every command is a Python function that Typer turns into <code>ovat &lt;command&gt;</code> from its type hints. There are eleven: <code>run</code>, <code>chat</code>, <code>index</code>, <code>init</code>, <code>doctor</code>, <code>setup</code>, <code>serve</code>, <code>models</code>, <code>bench</code>, <code>telemetry</code> and <code>tui</code>. A bare <code>ovat</code> opens the terminal UI.</p>
+        <p>Every command is a Python function that Typer turns into <code>ovat &lt;command&gt;</code> from its type hints. There are twelve: <code>run</code>, <code>chat</code>, <code>index</code>, <code>init</code>, <code>doctor</code>, <code>setup</code>, <code>serve</code>, <code>models</code>, <code>bench</code>, <code>telemetry</code>, <code>tui</code> and <code>agent</code>, plus the <code>ovat a2a</code> group (<code>serve</code>, <code>card</code>, <code>call</code>, <code>token</code>). A bare <code>ovat</code> opens the terminal UI launcher.</p>
         <p><strong>The config is strict.</strong> <code>WorkflowConfig</code> is a pydantic model that forbids unknown keys. A typo such as <code>max_iteration</code> fails at once, by name, instead of being ignored while the default stays in charge.</p>
         <p><strong>Only one function loads it.</strong> <code>_load_config()</code> in <code>cli/main.py</code> turns three different failures into three plain sentences: the file is missing, the YAML does not parse, or the schema does not match. <code>yaml.safe_load(f) or {}</code> makes an empty or comments-only file a schema error that names the missing section.</p>
         <p><strong>Model text is data, not markup.</strong> Every value that reaches the console goes through <code>esc()</code>, because the console library reads <code>[...]</code> as a style tag. Model output, exception text and file paths are data.</p>
@@ -474,12 +478,59 @@ scripts: flow.js
       </div>
     </section>
 
-    <section class="arch-sec" id="a2a" aria-labelledby="a2a-t">
-      <p class="layer-tag"><b>Orchestration</b> not in the code</p>
-      <h2 class="h2" id="a2a-t">Multi-agent orchestration (A2A): not implemented</h2>
+    <section class="arch-sec" id="agent" aria-labelledby="agent-t">
+      <p class="layer-tag"><b>Agentic</b> agent/events.py, agent/permissions.py, agent/subagents.py, agentic/, tui/</p>
+      <h2 class="h2" id="agent-t">The agent TUI, permissions and subagents</h2>
       <div class="prose">
-        <p>Agent-to-agent (A2A) orchestration was a stretch goal in the project proposal, and the core toolkit works without it. It is out of scope, and there is no A2A code in OVAT.</p>
+        <p><code>ovat agent workflow.yml</code> opens a terminal app for working with an agent: you type, it answers, and everything it does is drawn on the screen. It needs the <code>tui</code> extra. This part was added after the nine layers of the proposal and sits on top of them, so every engine gets it.</p>
+        <p><strong>Three layers, each talking to the next through a small interface.</strong> The terminal client in <code>ovat/tui/vibe/</code> is a copied Apache-2.0 client (the licence and a NOTICE file travel with it). It knows nothing about OVAT's engines: it sends JSON-RPC requests and draws what comes back. The app server in <code>ovat/tui/server/</code> is OVAT's own and answers those requests from OVAT's state. Under it, <code>AgentSession</code> in <code>ovat/agentic/</code> runs the engine on a worker thread and has no UI code; a test scans the folder to keep Textual out of it.</p>
       </div>
+      <figure class="shot dia"><img class="dia-dark" src="assets/media/diagrams/agent-tui-dark.svg" width="880" height="372" loading="lazy" decoding="async" alt="You type in the terminal client. It sends a JSON-RPC request to OVAT's app server, which starts a turn on AgentSession. AgentSession runs the chosen engine on a worker thread; the engine asks the model on OVMS, and every tool call goes through one wrapper that reports events. The events travel back up the same layers and the client draws them."><img class="dia-light" src="assets/media/diagrams/agent-tui-light.svg" width="880" height="372" loading="lazy" decoding="async" alt="You type in the terminal client. It sends a JSON-RPC request to OVAT's app server, which starts a turn on AgentSession. AgentSession runs the chosen engine on a worker thread; the engine asks the model on OVMS, and every tool call goes through one wrapper that reports events. The events travel back up the same layers and the client draws them."></figure>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-start.webp" width="1720" height="759" loading="lazy" decoding="async" alt="The OVAT agent TUI right after start on an Intel AI PC: the banner says Qwen3.5-4B-int4-ov on GPU, native engine, 1 tool and 4 subagents. The slash menu is open, and the bottom bar shows live CPU, GPU, NPU and RAM."></figure>
+      <div class="prose after-fig">
+        <p><strong>One wrapper for every engine.</strong> All four engines call the same tool functions, so the factory wraps each one once (<code>agent/events.py</code>). The wrapper reports <code>tool_started</code> and <code>tool_ended</code> on the agent's event bus, checks the cancel flag, and asks the permission check below. The TUI draws its tool cards from that bus. No engine file changed to get any of this.</p>
+        <p><strong>Coding tools.</strong> The file tools resolve every path through <code>tools/project.py</code>, which rejects anything outside the project folder, symlinks included. Writes go to a temporary file that replaces the target, so a failure leaves the old file. <code>shell</code> starts in the project folder but is not confined to it, and <code>edit</code> matches on LF text and puts the file's own line ending back.</p>
+      </div>
+      <h3 class="h3 sub-h">Permissions: allow, ask or deny</h3>
+      <div class="prose">
+        <p>Each tool and each subagent is <code>allow</code>, <code>ask</code> or <code>deny</code>. When a tool asks, the <code>ApprovalBroker</code> holds the worker thread until the person answers once, for the session, or always. A cancel denies everything waiting.</p>
+      </div>
+      <figure class="shot dia"><img class="dia-dark" src="assets/media/diagrams/approval-flow-dark.svg" width="880" height="470" loading="lazy" decoding="async" alt="The model asks for a tool. One wrapper checks the permission of that tool or subagent. Allow runs it. Ask opens an approval panel with once, session, always and deny when someone is there to answer, and counts as no when nobody is. Deny sends the model a plain sentence."><img class="dia-light" src="assets/media/diagrams/approval-flow-light.svg" width="880" height="470" loading="lazy" decoding="async" alt="The model asks for a tool. One wrapper checks the permission of that tool or subagent. Allow runs it. Ask opens an approval panel with once, session, always and deny when someone is there to answer, and counts as no when nobody is. Deny sends the model a plain sentence."></figure>
+      <div class="tree">
+        <div class="tree-row"><span class="flag f-ok">nobody to ask</span><p>With no approver connected, <code>ask</code> means NO. So <code>ovat run</code>, a bench worker and an A2A server never send data out unasked.</p></div>
+        <div class="tree-row"><span class="flag f-ok">always allow</span><p>Saved per project in <code>~/.ovat/</code>, never in the project's own <code>.ovat/</code> folder. A cloned repository could otherwise ship a file that switches on "always allow" for <code>shell</code>.</p></div>
+      </div>
+      <h3 class="h3 sub-h">Subagents</h3>
+      <div class="prose">
+        <p><code>subagents:</code> in the YAML become one tool, <code>delegate(agent, task)</code>, where <code>agent</code> is an enum of the names. Three kinds sit behind it. A <strong>workflow</strong> subagent runs in the same process with a fresh context and its own <code>delegate</code> tool removed, so delegation is one level deep. An <strong>api</strong> subagent is any OpenAI-compatible API. An <strong>a2a</strong> subagent is a remote agent. They share the parent's stop flag and approver, and their progress shows in the <code>/agents</code> screen.</p>
+      </div>
+      <figure class="shot dia"><img class="dia-dark" src="assets/media/diagrams/subagents-dark.svg" width="880" height="452" loading="lazy" decoding="async" alt="The main agent gets one tool, delegate(agent, task). A subagent is another OVAT workflow in this process, a model behind an OpenAI-compatible API, or an agent reached over A2A. Answers come back framed as information. Progress is reported as events and shown in the agents table."><img class="dia-light" src="assets/media/diagrams/subagents-light.svg" width="880" height="452" loading="lazy" decoding="async" alt="The main agent gets one tool, delegate(agent, task). A subagent is another OVAT workflow in this process, a model behind an OpenAI-compatible API, or an agent reached over A2A. Answers come back framed as information. Progress is reported as events and shown in the agents table."></figure>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-agents-table.webp" width="1720" height="418" loading="lazy" decoding="async" alt="The /agents screen: the A2A server is serving, four configured subagents, and a table with the team_docs call finished ok in 12.51 seconds with 1663 tokens."></figure>
+      <div class="prose after-fig">
+        <p>Also in the app: <code>/config</code> is drawn from the same schema as <code>workflow.yml</code> and saves through an all-or-nothing writer that keeps the file's comments; <code>/model</code> switches model; <code>/telemetry</code> and <code>/doctor</code> show the same numbers and checks as the commands; <code>Ctrl+R</code> is local dictation with Whisper. One thing is still open: the copied trust prompt is inert, because <code>workspace/trust/status</code> always answers trusted. The screen-by-screen walk-through is <a href="https://github.com/Lagmator22/ovat/blob/main/docs/AGENT_TUI.md" rel="noopener"><code>docs/AGENT_TUI.md</code></a>.</p>
+      </div>
+    </section>
+
+    <section class="arch-sec" id="a2a" aria-labelledby="a2a-t">
+      <p class="layer-tag"><b>Orchestration</b> ovat/a2a/, tools/a2a_call.py, cli/a2a_cmd.py</p>
+      <h2 class="h2" id="a2a-t">Multi-agent orchestration (A2A)</h2>
+      <div class="prose">
+        <p>A2A lets agents ask each other questions over HTTP. Each agent publishes a public card at <code>/.well-known/agent-card.json</code> that says what it can do, and takes messages with the JSON-RPC method <code>SendMessage</code>. OVAT does both sides. It needs the <code>a2a</code> extra; the spec is v1.0 and the SDK is <code>a2a-sdk</code> 1.2.</p>
+      </div>
+      <div class="tree">
+        <div class="tree-row"><span class="flag f-ok">ovat a2a serve</span><p>Offers a workflow to other agents.</p></div>
+        <div class="tree-row"><span class="flag f-ok">type: a2a</span><p>A tool that lets a workflow ask another agent, OVAT or not. The reply is framed as information, not instructions, and a failure is one <code>Error:</code> sentence.</p></div>
+        <div class="tree-row"><span class="flag f-ok">card, call, token</span><p><code>ovat a2a card</code> prints the card without starting anything, <code>call</code> asks an agent one question from the shell, <code>token</code> makes a bearer token.</p></div>
+      </div>
+      <figure class="shot dia"><img class="dia-dark" src="assets/media/diagrams/a2a-flow-dark.svg" width="880" height="390" loading="lazy" decoding="async" alt="A caller sends a message. The server checks the host, the body size and the bearer token, then admission limits, then gives each caller and conversation its own agent. A run takes the conversation lock and then the one-model gate, runs only the exposed tools, and the answer comes back as a task update."><img class="dia-light" src="assets/media/diagrams/a2a-flow-light.svg" width="880" height="390" loading="lazy" decoding="async" alt="A caller sends a message. The server checks the host, the body size and the bearer token, then admission limits, then gives each caller and conversation its own agent. A run takes the conversation lock and then the one-model gate, runs only the exposed tools, and the answer comes back as a task update."></figure>
+      <div class="prose after-fig">
+        <p><strong>Safe by default.</strong> The server listens on 127.0.0.1 only and wants a bearer token even there, because a web page can reach a loopback port too; it also refuses a request whose Host header is not its own. Listening elsewhere needs <code>public_url</code> and TLS, or an explicit <code>--allow-plain-http</code>. Tools that take a file path, MCP tools and <code>a2a</code> tools are not exposed unless listed in <code>a2a.server.expose_tools</code>, and an unexposed tool is not just left off the card: the served agent is built without it. There are limits on message size, queue, rate, run time, conversations, turns and hops, so two agents cannot call each other forever.</p>
+        <p><strong>What leaves the machine.</strong> The question, the answer, source file names, tool names and the run's token counts and timings. Documents, the index, the model, the system prompt, tool arguments and full file paths stay. Because an answer is made from private data and a model can quote a document, treat anything a served workflow has indexed as readable by every token holder. Every answer that leaves is written to an audit log that only its owner can read.</p>
+        <p><strong>Built so the SDK can change.</strong> The SDK shipped four versions in the two weeks this was designed, and its 1.0 moved every type to protobuf. So OVAT's own logic (<code>protocol.py</code>, <code>exposure.py</code>, <code>card.py</code>, <code>policy.py</code>, <code>tokens.py</code>, <code>audit.py</code>, <code>service.py</code>, <code>serving.py</code>) never imports it. Only <code>ovat/a2a/sdk/</code> does, and a test scans the source to keep it that way. An SDK upgrade is a change to that folder alone.</p>
+        <p><strong>One model, many callers.</strong> One OVMS on one GPU is the bottleneck, so tasks take turns behind one lock, and a waiting caller is told how many are ahead. The lock is a threading lock held by the worker, not an asyncio lock, because a cancelled task's thread keeps using OVMS until its request ends. Each conversation (caller plus context id) gets its own agent, so callers never share memory. Live progress comes from the same tool wrapper as the TUI: the server turns <code>tool_started</code> events into "calling search_docs" updates and never sends tool arguments.</p>
+      </div>
+      <figure class="shot"><img src="assets/media/screens/hero-agent-serve-and-a2a-answer.webp" width="1720" height="781" loading="lazy" decoding="async" alt="After /serve the A2A server listens on 127.0.0.1 port 9100, the TUI asks it a question through the team_docs subagent and gets a cited answer, and the bar shows a2a serving."></figure>
+      <div class="callout info after-fig" data-tag="open"><p>Still to do: a server opt-in that lets an authenticated caller approve <code>ask</code> tools on the serving machine (default off), and GPU or NPU on Linux, which no hardware here can test.</p></div>
     </section>
 
     <section class="arch-sec" id="failures" aria-labelledby="fail-t">
@@ -511,7 +562,7 @@ scripts: flow.js
         <li><a href="#loop"><span class="ln-n">3</span><span class="ln-name">Agent core</span><span class="ln-files">The native loop</span><span class="pill ok">built</span></a></li>
         <li><a href="#providers"><span class="ln-n">4</span><span class="ln-name">Provider abstraction</span><span class="ln-files">Providers and RAG</span><span class="pill ok">built</span></a></li>
         <li><a href="#tools"><span class="ln-n">5</span><span class="ln-name">Tools and MCP</span><span class="ln-files">Tools and MCP</span><span class="pill ok">built</span></a></li>
-        <li><a href="#a2a"><span class="ln-n">6</span><span class="ln-name">Orchestration (A2A)</span><span class="ln-files">Multi-agent (A2A)</span><span class="pill off">not built</span></a></li>
+        <li><a href="#a2a"><span class="ln-n">6</span><span class="ln-name">Orchestration (A2A)</span><span class="ln-files">Multi-agent (A2A)</span><span class="pill ok">built</span></a></li>
         <li><a href="#telemetry"><span class="ln-n">7</span><span class="ln-name">Telemetry</span><span class="ln-files">Telemetry</span><span class="pill ok">built</span></a></li>
         <li><a href="#serving"><span class="ln-n">8</span><span class="ln-name">Deployment and serving</span><span class="ln-files">Serving the model</span><span class="pill ok">built</span></a></li>
         <li><a href="#devices"><span class="ln-n">9</span><span class="ln-name">OpenVINO runtime and hardware</span><span class="ln-files">Devices</span><span class="pill ok">built</span></a></li>

@@ -824,7 +824,6 @@ td:first-child { color: var(--fg); }
   color: var(--fg); text-decoration: none; transition: border-color 200ms, transform 200ms var(--ease), background 200ms;
 }
 .layer-stack a:hover { border-color: var(--signal); transform: translateX(4px); }
-.layer-stack li:nth-child(6) a { background: transparent; border-style: dashed; color: var(--fg-faint); }
 .ln-n { font: 600 15px var(--f-mono); color: var(--signal-ink); }
 .ln-name { font-weight: 600; font-size: 16px; }
 .ln-files { font: 13px var(--f-mono); color: var(--fg-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1193,3 +1192,9 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
 .shot img { background: var(--term-bg); }
 .arch-sec > .shot, .guide-step .shot { margin: 0; }
 .shots-2 { align-items: start; }
+
+/* Diagrams drawn twice, one per theme: show the one that matches. */
+.shot.dia img { background: transparent; }
+.shot img.dia-light { display: none; }
+:root[data-theme="light"] .shot img.dia-light { display: block; }
+:root[data-theme="light"] .shot img.dia-dark { display: none; }

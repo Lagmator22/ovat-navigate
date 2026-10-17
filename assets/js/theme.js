@@ -13,3 +13,15 @@
     }
   } catch (e) { /* old browser */ }
 })();
+
+/* Show /guide, not /guide.html, however the page was reached (an old link, a
+   search result). GitHub Pages serves both; only the address bar changes. */
+(function () {
+  try {
+    var path = window.location.pathname;
+    var clean = path.replace(/\/index\.html$/, "/").replace(/\/(architecture|guide|results|codebase)\.html$/, "/$1");
+    if (clean !== path && window.history && window.history.replaceState) {
+      window.history.replaceState(null, "", clean + window.location.search + window.location.hash);
+    }
+  } catch (e) { /* keep the address as it is */ }
+})();

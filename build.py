@@ -143,7 +143,7 @@ def page(body: str, meta: dict, filename: str) -> str:
     scripts = "".join(
         f'\n<script src="assets/js/{s}?v={_v("assets/js/" + s)}" defer></script>' for s in meta.get("scripts", "").split()
     )
-    canonical = BASE_URL + ("" if filename == "index.html" else filename)
+    canonical = BASE_URL + pretty(filename)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -206,6 +206,21 @@ def normalise_code_boxes(body: str) -> str:
     return CODE_OPEN_RE.sub(fix, body)
 
 
+PAGE_LINK_RE = re.compile(r'href="(index|architecture|guide|results|codebase)\.html(#[^"]*)?"')
+
+
+def clean_links(out: str) -> str:
+    """Link to /guide, not /guide.html. GitHub Pages serves both; the short one
+    is what the address bar should show. index goes to the folder itself."""
+    return PAGE_LINK_RE.sub(
+        lambda m: f'href="{"./" if m.group(1) == "index" else m.group(1)}{m.group(2) or ""}"', out)
+
+
+def pretty(filename: str) -> str:
+    """The public path of a built page: no .html, and the home page is the folder."""
+    return "" if filename == "index.html" else filename.removesuffix(".html")
+
+
 def main() -> int:
     built = []
     for src in sorted(SRC.glob("*.html")):
@@ -228,6 +243,7 @@ def main() -> int:
                 line_no = out[: out.index(ch)].count("\n") + 1
                 print(f"{src.name}: contains an {name} (output line {line_no})", file=sys.stderr)
                 return 1
+        out = clean_links(out)
         if src.name == "404.html":
             # GitHub Pages serves this file for a missing path at ANY depth, so
             # relative links would resolve against the wrong folder.
@@ -237,7 +253,7 @@ def main() -> int:
         print(f"built {src.name}")
 
     urls = "\n".join(
-        f"  <url><loc>{BASE_URL}{'' if n == 'index.html' else n}</loc></url>"
+        f"  <url><loc>{BASE_URL}{pretty(n)}</loc></url>"
         for n in built if n != "404.html"
     )
     (ROOT / "sitemap.xml").write_text(

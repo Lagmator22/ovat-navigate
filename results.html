@@ -9,30 +9,30 @@
 <meta name="theme-color" content="#070a10">
 <title>OVAT Results</title>
 <meta name="description" content="Measured results for OVAT on an Intel LunarLake AI PC: accuracy and memory across OVMS versions, determinism, tuning knobs, KV cache latency, NPU tool calling and how the benchmark keeps engines apart.">
-<link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/results.html">
+<link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/results">
 <meta property="og:type" content="website">
 <meta property="og:title" content="OVAT Results">
 <meta property="og:description" content="Measured results for OVAT on an Intel LunarLake AI PC: accuracy and memory across OVMS versions, determinism, tuning knobs, KV cache latency, NPU tool calling and how the benchmark keeps engines apart.">
-<meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/results.html">
+<meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/results">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css?v=9125c883">
-<script src="assets/js/theme.js?v=49b2f04b"></script>
+<script src="assets/js/theme.js?v=f600b30e"></script>
 <script src="assets/js/site.js?v=70fa122c" defer></script>
 </head>
 <body class="sheet">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-inner">
-    <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
+    <a class="brand" href="./" aria-label="OVAT Navigate, home">
       <img class="brand-mark-img logo-dark" src="assets/media/ovat-mark-dark.png" width="28" height="28" alt=""><img class="brand-mark-img logo-light" src="assets/media/ovat-mark-light.png" width="28" height="28" alt="">
       <span class="brand-word">ovat</span>
       <span class="brand-tag">navigate</span>
     </a>
     <nav class="nav" aria-label="Main">
-      <ul><li><a href="index.html">Overview</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="guide.html">Guide</a></li><li><a href="results.html" aria-current="page">Results</a></li><li><a href="codebase.html">Codebase</a></li></ul>
+      <ul><li><a href="./">Overview</a></li><li><a href="architecture">Architecture</a></li><li><a href="guide">Guide</a></li><li><a href="results" aria-current="page">Results</a></li><li><a href="codebase">Codebase</a></li></ul>
     </nav>
     <div class="top-actions">
       <button class="icon-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme"><svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
@@ -260,7 +260,7 @@
       <div class="chart">
         <div class="chart-head">
           <h3 class="h3">Four engines, one question, one server</h3>
-          <p>An <code>ovat bench</code> run of the RAG example (the screenshot is in the <a href="guide.html#bench">guide</a>): Qwen3.5-4B on the Arc 140V GPU, each engine in its own process. One run per engine, so read it as a snapshot, not a ranking.</p>
+          <p>An <code>ovat bench</code> run of the RAG example (the screenshot is in the <a href="guide#bench">guide</a>): Qwen3.5-4B on the Arc 140V GPU, each engine in its own process. One run per engine, so read it as a snapshot, not a ranking.</p>
         </div>
         <div class="plot-wrap" data-dur="1400"><svg class="plot" viewBox="0 0 640 320" role="img" aria-labelledby="c-bench-t c-bench-d"><title id="c-bench-t">Answer time against peak memory, one run per engine</title><desc id="c-bench-d">native 18.6 s and 454.1 MB, react 14.7 s and 664.4 MB, llamaindex 9.7 s and 591.1 MB, openai-agents 8.0 s and 470.9 MB.</desc><line class="gr" x1="64" y1="257.8" x2="616" y2="257.8"/><text x="54" y="261.8" text-anchor="end">450</text><line class="gr" x1="64" y1="207.0" x2="616" y2="207.0"/><text x="54" y="211.0" text-anchor="end">500</text><line class="gr" x1="64" y1="156.2" x2="616" y2="156.2"/><text x="54" y="160.2" text-anchor="end">550</text><line class="gr" x1="64" y1="105.3" x2="616" y2="105.3"/><text x="54" y="109.3" text-anchor="end">600</text><line class="gr" x1="64" y1="54.5" x2="616" y2="54.5"/><text x="54" y="58.5" text-anchor="end">650</text><line class="ax" x1="64.0" y1="268" x2="64.0" y2="273"/><text x="64.0" y="288" text-anchor="middle">6</text><line class="ax" x1="174.4" y1="268" x2="174.4" y2="273"/><text x="174.4" y="288" text-anchor="middle">9</text><line class="ax" x1="284.8" y1="268" x2="284.8" y2="273"/><text x="284.8" y="288" text-anchor="middle">12</text><line class="ax" x1="395.2" y1="268" x2="395.2" y2="273"/><text x="395.2" y="288" text-anchor="middle">15</text><line class="ax" x1="505.6" y1="268" x2="505.6" y2="273"/><text x="505.6" y="288" text-anchor="middle">18</text><line class="ax" x1="616.0" y1="268" x2="616.0" y2="273"/><text x="616.0" y="288" text-anchor="middle">21 s</text><line class="ax" x1="64" y1="24" x2="64" y2="268"/><line class="ax" x1="64" y1="268" x2="616" y2="268"/><text x="340" y="312" text-anchor="middle">answer time, seconds</text><text x="14" y="146" text-anchor="middle" transform="rotate(-90 14 146)">peak MB</text><rect class="mk sq " data-i="0" x="522.0" y="247.7" width="12" height="12"><title>native</title></rect><text class="mk lbl" data-i="0" x="516.0" y="257.7" text-anchor="end">native</text><rect class="mk sq t" data-i="1" x="377.8" y="33.9" width="12" height="12"><title>react</title></rect><text class="mk lbl" data-i="1" x="395.8" y="43.9" text-anchor="start">react</text><rect class="mk sq o" data-i="2" x="192.5" y="108.4" width="12" height="12"><title>llamaindex</title></rect><text class="mk lbl" data-i="2" x="210.5" y="118.4" text-anchor="start">llamaindex</text><rect class="mk sq w" data-i="3" x="132.4" y="230.6" width="12" height="12"><title>openai-agents</title></rect><text class="mk lbl" data-i="3" x="150.4" y="240.6" text-anchor="start">openai-agents</text></svg></div>
         <div class="chart-foot"><p>Build time was 0.734 s for native, 15.185 s for react, 1.372 s for llamaindex and 1.132 s for openai-agents. All four answered ok, and all four recorded prompt and completion tokens from OVMS's <code>usage</code> field: 2002/485, 1410/387, 1456/224 and 1418/218, with 2, 1, 1 and 1 tool calls. An earlier run of the same example answered in 14.6, 164.9, 17.6 and 10.3 s, so a single run says little about which engine is faster.</p></div>
@@ -312,7 +312,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="foot-logo" href="index.html" aria-label="OVAT Navigate, home">
+        <a class="foot-logo" href="./" aria-label="OVAT Navigate, home">
           <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
           <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
         </a>
@@ -328,10 +328,10 @@
       <div>
         <h2>This site</h2>
         <ul>
-          <li><a href="architecture.html">Architecture</a></li>
-          <li><a href="guide.html">Guide</a></li>
-          <li><a href="results.html">Measured results</a></li>
-          <li><a href="codebase.html">Codebase map</a></li>
+          <li><a href="architecture">Architecture</a></li>
+          <li><a href="guide">Guide</a></li>
+          <li><a href="results">Measured results</a></li>
+          <li><a href="codebase">Codebase map</a></li>
         </ul>
       </div>
       <div>

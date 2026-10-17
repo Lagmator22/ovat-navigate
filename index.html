@@ -19,7 +19,7 @@
 <link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css?v=9125c883">
-<script src="assets/js/theme.js?v=49b2f04b"></script>
+<script src="assets/js/theme.js?v=f600b30e"></script>
 <script src="assets/js/site.js?v=70fa122c" defer></script>
 <script src="assets/js/flow.js?v=3ea808fc" defer></script>
 <script src="assets/js/terminal.js?v=ea6756de" defer></script>
@@ -28,13 +28,13 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap top-inner">
-    <a class="brand" href="index.html" aria-label="OVAT Navigate, home">
+    <a class="brand" href="./" aria-label="OVAT Navigate, home">
       <img class="brand-mark-img logo-dark" src="assets/media/ovat-mark-dark.png" width="28" height="28" alt=""><img class="brand-mark-img logo-light" src="assets/media/ovat-mark-light.png" width="28" height="28" alt="">
       <span class="brand-word">ovat</span>
       <span class="brand-tag">navigate</span>
     </a>
     <nav class="nav" aria-label="Main">
-      <ul><li><a href="index.html" aria-current="page">Overview</a></li><li><a href="architecture.html">Architecture</a></li><li><a href="guide.html">Guide</a></li><li><a href="results.html">Results</a></li><li><a href="codebase.html">Codebase</a></li></ul>
+      <ul><li><a href="./" aria-current="page">Overview</a></li><li><a href="architecture">Architecture</a></li><li><a href="guide">Guide</a></li><li><a href="results">Results</a></li><li><a href="codebase">Codebase</a></li></ul>
     </nav>
     <div class="top-actions">
       <button class="icon-btn" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme"><svg class="theme-ico-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="theme-ico-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button>
@@ -56,7 +56,7 @@
         <div class="install"><span class="prompt" aria-hidden="true">$</span><span id="pip-cmd">pip install ovat</span>
           <button class="copy-btn" type="button" data-copy="pip install ovat" aria-label="Copy the install command"><span class="copy-label">Copy</span></button>
         </div>
-        <a class="btn btn-primary" href="guide.html">Start the guide</a>
+        <a class="btn btn-primary" href="guide">Start the guide</a>
       </div>
     </div>
 
@@ -386,7 +386,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
       <div class="figure"><span class="big">NPU</span><span class="vs">tool calls work</span><p>A real tool-calling agent run on the NPU, from a channel-wise INT4 export (<code>-int4-cw-ov</code>).</p></div>
       <div class="figure"><span class="big num">1,500<small>+</small></span><span class="vs">test functions, 4 CI platforms</span><p>Ubuntu 22.04 and 24.04, Windows and macOS on every push. No server needed to run them.</p></div>
     </div>
-    <p class="row"><a class="btn btn-ghost" href="results.html">See every measurement</a></p>
+    <p class="row"><a class="btn btn-ghost" href="results">See every measurement</a></p>
   </div>
 </section>
 
@@ -395,7 +395,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
     <div class="stack">
       <h2 class="h2" id="agent-t">More than one agent</h2>
       <p class="lede"><code>ovat agent</code> is a terminal app where the agent works in front of you. Tools ask before they run, subagents take on part of a job, and other agents can ask yours questions over A2A, on your machine, with a token.</p>
-      <p class="row"><a class="btn btn-ghost" href="guide.html#agent">Try the agent TUI</a> <a class="btn btn-ghost" href="architecture.html#agent">How it is built</a></p>
+      <p class="row"><a class="btn btn-ghost" href="guide#agent">Try the agent TUI</a> <a class="btn btn-ghost" href="architecture#agent">How it is built</a></p>
     </div>
     <figure class="shot"><img src="assets/media/screens/hero-agent-agents-table.webp" width="1720" height="418" loading="lazy" decoding="async" alt="The /agents screen: the A2A server is serving, four configured subagents, and a table with the team_docs call finished ok in 12.51 seconds with 1663 tokens."></figure>
   </div>
@@ -426,9 +426,9 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
   <div class="wrap stack">
     <h2 class="sr-only" id="next-title">Keep reading</h2>
     <div class="next-up">
-      <a class="next-card" href="architecture.html"><span>Architecture</span><strong>What each part does</strong><p>The agent loop, the four engines, document search, telemetry and device routing, animated.</p></a>
-      <a class="next-card" href="guide.html"><span>Guide</span><strong>From pip install to your first answer</strong><p>Every command in order, the anatomy of workflow.yml, and how to add an MCP tool.</p></a>
-      <a class="next-card" href="codebase.html"><span>Codebase</span><strong>A map of every module</strong><p>Click any file in the ovat package to see what it does, why, and where it lives on GitHub.</p></a>
+      <a class="next-card" href="architecture"><span>Architecture</span><strong>What each part does</strong><p>The agent loop, the four engines, document search, telemetry and device routing, animated.</p></a>
+      <a class="next-card" href="guide"><span>Guide</span><strong>From pip install to your first answer</strong><p>Every command in order, the anatomy of workflow.yml, and how to add an MCP tool.</p></a>
+      <a class="next-card" href="codebase"><span>Codebase</span><strong>A map of every module</strong><p>Click any file in the ovat package to see what it does, why, and where it lives on GitHub.</p></a>
     </div>
   </div>
 </section>
@@ -437,7 +437,7 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="foot-logo" href="index.html" aria-label="OVAT Navigate, home">
+        <a class="foot-logo" href="./" aria-label="OVAT Navigate, home">
           <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
           <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
         </a>
@@ -453,10 +453,10 @@ messages = [{<span class="s">"role"</span>: <span class="s">"user"</span>, <span
       <div>
         <h2>This site</h2>
         <ul>
-          <li><a href="architecture.html">Architecture</a></li>
-          <li><a href="guide.html">Guide</a></li>
-          <li><a href="results.html">Measured results</a></li>
-          <li><a href="codebase.html">Codebase map</a></li>
+          <li><a href="architecture">Architecture</a></li>
+          <li><a href="guide">Guide</a></li>
+          <li><a href="results">Measured results</a></li>
+          <li><a href="codebase">Codebase map</a></li>
         </ul>
       </div>
       <div>

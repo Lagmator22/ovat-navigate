@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" width="880" height="400" role="img" aria-labelledby="tdevices ddevices">
+<title id="tdevices">Device routing</title><desc id="ddevices">On an AI PC the agent model and vision go to the GPU, embeddings to the NPU, and speech to text to the CPU. With only a CPU, everything runs on the CPU.</desc>
+<defs><radialGradient id="bgdevices" cx="0.12" cy="0" r="1.1"><stop offset="0" stop-color="#1f2236"/><stop offset="0.7" stop-color="#161826"/></radialGradient><linearGradient id="ruledevices" x1="0" x2="1"><stop offset="0" stop-color="#3f424d" stop-opacity="0"/><stop offset="0.08" stop-color="#3f424d"/><stop offset="0.92" stop-color="#3f424d"/><stop offset="1" stop-color="#3f424d" stop-opacity="0"/></linearGradient><pattern id="dpdevices" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.9" fill="#262836"/></pattern><marker id="ahdevices" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.5L8.5 5L1 8.5" fill="none" stroke="#75798c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>@keyframes k0{0%{stroke-dashoffset:108;opacity:1}0.000%{stroke-dashoffset:108;opacity:1}4.360%{stroke-dashoffset:0}98.256%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr0{animation:k0 17.2s linear infinite}
+@keyframes k1{0%{stroke-dashoffset:46;opacity:0}0.000%{stroke-dashoffset:46;opacity:0}0.116%{opacity:1}4.360%{stroke-dashoffset:-108;opacity:1}4.651%{stroke-dashoffset:-108;opacity:0}100%{stroke-dashoffset:-108;opacity:0}}.cm0{animation:k1 17.2s linear infinite}
+@keyframes k2{0%{stroke-dashoffset:108;opacity:1}17.442%{stroke-dashoffset:108;opacity:1}21.802%{stroke-dashoffset:0}98.256%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr1{animation:k2 17.2s linear infinite}
+@keyframes k3{0%{stroke-dashoffset:46;opacity:0}17.442%{stroke-dashoffset:46;opacity:0}17.558%{opacity:1}21.802%{stroke-dashoffset:-108;opacity:1}22.093%{stroke-dashoffset:-108;opacity:0}100%{stroke-dashoffset:-108;opacity:0}}.cm1{animation:k3 17.2s linear infinite}
+@keyframes k4{0%{stroke-dashoffset:108;opacity:1}34.884%{stroke-dashoffset:108;opacity:1}39.244%{stroke-dashoffset:0}98.256%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr2{animation:k4 17.2s linear infinite}
+@keyframes k5{0%{stroke-dashoffset:46;opacity:0}34.884%{stroke-dashoffset:46;opacity:0}35.000%{opacity:1}39.244%{stroke-dashoffset:-108;opacity:1}39.535%{stroke-dashoffset:-108;opacity:0}100%{stroke-dashoffset:-108;opacity:0}}.cm2{animation:k5 17.2s linear infinite}
+@keyframes k6{0%{stroke-dashoffset:108;opacity:1}52.326%{stroke-dashoffset:108;opacity:1}56.686%{stroke-dashoffset:0}98.256%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr3{animation:k6 17.2s linear infinite}
+@keyframes k7{0%{stroke-dashoffset:46;opacity:0}52.326%{stroke-dashoffset:46;opacity:0}52.442%{opacity:1}56.686%{stroke-dashoffset:-108;opacity:1}56.977%{stroke-dashoffset:-108;opacity:0}100%{stroke-dashoffset:-108;opacity:0}}.cm3{animation:k7 17.2s linear infinite}
+@keyframes k8{0%{opacity:0}3.488%{opacity:0}5.233%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vllm{animation:k8 17.2s linear infinite}
+@keyframes k9{0%{opacity:0}3.488%{opacity:0}5.233%{opacity:1}15.698%{opacity:1}17.442%{opacity:0}100%{opacity:0}}.allm{animation:k9 17.2s linear infinite}
+@keyframes k10{0%{opacity:0}20.930%{opacity:0}22.674%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vvis{animation:k10 17.2s linear infinite}
+@keyframes k11{0%{opacity:0}20.930%{opacity:0}22.674%{opacity:1}33.140%{opacity:1}34.884%{opacity:0}100%{opacity:0}}.avis{animation:k11 17.2s linear infinite}
+@keyframes k12{0%{opacity:0}38.372%{opacity:0}40.116%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vemb{animation:k12 17.2s linear infinite}
+@keyframes k13{0%{opacity:0}38.372%{opacity:0}40.116%{opacity:1}50.581%{opacity:1}52.326%{opacity:0}100%{opacity:0}}.aemb{animation:k13 17.2s linear infinite}
+@keyframes k14{0%{opacity:0}55.814%{opacity:0}57.558%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vasr{animation:k14 17.2s linear infinite}
+@keyframes k15{0%{opacity:0}55.814%{opacity:0}57.558%{opacity:1}68.023%{opacity:1}69.767%{opacity:0}100%{opacity:0}}.aasr{animation:k15 17.2s linear infinite}
+@keyframes k16{0%{opacity:0}3.488%{opacity:0}5.233%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vgpu{animation:k16 17.2s linear infinite}
+@keyframes k17{0%{opacity:0}3.488%{opacity:0}5.233%{opacity:1}15.698%{opacity:1}17.442%{opacity:0}20.930%{opacity:0}22.674%{opacity:1}33.140%{opacity:1}34.884%{opacity:0}100%{opacity:0}}.agpu{animation:k17 17.2s linear infinite}
+@keyframes k18{0%{opacity:0}38.372%{opacity:0}40.116%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vnpu{animation:k18 17.2s linear infinite}
+@keyframes k19{0%{opacity:0}38.372%{opacity:0}40.116%{opacity:1}50.581%{opacity:1}52.326%{opacity:0}100%{opacity:0}}.anpu{animation:k19 17.2s linear infinite}
+@keyframes k20{0%{opacity:0}55.814%{opacity:0}57.558%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vcpu{animation:k20 17.2s linear infinite}
+@keyframes k21{0%{opacity:0}55.814%{opacity:0}57.558%{opacity:1}68.023%{opacity:1}69.767%{opacity:0}100%{opacity:0}}.acpu{animation:k21 17.2s linear infinite}
+@keyframes k22{0%{opacity:0}69.767%{opacity:0}71.512%{opacity:1}98.256%{opacity:1}100%{opacity:0}}.vall{animation:k22 17.2s linear infinite}
+@keyframes k23{0%{opacity:0}69.767%{opacity:0}71.512%{opacity:1}96.512%{opacity:1}98.256%{opacity:0}100%{opacity:0}}.aall{animation:k23 17.2s linear infinite}
+@keyframes k24{0%{opacity:0}0.000%{opacity:0}1.744%{opacity:1}15.698%{opacity:1}17.442%{opacity:0}100%{opacity:0}}.tk0{animation:k24 17.2s linear infinite}
+@keyframes k25{0%{opacity:0}0.000%{opacity:0}1.744%{opacity:1}15.698%{opacity:1}17.442%{opacity:0}100%{opacity:0}}.cp0{animation:k25 17.2s linear infinite}
+@keyframes k26{0%{opacity:0}17.442%{opacity:0}19.186%{opacity:1}33.140%{opacity:1}34.884%{opacity:0}100%{opacity:0}}.tk1{animation:k26 17.2s linear infinite}
+@keyframes k27{0%{opacity:0}17.442%{opacity:0}19.186%{opacity:1}33.140%{opacity:1}34.884%{opacity:0}100%{opacity:0}}.cp1{animation:k27 17.2s linear infinite}
+@keyframes k28{0%{opacity:0}34.884%{opacity:0}36.628%{opacity:1}50.581%{opacity:1}52.326%{opacity:0}100%{opacity:0}}.tk2{animation:k28 17.2s linear infinite}
+@keyframes k29{0%{opacity:0}34.884%{opacity:0}36.628%{opacity:1}50.581%{opacity:1}52.326%{opacity:0}100%{opacity:0}}.cp2{animation:k29 17.2s linear infinite}
+@keyframes k30{0%{opacity:0}52.326%{opacity:0}54.070%{opacity:1}68.023%{opacity:1}69.767%{opacity:0}100%{opacity:0}}.tk3{animation:k30 17.2s linear infinite}
+@keyframes k31{0%{opacity:0}52.326%{opacity:0}54.070%{opacity:1}68.023%{opacity:1}69.767%{opacity:0}100%{opacity:0}}.cp3{animation:k31 17.2s linear infinite}
+@keyframes k32{0%{opacity:0}69.767%{opacity:0}71.512%{opacity:1}98.256%{opacity:1}100.000%{opacity:0}100%{opacity:0}}.tk4{animation:k32 17.2s linear infinite}
+@keyframes k33{0%{opacity:0}69.767%{opacity:0}71.512%{opacity:1}98.256%{opacity:1}100.000%{opacity:0}100%{opacity:0}}.cp4{animation:k33 17.2s linear infinite}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}.v{opacity:1!important}.cap,.cmt{opacity:0!important}.sum{opacity:1!important}.tr{stroke-dashoffset:0!important}}</style>
+<rect x="0.5" y="0.5" width="879" height="399" rx="8" fill="url(#bgdevices)" stroke="#292b31"/>
+<rect x="12" y="48" width="856" height="292" fill="url(#dpdevices)"/>
+<text x="28" y="34" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.14em" fill="#9184d9">OVAT</text>
+<text x="72" y="34" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.14em" fill="#b2b6ca">WHICH DEVICE RUNS WHAT</text>
+<rect x="24" y="64" width="520" height="268" rx="8" fill="#1b1d2b" stroke="#3f424d" stroke-width="0.8" stroke-dasharray="1 3"/>
+<text x="36" y="82" style="font:500 10.5px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.12em" fill="#9397ab">INTEL AI PC: CPU + GPU + NPU</text>
+<rect x="560" y="64" width="300" height="268" rx="8" fill="#1b1d2b" stroke="#3f424d" stroke-width="0.8" stroke-dasharray="1 3"/>
+<text x="572" y="82" style="font:500 10.5px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.12em" fill="#9397ab">CPU ONLY: A MAC, A DEV LAPTOP</text>
+<path d="M226 120 L330 119.92" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahdevices)"/>
+<path d="M226 176 L330 176.08" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahdevices)"/>
+<path d="M226 232 L330 232" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahdevices)"/>
+<path d="M226 288 L330 288" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahdevices)"/>
+<path class="tr tr0" d="M226 120 L330 119.92" fill="none" stroke="#5d5294" stroke-width="1.8" stroke-dasharray="108 108" stroke-dashoffset="108"/>
+<path class="cmt cm0" d="M226 120 L330 119.92" fill="none" stroke="#9184d9" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 174" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr1" d="M226 176 L330 176.08" fill="none" stroke="#5d5294" stroke-width="1.8" stroke-dasharray="108 108" stroke-dashoffset="108"/>
+<path class="cmt cm1" d="M226 176 L330 176.08" fill="none" stroke="#9184d9" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 174" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr2" d="M226 232 L330 232" fill="none" stroke="#5d5294" stroke-width="1.8" stroke-dasharray="108 108" stroke-dashoffset="108"/>
+<path class="cmt cm2" d="M226 232 L330 232" fill="none" stroke="#9184d9" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 174" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr3" d="M226 288 L330 288" fill="none" stroke="#5d5294" stroke-width="1.8" stroke-dasharray="108 108" stroke-dashoffset="108"/>
+<path class="cmt cm3" d="M226 288 L330 288" fill="none" stroke="#9184d9" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 174" stroke-dashoffset="46" opacity="0"/>
+<g>
+<rect x="40" y="96" width="186" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vllm" x="40" y="96" width="186" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="allm" opacity="0"><rect x="40" y="96" width="186" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M40 110 V102 Q40 96 46 96 H56" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="54" y="115.75" style="font:500 14px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;letter-spacing:-.01em" fill="#e9e9ed">Agent model</text>
+<text x="54" y="134.75" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">the LLM, int4</text>
+</g>
+<g>
+<rect x="40" y="152" width="186" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vvis" x="40" y="152" width="186" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="avis" opacity="0"><rect x="40" y="152" width="186" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M40 166 V158 Q40 152 46 152 H56" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="54" y="171.75" style="font:500 14px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;letter-spacing:-.01em" fill="#e9e9ed">Vision</text>
+<text x="54" y="190.75" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">describe_image</text>
+</g>
+<g>
+<rect x="40" y="208" width="186" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vemb" x="40" y="208" width="186" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="aemb" opacity="0"><rect x="40" y="208" width="186" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M40 222 V214 Q40 208 46 208 H56" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="54" y="227.75" style="font:500 14px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;letter-spacing:-.01em" fill="#e9e9ed">Embeddings</text>
+<text x="54" y="246.75" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">bge-small, ~130 MB</text>
+</g>
+<g>
+<rect x="40" y="264" width="186" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vasr" x="40" y="264" width="186" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="aasr" opacity="0"><rect x="40" y="264" width="186" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M40 278 V270 Q40 264 46 264 H56" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="54" y="283.75" style="font:500 14px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;letter-spacing:-.01em" fill="#e9e9ed">Speech to text</text>
+<text x="54" y="302.75" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">whisper, ~80 MB</text>
+</g>
+<g>
+<rect x="330" y="96" width="198" height="104" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vgpu" x="330" y="96" width="198" height="104" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="agpu" opacity="0"><rect x="330" y="96" width="198" height="104" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M330 110 V102 Q330 96 336 96 H346" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="344" y="128.13" style="font:500 15px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#e9e9ed">GPU</text>
+<text x="344" y="147.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">dynamic shapes,</text>
+<text x="344" y="163.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">KV cache, works with</text>
+<text x="344" y="179.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">every export</text>
+</g>
+<g>
+<rect x="330" y="208" width="198" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vnpu" x="330" y="208" width="198" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="anpu" opacity="0"><rect x="330" y="208" width="198" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M330 222 V214 Q330 208 336 208 H346" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="344" y="228.13" style="font:500 15px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#e9e9ed">NPU</text>
+<text x="344" y="247.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">static shape, low power</text>
+</g>
+<g>
+<rect x="330" y="264" width="198" height="48" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vcpu" x="330" y="264" width="198" height="48" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="acpu" opacity="0"><rect x="330" y="264" width="198" height="48" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M330 278 V270 Q330 264 336 264 H346" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="344" y="284.13" style="font:500 15px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#e9e9ed">CPU</text>
+<text x="344" y="303.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">small model, fast enough</text>
+</g>
+<g>
+<rect x="578" y="96" width="264" height="216" rx="6" fill="#232532" stroke="#3f424d" stroke-width="1"/>
+<rect class="v vall" x="578" y="96" width="264" height="216" rx="6" fill="#2b2741" stroke="#5d5294" stroke-width="1.2" opacity="0"/>
+<g class="aall" opacity="0"><rect x="578" y="96" width="264" height="216" rx="6" fill="none" stroke="#9184d9" stroke-width="1.8"/><path d="M578 110 V102 Q578 96 584 96 H594" fill="none" stroke="#9184d9" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="592" y="152.13" style="font:500 15px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#e9e9ed">CPU</text>
+<text x="592" y="171.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">everything runs here</text>
+<text x="592" y="187.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca"></text>
+<text x="592" y="203.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">low-bit weights keep</text>
+<text x="592" y="219.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">the model in RAM</text>
+<text x="592" y="235.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca"></text>
+<text x="592" y="251.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">a device set in</text>
+<text x="592" y="267.13" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#b2b6ca">workflow.yml always wins</text>
+</g>
+<rect x="28" y="346" width="824" height="1" fill="url(#ruledevices)"/>
+<rect x="776" y="370" width="12" height="2" rx="1" fill="#3f424d"/>
+<rect class="tk0" x="776" y="370" width="12" height="2" rx="1" fill="#9184d9" opacity="0"/>
+<g class="cap cp0" opacity="0"><text x="28" y="374" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#9184d9">01 / 05</text><text x="92" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed">On an AI PC the agent model goes to the GPU, which handles dynamic shapes and the KV cache.</text></g>
+<rect x="792" y="370" width="12" height="2" rx="1" fill="#3f424d"/>
+<rect class="tk1" x="792" y="370" width="12" height="2" rx="1" fill="#9184d9" opacity="0"/>
+<g class="cap cp1" opacity="0"><text x="28" y="374" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#9184d9">02 / 05</text><text x="92" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed">Vision follows the LLM. With a unified model it is the same weights.</text></g>
+<rect x="808" y="370" width="12" height="2" rx="1" fill="#3f424d"/>
+<rect class="tk2" x="808" y="370" width="12" height="2" rx="1" fill="#9184d9" opacity="0"/>
+<g class="cap cp2" opacity="0"><text x="28" y="374" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#9184d9">03 / 05</text><text x="92" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed">Embeddings suit the NPU: a small model with a static shape, at low power.</text></g>
+<rect x="824" y="370" width="12" height="2" rx="1" fill="#3f424d"/>
+<rect class="tk3" x="824" y="370" width="12" height="2" rx="1" fill="#9184d9" opacity="0"/>
+<g class="cap cp3" opacity="0"><text x="28" y="374" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#9184d9">04 / 05</text><text x="92" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed">Whisper is small enough that the CPU is fast enough.</text></g>
+<rect x="840" y="370" width="12" height="2" rx="1" fill="#3f424d"/>
+<rect class="tk4" x="840" y="370" width="12" height="2" rx="1" fill="#9184d9" opacity="0"/>
+<g class="cap cp4" opacity="0"><text x="28" y="374" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#9184d9">05 / 05</text><text x="92" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed">With only a CPU, everything runs there. A device set in workflow.yml always wins.</text></g>
+<text class="sum" x="28" y="374" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#e9e9ed" opacity="0">AI PC: LLM and vision on GPU, embeddings on NPU, whisper on CPU. CPU only: everything on CPU.</text>
+</svg>

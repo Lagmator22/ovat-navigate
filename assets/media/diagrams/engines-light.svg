@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" width="880" height="380" role="img" aria-labelledby="tengines dengines">
+<title id="tengines">One config, four agent engines</title><desc id="dengines">agent.type in workflow.yml selects one of four engines: native (built in), react (LangChain), llamaindex or openai-agents. All four talk to the same OVMS server with the same model, tools and endpoint.</desc>
+<defs><radialGradient id="bgengines" cx="0.12" cy="0" r="1.1"><stop offset="0" stop-color="#f9faff"/><stop offset="0.7" stop-color="#f3f5fe"/></radialGradient><linearGradient id="ruleengines" x1="0" x2="1"><stop offset="0" stop-color="#b2b6ca" stop-opacity="0"/><stop offset="0.08" stop-color="#b2b6ca"/><stop offset="0.92" stop-color="#b2b6ca"/><stop offset="1" stop-color="#b2b6ca" stop-opacity="0"/></linearGradient><pattern id="dpengines" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="0.9" fill="#dde0ee"/></pattern><marker id="ahengines" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.5L8.5 5L1 8.5" fill="none" stroke="#75798c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<style>@keyframes k0{0%{stroke-dashoffset:166;opacity:1}14.851%{stroke-dashoffset:166;opacity:1}18.564%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr0{animation:k0 20.2s linear infinite}
+@keyframes k1{0%{stroke-dashoffset:46;opacity:0}14.851%{stroke-dashoffset:46;opacity:0}14.950%{opacity:1}18.564%{stroke-dashoffset:-166;opacity:1}18.812%{stroke-dashoffset:-166;opacity:0}100%{stroke-dashoffset:-166;opacity:0}}.cm0{animation:k1 20.2s linear infinite}
+@keyframes k2{0%{stroke-dashoffset:129.2;opacity:1}14.851%{stroke-dashoffset:129.2;opacity:1}18.564%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr1{animation:k2 20.2s linear infinite}
+@keyframes k3{0%{stroke-dashoffset:46;opacity:0}14.851%{stroke-dashoffset:46;opacity:0}14.950%{opacity:1}18.564%{stroke-dashoffset:-129.2;opacity:1}18.812%{stroke-dashoffset:-129.2;opacity:0}100%{stroke-dashoffset:-129.2;opacity:0}}.cm1{animation:k3 20.2s linear infinite}
+@keyframes k4{0%{stroke-dashoffset:104;opacity:1}29.703%{stroke-dashoffset:104;opacity:1}33.416%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr2{animation:k4 20.2s linear infinite}
+@keyframes k5{0%{stroke-dashoffset:46;opacity:0}29.703%{stroke-dashoffset:46;opacity:0}29.802%{opacity:1}33.416%{stroke-dashoffset:-104;opacity:1}33.663%{stroke-dashoffset:-104;opacity:0}100%{stroke-dashoffset:-104;opacity:0}}.cm2{animation:k5 20.2s linear infinite}
+@keyframes k6{0%{stroke-dashoffset:94.4;opacity:1}29.703%{stroke-dashoffset:94.4;opacity:1}33.416%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr3{animation:k6 20.2s linear infinite}
+@keyframes k7{0%{stroke-dashoffset:46;opacity:0}29.703%{stroke-dashoffset:46;opacity:0}29.802%{opacity:1}33.416%{stroke-dashoffset:-94.4;opacity:1}33.663%{stroke-dashoffset:-94.4;opacity:0}100%{stroke-dashoffset:-94.4;opacity:0}}.cm3{animation:k7 20.2s linear infinite}
+@keyframes k8{0%{stroke-dashoffset:126;opacity:1}44.554%{stroke-dashoffset:126;opacity:1}48.267%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr4{animation:k8 20.2s linear infinite}
+@keyframes k9{0%{stroke-dashoffset:46;opacity:0}44.554%{stroke-dashoffset:46;opacity:0}44.653%{opacity:1}48.267%{stroke-dashoffset:-126;opacity:1}48.515%{stroke-dashoffset:-126;opacity:0}100%{stroke-dashoffset:-126;opacity:0}}.cm4{animation:k9 20.2s linear infinite}
+@keyframes k10{0%{stroke-dashoffset:116.4;opacity:1}44.554%{stroke-dashoffset:116.4;opacity:1}48.267%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr5{animation:k10 20.2s linear infinite}
+@keyframes k11{0%{stroke-dashoffset:46;opacity:0}44.554%{stroke-dashoffset:46;opacity:0}44.653%{opacity:1}48.267%{stroke-dashoffset:-116.4;opacity:1}48.515%{stroke-dashoffset:-116.4;opacity:0}100%{stroke-dashoffset:-116.4;opacity:0}}.cm5{animation:k11 20.2s linear infinite}
+@keyframes k12{0%{stroke-dashoffset:188;opacity:1}59.406%{stroke-dashoffset:188;opacity:1}63.119%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr6{animation:k12 20.2s linear infinite}
+@keyframes k13{0%{stroke-dashoffset:46;opacity:0}59.406%{stroke-dashoffset:46;opacity:0}59.505%{opacity:1}63.119%{stroke-dashoffset:-188;opacity:1}63.366%{stroke-dashoffset:-188;opacity:0}100%{stroke-dashoffset:-188;opacity:0}}.cm6{animation:k13 20.2s linear infinite}
+@keyframes k14{0%{stroke-dashoffset:151.2;opacity:1}59.406%{stroke-dashoffset:151.2;opacity:1}63.119%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr7{animation:k14 20.2s linear infinite}
+@keyframes k15{0%{stroke-dashoffset:46;opacity:0}59.406%{stroke-dashoffset:46;opacity:0}59.505%{opacity:1}63.119%{stroke-dashoffset:-151.2;opacity:1}63.366%{stroke-dashoffset:-151.2;opacity:0}100%{stroke-dashoffset:-151.2;opacity:0}}.cm7{animation:k15 20.2s linear infinite}
+@keyframes k16{0%{stroke-dashoffset:129.2;opacity:1}74.257%{stroke-dashoffset:129.2;opacity:1}77.970%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr8{animation:k16 20.2s linear infinite}
+@keyframes k17{0%{stroke-dashoffset:46;opacity:0}74.257%{stroke-dashoffset:46;opacity:0}74.356%{opacity:1}77.970%{stroke-dashoffset:-129.2;opacity:1}78.218%{stroke-dashoffset:-129.2;opacity:0}100%{stroke-dashoffset:-129.2;opacity:0}}.cm8{animation:k17 20.2s linear infinite}
+@keyframes k18{0%{stroke-dashoffset:94.4;opacity:1}74.257%{stroke-dashoffset:94.4;opacity:1}77.970%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr9{animation:k18 20.2s linear infinite}
+@keyframes k19{0%{stroke-dashoffset:46;opacity:0}74.257%{stroke-dashoffset:46;opacity:0}74.356%{opacity:1}77.970%{stroke-dashoffset:-94.4;opacity:1}78.218%{stroke-dashoffset:-94.4;opacity:0}100%{stroke-dashoffset:-94.4;opacity:0}}.cm9{animation:k19 20.2s linear infinite}
+@keyframes k20{0%{stroke-dashoffset:116.4;opacity:1}74.257%{stroke-dashoffset:116.4;opacity:1}77.970%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr10{animation:k20 20.2s linear infinite}
+@keyframes k21{0%{stroke-dashoffset:46;opacity:0}74.257%{stroke-dashoffset:46;opacity:0}74.356%{opacity:1}77.970%{stroke-dashoffset:-116.4;opacity:1}78.218%{stroke-dashoffset:-116.4;opacity:0}100%{stroke-dashoffset:-116.4;opacity:0}}.cm10{animation:k21 20.2s linear infinite}
+@keyframes k22{0%{stroke-dashoffset:151.2;opacity:1}74.257%{stroke-dashoffset:151.2;opacity:1}77.970%{stroke-dashoffset:0}98.515%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}.tr11{animation:k22 20.2s linear infinite}
+@keyframes k23{0%{stroke-dashoffset:46;opacity:0}74.257%{stroke-dashoffset:46;opacity:0}74.356%{opacity:1}77.970%{stroke-dashoffset:-151.2;opacity:1}78.218%{stroke-dashoffset:-151.2;opacity:0}100%{stroke-dashoffset:-151.2;opacity:0}}.cm11{animation:k23 20.2s linear infinite}
+@keyframes k24{0%{opacity:0}0.000%{opacity:0}1.485%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.vyaml{animation:k24 20.2s linear infinite}
+@keyframes k25{0%{opacity:0}0.000%{opacity:0}1.485%{opacity:1}13.366%{opacity:1}14.851%{opacity:0}100%{opacity:0}}.ayaml{animation:k25 20.2s linear infinite}
+@keyframes k26{0%{opacity:0}17.822%{opacity:0}19.307%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.vnative{animation:k26 20.2s linear infinite}
+@keyframes k27{0%{opacity:0}17.822%{opacity:0}19.307%{opacity:1}28.218%{opacity:1}29.703%{opacity:0}100%{opacity:0}}.anative{animation:k27 20.2s linear infinite}
+@keyframes k28{0%{opacity:0}32.673%{opacity:0}34.158%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.vreact{animation:k28 20.2s linear infinite}
+@keyframes k29{0%{opacity:0}32.673%{opacity:0}34.158%{opacity:1}43.069%{opacity:1}44.554%{opacity:0}100%{opacity:0}}.areact{animation:k29 20.2s linear infinite}
+@keyframes k30{0%{opacity:0}47.525%{opacity:0}49.010%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.vllama{animation:k30 20.2s linear infinite}
+@keyframes k31{0%{opacity:0}47.525%{opacity:0}49.010%{opacity:1}57.921%{opacity:1}59.406%{opacity:0}100%{opacity:0}}.allama{animation:k31 20.2s linear infinite}
+@keyframes k32{0%{opacity:0}62.376%{opacity:0}63.861%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.voai{animation:k32 20.2s linear infinite}
+@keyframes k33{0%{opacity:0}62.376%{opacity:0}63.861%{opacity:1}72.772%{opacity:1}74.257%{opacity:0}100%{opacity:0}}.aoai{animation:k33 20.2s linear infinite}
+@keyframes k34{0%{opacity:0}17.822%{opacity:0}19.307%{opacity:1}98.515%{opacity:1}100%{opacity:0}}.vovms{animation:k34 20.2s linear infinite}
+@keyframes k35{0%{opacity:0}17.822%{opacity:0}19.307%{opacity:1}28.218%{opacity:1}29.703%{opacity:0}32.673%{opacity:0}34.158%{opacity:1}43.069%{opacity:1}44.554%{opacity:0}47.525%{opacity:0}49.010%{opacity:1}57.921%{opacity:1}59.406%{opacity:0}62.376%{opacity:0}63.861%{opacity:1}72.772%{opacity:1}74.257%{opacity:0}77.228%{opacity:0}78.713%{opacity:1}97.030%{opacity:1}98.515%{opacity:0}100%{opacity:0}}.aovms{animation:k35 20.2s linear infinite}
+@keyframes k36{0%{opacity:0}0.000%{opacity:0}1.485%{opacity:1}13.366%{opacity:1}14.851%{opacity:0}100%{opacity:0}}.tk0{animation:k36 20.2s linear infinite}
+@keyframes k37{0%{opacity:0}0.000%{opacity:0}1.485%{opacity:1}13.366%{opacity:1}14.851%{opacity:0}100%{opacity:0}}.cp0{animation:k37 20.2s linear infinite}
+@keyframes k38{0%{opacity:0}14.851%{opacity:0}16.337%{opacity:1}28.218%{opacity:1}29.703%{opacity:0}100%{opacity:0}}.tk1{animation:k38 20.2s linear infinite}
+@keyframes k39{0%{opacity:0}14.851%{opacity:0}16.337%{opacity:1}28.218%{opacity:1}29.703%{opacity:0}100%{opacity:0}}.cp1{animation:k39 20.2s linear infinite}
+@keyframes k40{0%{opacity:0}29.703%{opacity:0}31.188%{opacity:1}43.069%{opacity:1}44.554%{opacity:0}100%{opacity:0}}.tk2{animation:k40 20.2s linear infinite}
+@keyframes k41{0%{opacity:0}29.703%{opacity:0}31.188%{opacity:1}43.069%{opacity:1}44.554%{opacity:0}100%{opacity:0}}.cp2{animation:k41 20.2s linear infinite}
+@keyframes k42{0%{opacity:0}44.554%{opacity:0}46.040%{opacity:1}57.921%{opacity:1}59.406%{opacity:0}100%{opacity:0}}.tk3{animation:k42 20.2s linear infinite}
+@keyframes k43{0%{opacity:0}44.554%{opacity:0}46.040%{opacity:1}57.921%{opacity:1}59.406%{opacity:0}100%{opacity:0}}.cp3{animation:k43 20.2s linear infinite}
+@keyframes k44{0%{opacity:0}59.406%{opacity:0}60.891%{opacity:1}72.772%{opacity:1}74.257%{opacity:0}100%{opacity:0}}.tk4{animation:k44 20.2s linear infinite}
+@keyframes k45{0%{opacity:0}59.406%{opacity:0}60.891%{opacity:1}72.772%{opacity:1}74.257%{opacity:0}100%{opacity:0}}.cp4{animation:k45 20.2s linear infinite}
+@keyframes k46{0%{opacity:0}74.257%{opacity:0}75.743%{opacity:1}98.515%{opacity:1}100.000%{opacity:0}100%{opacity:0}}.tk5{animation:k46 20.2s linear infinite}
+@keyframes k47{0%{opacity:0}74.257%{opacity:0}75.743%{opacity:1}98.515%{opacity:1}100.000%{opacity:0}100%{opacity:0}}.cp5{animation:k47 20.2s linear infinite}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}.v{opacity:1!important}.cap,.cmt{opacity:0!important}.sum{opacity:1!important}.tr{stroke-dashoffset:0!important}}</style>
+<rect x="0.5" y="0.5" width="879" height="379" rx="8" fill="url(#bgengines)" stroke="#cfd3e5"/>
+<rect x="12" y="48" width="856" height="272" fill="url(#dpengines)"/>
+<text x="28" y="34" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.14em" fill="#796cbf">OVAT</text>
+<text x="72" y="34" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.14em" fill="#595d6c">ONE CONFIG, FOUR ENGINES</text>
+<path d="M210 178 L240 178 Q250 178 250 168 L250 106 Q250 96 260 96 L290 96" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M210 178 L240 178 Q250 178 250 168 L250 168 Q250 158 260 158 L290 158" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M210 178 L240 178 Q250 178 250 188 L250 210 Q250 220 260 220 L290 220" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M210 178 L240 178 Q250 178 250 188 L250 272 Q250 282 260 282 L290 282" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M520 96 L552 96 Q562 96 562 106 L562 127.2 Q562 137.2 572 137.2 L604 137.2" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M520 158 L558.8 158 Q562 158 562 161.2 L562 161.2 Q562 164.4 565.2 164.4 L604 164.4" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M520 220 L552 220 Q562 220 562 210 L562 201.6 Q562 191.6 572 191.6 L604 191.6" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path d="M520 282 L552 282 Q562 282 562 272 L562 228.8 Q562 218.8 572 218.8 L604 218.8" fill="none" stroke="#75798c" stroke-width="1.3" marker-end="url(#ahengines)"/>
+<path class="tr tr0" d="M210 178 L240 178 Q250 178 250 168 L250 106 Q250 96 260 96 L290 96" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="166 166" stroke-dashoffset="166"/>
+<path class="cmt cm0" d="M210 178 L240 178 Q250 178 250 168 L250 106 Q250 96 260 96 L290 96" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 232" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr1" d="M520 96 L552 96 Q562 96 562 106 L562 127.2 Q562 137.2 572 137.2 L604 137.2" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="129.2 129.2" stroke-dashoffset="129.2"/>
+<path class="cmt cm1" d="M520 96 L552 96 Q562 96 562 106 L562 127.2 Q562 137.2 572 137.2 L604 137.2" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 195.2" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr2" d="M210 178 L240 178 Q250 178 250 168 L250 168 Q250 158 260 158 L290 158" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="104 104" stroke-dashoffset="104"/>
+<path class="cmt cm2" d="M210 178 L240 178 Q250 178 250 168 L250 168 Q250 158 260 158 L290 158" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 170" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr3" d="M520 158 L558.8 158 Q562 158 562 161.2 L562 161.2 Q562 164.4 565.2 164.4 L604 164.4" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="94.4 94.4" stroke-dashoffset="94.4"/>
+<path class="cmt cm3" d="M520 158 L558.8 158 Q562 158 562 161.2 L562 161.2 Q562 164.4 565.2 164.4 L604 164.4" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 160.4" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr4" d="M210 178 L240 178 Q250 178 250 188 L250 210 Q250 220 260 220 L290 220" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="126 126" stroke-dashoffset="126"/>
+<path class="cmt cm4" d="M210 178 L240 178 Q250 178 250 188 L250 210 Q250 220 260 220 L290 220" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 192" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr5" d="M520 220 L552 220 Q562 220 562 210 L562 201.6 Q562 191.6 572 191.6 L604 191.6" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="116.4 116.4" stroke-dashoffset="116.4"/>
+<path class="cmt cm5" d="M520 220 L552 220 Q562 220 562 210 L562 201.6 Q562 191.6 572 191.6 L604 191.6" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 182.4" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr6" d="M210 178 L240 178 Q250 178 250 188 L250 272 Q250 282 260 282 L290 282" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="188 188" stroke-dashoffset="188"/>
+<path class="cmt cm6" d="M210 178 L240 178 Q250 178 250 188 L250 272 Q250 282 260 282 L290 282" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 254" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr7" d="M520 282 L552 282 Q562 282 562 272 L562 228.8 Q562 218.8 572 218.8 L604 218.8" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="151.2 151.2" stroke-dashoffset="151.2"/>
+<path class="cmt cm7" d="M520 282 L552 282 Q562 282 562 272 L562 228.8 Q562 218.8 572 218.8 L604 218.8" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 217.2" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr8" d="M520 96 L552 96 Q562 96 562 106 L562 127.2 Q562 137.2 572 137.2 L604 137.2" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="129.2 129.2" stroke-dashoffset="129.2"/>
+<path class="cmt cm8" d="M520 96 L552 96 Q562 96 562 106 L562 127.2 Q562 137.2 572 137.2 L604 137.2" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 195.2" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr9" d="M520 158 L558.8 158 Q562 158 562 161.2 L562 161.2 Q562 164.4 565.2 164.4 L604 164.4" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="94.4 94.4" stroke-dashoffset="94.4"/>
+<path class="cmt cm9" d="M520 158 L558.8 158 Q562 158 562 161.2 L562 161.2 Q562 164.4 565.2 164.4 L604 164.4" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 160.4" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr10" d="M520 220 L552 220 Q562 220 562 210 L562 201.6 Q562 191.6 572 191.6 L604 191.6" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="116.4 116.4" stroke-dashoffset="116.4"/>
+<path class="cmt cm10" d="M520 220 L552 220 Q562 220 562 210 L562 201.6 Q562 191.6 572 191.6 L604 191.6" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 182.4" stroke-dashoffset="46" opacity="0"/>
+<path class="tr tr11" d="M520 282 L552 282 Q562 282 562 272 L562 228.8 Q562 218.8 572 218.8 L604 218.8" fill="none" stroke="#b5abfc" stroke-width="1.8" stroke-dasharray="151.2 151.2" stroke-dashoffset="151.2"/>
+<path class="cmt cm11" d="M520 282 L552 282 Q562 282 562 272 L562 228.8 Q562 218.8 572 218.8 L604 218.8" fill="none" stroke="#796cbf" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="46 217.2" stroke-dashoffset="46" opacity="0"/>
+<g>
+<rect x="24" y="130" width="186" height="96" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v vyaml" x="24" y="130" width="186" height="96" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="ayaml" opacity="0"><rect x="24" y="130" width="186" height="96" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M24 144 V136 Q24 130 30 130 H40" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="38" y="165.38" style="font:500 13px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#292b31">workflow.yml</text>
+<text x="38" y="184.38" style="font:400 11.5px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace" fill="#5d5294">agent:</text>
+<text x="38" y="200.38" style="font:400 11.5px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace" fill="#5d5294">  type: native</text>
+</g>
+<g>
+<rect x="290" y="70" width="230" height="52" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v vnative" x="290" y="70" width="230" height="52" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="anative" opacity="0"><rect x="290" y="70" width="230" height="52" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M290 84 V76 Q290 70 296 70 H306" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="304" y="91.38" style="font:500 13px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#292b31">native</text>
+<text x="304" y="110.38" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">OVAT's own loop, no extras</text>
+</g>
+<g>
+<rect x="290" y="132" width="230" height="52" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v vreact" x="290" y="132" width="230" height="52" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="areact" opacity="0"><rect x="290" y="132" width="230" height="52" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M290 146 V138 Q290 132 296 132 H306" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="304" y="153.38" style="font:500 13px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#292b31">react</text>
+<text x="304" y="172.38" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">LangChain</text>
+</g>
+<g>
+<rect x="290" y="194" width="230" height="52" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v vllama" x="290" y="194" width="230" height="52" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="allama" opacity="0"><rect x="290" y="194" width="230" height="52" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M290 208 V200 Q290 194 296 194 H306" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="304" y="215.38" style="font:500 13px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#292b31">llamaindex</text>
+<text x="304" y="234.38" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">LlamaIndex FunctionAgent</text>
+</g>
+<g>
+<rect x="290" y="256" width="230" height="52" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v voai" x="290" y="256" width="230" height="52" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="aoai" opacity="0"><rect x="290" y="256" width="230" height="52" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M290 270 V262 Q290 256 296 256 H306" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="304" y="277.38" style="font:500 13px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:0" fill="#292b31">openai-agents</text>
+<text x="304" y="296.38" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">OpenAI Agents SDK</text>
+</g>
+<g>
+<rect x="604" y="110" width="256" height="136" rx="6" fill="#f9faff" stroke="#b2b6ca" stroke-width="1"/>
+<rect class="v vovms" x="604" y="110" width="256" height="136" rx="6" fill="#e7e5fe" stroke="#b5abfc" stroke-width="1.2" opacity="0"/>
+<g class="aovms" opacity="0"><rect x="604" y="110" width="256" height="136" rx="6" fill="none" stroke="#796cbf" stroke-width="1.8"/><path d="M604 124 V116 Q604 110 610 110 H620" fill="none" stroke="#796cbf" stroke-width="3.5" stroke-linecap="square"/></g>
+<text x="618" y="147.75" style="font:500 10px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.12em" fill="#75798c">SAME FOR ALL FOUR</text>
+<text x="618" y="165.25" style="font:500 14px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;letter-spacing:-.01em" fill="#292b31">OVMS  /v3</text>
+<text x="618" y="184.25" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">the same server and model</text>
+<text x="618" y="200.25" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">the same tools</text>
+<text x="618" y="216.25" style="font:400 12.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#595d6c">tokens recorded on every reply</text>
+</g>
+<rect x="28" y="326" width="824" height="1" fill="url(#ruleengines)"/>
+<rect x="760" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk0" x="760" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp0" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">01 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">agent.type is the one line that picks the engine. Tools and prompt stay as they are.</text></g>
+<rect x="776" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk1" x="776" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp1" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">02 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">native: OVAT's own loop. It needs nothing extra.</text></g>
+<rect x="792" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk2" x="792" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp2" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">03 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">react: the same agent, run through LangChain.</text></g>
+<rect x="808" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk3" x="808" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp3" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">04 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">llamaindex: the same agent, run through LlamaIndex.</text></g>
+<rect x="824" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk4" x="824" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp4" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">05 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">openai-agents: the OpenAI Agents SDK, pointed at the local server, not OpenAI's.</text></g>
+<rect x="840" y="350" width="12" height="2" rx="1" fill="#b2b6ca"/>
+<rect class="tk5" x="840" y="350" width="12" height="2" rx="1" fill="#796cbf" opacity="0"/>
+<g class="cap cp5" opacity="0"><text x="28" y="354" style="font:500 11px ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, 'Liberation Mono', monospace;letter-spacing:.06em" fill="#796cbf">06 / 06</text><text x="92" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31">All four use the same server and model. ovat bench runs them side by side.</text></g>
+<text class="sum" x="28" y="354" style="font:400 13.5px Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" fill="#292b31" opacity="0">agent.type picks native, react, llamaindex or openai-agents. Same server, model and tools for all four.</text>
+</svg>

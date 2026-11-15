@@ -22,9 +22,23 @@
     syncToggle();
     toggle.addEventListener("click", function () {
       var next = currentTheme() === "light" ? "dark" : "light";
-      root.setAttribute("data-theme", next);
-      try { window.localStorage.setItem("ovat-theme", next); } catch (e) { /* ignore */ }
-      syncToggle();
+      function apply() {
+        root.setAttribute("data-theme", next);
+        try { window.localStorage.setItem("ovat-theme", next); } catch (e) { /* ignore */ }
+        syncToggle();
+      }
+      /* A slow cross-fade between the two themes. Browsers without view
+         transitions fade the colours through CSS instead. */
+      if (reduceMotion) { apply(); return; }
+      root.classList.add("theming");
+      var end = function () { root.classList.remove("theming"); };
+      if (document.startViewTransition) {
+        var vt = document.startViewTransition(apply);
+        vt.finished.then(end, end);
+      } else {
+        apply();
+        window.setTimeout(end, 700);
+      }
     });
   }
 

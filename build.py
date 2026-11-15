@@ -76,6 +76,8 @@ def header(nav_key: str) -> str:
       <a class="icon-btn" href="{REPO}" rel="noopener" aria-label="OVAT on GitHub">{ICON_GH}</a>
     </div>
   </div>
+  <div class="track" aria-hidden="true"></div>
+  <canvas class="sprite walker" width="16" height="16" data-robot aria-hidden="true"></canvas>
 </header>"""
 
 
@@ -87,7 +89,7 @@ FOOTER = f"""<footer class="foot">
           <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
           <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
         </a>
-        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by <a href="https://gurman.is-a.dev/" rel="noopener">Gurman Singh</a> (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
         <div class="made-for">
           <picture>
             <source srcset="assets/media/intel-static.png" media="(prefers-reduced-motion: reduce)">
@@ -152,7 +154,8 @@ def page(body: str, meta: dict, filename: str) -> str:
 <meta http-equiv="Content-Security-Policy" content="{CSP}">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#070a10">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111216" media="(prefers-color-scheme: dark)">
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
@@ -162,11 +165,12 @@ def page(body: str, meta: dict, filename: str) -> str:
 <meta property="og:url" content="{canonical}">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css?v={_v("assets/css/site.css")}">
 <script src="assets/js/theme.js?v={_v("assets/js/theme.js")}"></script>
-<script src="assets/js/site.js?v={_v("assets/js/site.js")}" defer></script>{scripts}
+<script src="assets/js/site.js?v={_v("assets/js/site.js")}" defer></script>
+<script src="assets/js/motion.js?v={_v("assets/js/motion.js")}" defer></script>{scripts}
 </head>
 <body class="sheet">
 {header(meta.get("nav", "none"))}

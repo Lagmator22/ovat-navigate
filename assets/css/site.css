@@ -2,40 +2,28 @@
 
    Design system
    -------------
-   Layout concept: a signal schematic. A dark, blue-biased sheet with hairline
-   rules; diagrams are drawn as wiring; the only bright colour is the "live
-   signal" (cyan) travelling along it. Intel energy blue is structure, not
-   decoration.
+   The same language as gurman.is-a.dev: a quiet sheet of paper or ink,
+   hairline rules, square corners, one typeface for words and one for code.
+   Colour is spent only where something is happening: the signal travelling
+   through a diagram, a tool running, an answer coming back.
 
-   Colour comes from OVAT's own PALETTE (ovat/cli/ui.py): blue #0068B5,
-   cyan #00C7FD, purple #8F5CFF, ok #3DD68C, warn #FFC107, fail #FF5C5C,
-   dim #7A8CA0. Purple is reserved for "a tool is running".
+   Colour: neutrals with a faint violet bias, and a violet signal. Both come
+   from the drawn diagrams in assets/media/diagrams, so page and figures match.
+   Blue is reserved for "a tool is running", green for "done".
 
-   Type: Bricolage Grotesque (display, optical sizes), Geist (body),
-   Intel One Mono (code, labels, data). All self-hosted, OFL 1.1.
+   Type: IBM Plex Sans (words) and Intel One Mono (code, labels, data).
+   Both self-hosted, OFL 1.1.
 
    Spacing scale: 4 8 12 16 24 32 48 64 96 128 (px)
-   Radius: 6 (chips, buttons) and 12 (panels). Borders are 1px hairlines.
-   Motion: one travelling signal per diagram, 160 to 260ms UI transitions,
-   standard ease cubic-bezier(.2,.7,.2,1). Everything has a still state.
+   Radius: none. Borders are 1px hairlines. No drop shadows.
+   Motion: titles rise word by word, sections fade up once as they scroll in,
+   one travelling signal per diagram, a robot walks the reading-progress line.
+   Everything has a still state, and reduced motion turns travel off.
 */
 
-@font-face {
-  font-family: "Bricolage Grotesque";
-  src: url("../fonts/bricolage-grotesque-opsz.woff2") format("woff2-variations"),
-       url("../fonts/bricolage-grotesque-opsz.woff2") format("woff2");
-  font-weight: 200 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Geist";
-  src: url("../fonts/geist-variable.woff2") format("woff2-variations"),
-       url("../fonts/geist-variable.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("../fonts/ibm-plex-sans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
 @font-face {
   font-family: "Intel One Mono";
   src: url("../fonts/intel-one-mono-400.woff2") format("woff2");
@@ -51,38 +39,40 @@
   font-display: swap;
 }
 
-/* Dark first. Light is an opt-in theme (the toggle in the header). */
+/* Dark is what a browser without JavaScript gets. theme.js picks light or
+   dark from the system setting, and a stored choice wins over both. */
 :root {
-  --bg: #070a10;
-  --bg-raised: #0c1119;
-  --bg-sunk: #05070b;
-  --bg-tint: #101827;
-  --line: #1a2332;
-  --line-strong: #2a3850;
-  --fg: #e6edf6;
-  --fg-muted: #9aabc0;
-  --fg-faint: #71839a;
-  --intel: #0068b5;
+  --bg: #111216;
+  --bg-raised: #17181e;
+  --bg-sunk: #0c0d10;
+  --bg-tint: #1d1e27;
+  --line: #24262f;
+  --line-strong: #363947;
+  --fg: #e9e9ed;
+  --fg-muted: #b2b6ca;
+  --fg-faint: #8d91a5;
+  --intel: #5d5294;
   --intel-ink: #ffffff;
-  --signal: #00c7fd;
-  --signal-ink: #5fdcff;
-  --signal-soft: rgba(0, 199, 253, 0.12);
-  --tool: #8f5cff;
-  --tool-ink: #b79bff;
-  --tool-soft: rgba(143, 92, 255, 0.14);
+  --signal: #9184d9;
+  --signal-ink: #b5abfc;
+  --signal-soft: rgba(145, 132, 217, 0.14);
+  --tool: #5b9cf5;
+  --tool-ink: #8fc0ff;
+  --tool-soft: rgba(91, 156, 245, 0.14);
   --ok: #3dd68c;
   --ok-soft: rgba(61, 214, 140, 0.13);
   --warn: #ffc107;
   --warn-soft: rgba(255, 193, 7, 0.12);
   --fail: #ff5c5c;
   --fail-soft: rgba(255, 92, 92, 0.12);
-  --grid: rgba(120, 160, 210, 0.055);
-  --code-bg: #05080d;
-  --term-bg: #04060a;
-  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.75);
+  --grid: transparent;
+  --code-bg: #0b0c10;
+  --term-bg: #0b0c10;
+  --mint: #7cf5c4;
+  --shadow: none;
 
-  --f-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --f-body: "Geist", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-display: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --f-mono: "Intel One Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px;
@@ -91,39 +81,39 @@
   --r-md: 0;
   --gutter: clamp(16px, 4vw, 40px);
   --maxw: 1180px;
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --bg: #f4f6f9;
-  --bg-raised: #ffffff;
-  --bg-sunk: #e9eef4;
-  --bg-tint: #e6eef8;
-  --line: #d9e1eb;
-  --line-strong: #b9c6d6;
-  --fg: #0a1420;
-  --fg-muted: #3f5167;
-  --fg-faint: #56677d;
-  --intel: #0068b5;
+  --bg: #f5f5f7;
+  --bg-raised: #fbfbfd;
+  --bg-sunk: #eeeff3;
+  --bg-tint: #ebecf3;
+  --line: #dfe1ea;
+  --line-strong: #c3c7d5;
+  --fg: #15161b;
+  --fg-muted: #4b4f5c;
+  --fg-faint: #666a7a;
+  --intel: #5d5294;
   --intel-ink: #ffffff;
-  --signal: #0090c8;
-  --signal-ink: #00609a;
-  --signal-soft: rgba(0, 104, 181, 0.09);
-  --tool: #6b3fd9;
-  --tool-ink: #5a2fc4;
-  --tool-soft: rgba(107, 63, 217, 0.1);
+  --signal: #796cbf;
+  --signal-ink: #5d5294;
+  --signal-soft: rgba(121, 108, 191, 0.12);
+  --tool: #2f7fd6;
+  --tool-ink: #1f5fae;
+  --tool-soft: rgba(47, 127, 214, 0.1);
   --ok: #0d7343;
   --ok-soft: rgba(19, 138, 80, 0.11);
   --warn: #855600;
   --warn-soft: rgba(184, 120, 0, 0.12);
   --fail: #c4302d;
   --fail-soft: rgba(196, 48, 45, 0.1);
-  --grid: rgba(0, 70, 140, 0.05);
-  --code-bg: #0b111a;
-  --term-bg: #0b111a;
-  --shadow: 0 30px 70px -36px rgba(10, 30, 60, 0.45);
+  --grid: transparent;
+  --code-bg: #14151b;
+  --term-bg: #14151b;
+  --shadow: none;
   color-scheme: light;
 }
 
@@ -137,7 +127,6 @@ body {
   font-family: var(--f-body);
   font-size: 17px;
   line-height: 1.6;
-  font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -146,7 +135,7 @@ img, svg, video { max-width: 100%; }
 img { height: auto; }
 a { color: var(--signal-ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
-::selection { background: var(--intel); color: #fff; }
+::selection { background: var(--fg); color: var(--bg); }
 :focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 0; }
 [hidden] { display: none !important; }
 p, ul, ol { margin: 0; }
@@ -973,28 +962,6 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
 .compare-col:first-child .code pre { flex: 1; }
 .compare-col .handles { flex: 1; margin-top: var(--s3); align-content: start; }
 
-/* Top menu: a dotted sky-blue frame that glows, with purple text. */
-.nav a {
-  position: relative; border: 1px dotted transparent; padding: 6px 12px;
-  transition: color 180ms var(--ease), background 180ms var(--ease), box-shadow 220ms var(--ease), border-color 180ms, text-shadow 220ms;
-}
-.nav a:hover, .nav a:focus-visible {
-  color: #c9b3ff; background: rgba(0, 199, 253, 0.07); border-color: rgba(0, 199, 253, 0.85);
-  box-shadow: 0 0 0 1px rgba(0, 199, 253, 0.12), 0 0 14px rgba(0, 199, 253, 0.35), inset 0 0 12px rgba(0, 199, 253, 0.12);
-  text-shadow: 0 0 10px rgba(143, 92, 255, 0.85), 0 0 2px rgba(143, 92, 255, 0.6);
-  outline: none;
-}
-.nav a[aria-current="page"] {
-  color: var(--tool-ink); background: transparent; border-color: rgba(0, 199, 253, 0.55); box-shadow: none;
-}
-.nav a[aria-current="page"]::before { content: "#"; color: var(--signal-ink); margin-right: 1px; }
-:root[data-theme="light"] .nav a:hover, :root[data-theme="light"] .nav a:focus-visible {
-  color: #5a2fc4; background: rgba(0, 144, 200, 0.07); border-color: #0090c8;
-  box-shadow: 0 0 12px rgba(0, 144, 200, 0.35), inset 0 0 10px rgba(0, 144, 200, 0.1);
-  text-shadow: 0 0 8px rgba(107, 63, 217, 0.35);
-}
-:root[data-theme="light"] .nav a[aria-current="page"] { border-color: #0090c8; }
-
 /* Brand: the real OVAT mark. */
 .brand-mark-img { width: 28px; height: 28px; display: block; }
 .logo-dark, .logo-light { display: block; }
@@ -1153,10 +1120,6 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
 .anno-notes .key, .anno-notes .txt { transition: color 450ms var(--ease-soft); }
 .toc a { transition: color 450ms var(--ease-soft), border-color 450ms var(--ease-soft); }
 
-/* Menu: the glow eases in over ~350 ms and out a little slower. */
-.nav a { transition: color 450ms var(--ease-soft), background-color 450ms var(--ease-soft), border-color 450ms var(--ease-soft), box-shadow 500ms var(--ease-soft), text-shadow 500ms var(--ease-soft); }
-.nav a:hover, .nav a:focus-visible { transition-duration: 350ms; }
-
 /* Content that appears (terminal lines, tab panels, the module panel)
    fades up instead of popping in. */
 @keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
@@ -1198,3 +1161,159 @@ p > code, li > code, dd > code, .callout code, p span code { white-space: normal
 .shot img.dia-light { display: none; }
 :root[data-theme="light"] .shot img.dia-light { display: block; }
 :root[data-theme="light"] .shot img.dia-dark { display: none; }
+
+/* =====================================================================
+   The portfolio language (gurman.is-a.dev): quiet chrome, Plex type, ink
+   buttons, neutral code panels, a robot on the reading-progress line, and
+   entrance and scroll motion. Tokens at the top carry the colours.
+   ===================================================================== */
+
+/* Type: medium weight, tight tracking, one colour per headline. */
+h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.025em; }
+.display { font-size: clamp(40px, 5.6vw, 80px); font-weight: 500; letter-spacing: -0.035em; line-height: 1.02; }
+.page-hero .display { font-size: clamp(40px, 5.6vw, 76px); }
+.h2 { font-size: clamp(30px, 3.8vw, 46px); letter-spacing: -0.03em; line-height: 1.06; }
+.h4 { font-weight: 500; }
+.figure .big, .flip b, .vbar-val, .next-card strong, .detail-head h2 { font-weight: 500; }
+.dg .t-t { font-weight: 500; }
+.dg .t-big { font-weight: 500; }
+a { color: var(--fg); text-decoration-color: color-mix(in srgb, var(--fg) 35%, transparent); transition: text-decoration-color 200ms; }
+a:hover { text-decoration-thickness: 1px; text-decoration-color: var(--fg); }
+.skip { background: var(--fg); color: var(--bg); }
+.eyebrow::before, .layer-tag b::before, .next-card span::before { color: var(--signal-ink); }
+
+/* Header: no frame, plain words, the current page in ink. */
+.top { border-bottom: 0; background: color-mix(in srgb, var(--bg) 84%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.top-inner { min-height: 68px; }
+.brand-word { font-weight: 500; font-size: 17px; letter-spacing: -0.01em; }
+.nav ul { gap: 24px; justify-content: flex-end; }
+.nav a { padding: 12px 0; border: 0; background: none; box-shadow: none; color: var(--fg-muted); font-size: 15px; transition: color 200ms var(--ease); }
+.nav a:hover, .nav a:focus-visible { color: var(--fg); background: none; }
+.nav a[aria-current="page"] { color: var(--fg); background: none; box-shadow: none; }
+.top-actions { gap: 0; }
+.icon-btn { width: 40px; height: 40px; border: 0; color: var(--fg); }
+.icon-btn:hover { background: none; color: var(--fg-muted); border: 0; }
+#theme-toggle svg { transition: transform 600ms var(--ease); }
+#theme-toggle:hover svg { transform: rotate(30deg); }
+
+/* Reading progress: the header's bottom edge fills as you read, and a robot
+   walks along it. --p (0 to 1) and --track-w come from motion.js. */
+.track { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); pointer-events: none; }
+.track::before { content: ""; position: absolute; inset: 0; background: var(--fg); transform: scaleX(var(--p, 0)); transform-origin: left; }
+.sprite { display: block; width: calc(16 * var(--px)); height: calc(16 * var(--px)); image-rendering: pixelated; image-rendering: crisp-edges; }
+.walker {
+  position: absolute; bottom: 1px; left: 0; --px: 1px; pointer-events: none;
+  opacity: 0; transition: opacity 300ms;
+  transform: translateX(calc(var(--p, 0) * (var(--track-w, 0px) - 16 * var(--px))));
+}
+.top.is-scrolled .walker { opacity: 1; }
+.walker.is-walking { animation: step 240ms steps(1) infinite; }
+@keyframes step { 0%, 49.9% { margin-bottom: 0; } 50%, 100% { margin-bottom: var(--px); } }
+@media (min-resolution: 2dppx) { .walker { --px: 1.5px; } }
+@media (max-width: 880px) { .walker { display: none; } .nav ul { justify-content: flex-start; gap: 20px; } .nav a { padding: 10px 0; } }
+
+/* Buttons: ink, not brand blue. */
+.btn { font-weight: 500; }
+.btn-primary { background: var(--fg); color: var(--bg); }
+.btn-primary:hover { background: color-mix(in srgb, var(--fg) 82%, var(--bg)); }
+.install { background: transparent; }
+.hero::after { display: none; }
+.hero-meta { font-size: 13px; color: var(--fg-muted); }
+.hero-meta i { width: 8px; height: 8px; }
+
+/* Diagrams and charts: flat fills, no dotted backdrop. */
+.diagram-stage { background: var(--bg-sunk); }
+.hbar-fill.hi, .vbar-fill.hi { --fill: var(--signal); }
+.stack-bar .c { background: var(--signal); color: #111216; }
+.steps li.is-current::before { color: #111216; }
+:root[data-theme="light"] .steps li.is-current::before { background: var(--signal-ink); border-color: var(--signal-ink); color: #fff; }
+.steps li.tone-tool.is-current::before { color: #fff; }
+:root[data-theme="light"] .steps li.tone-ok.is-current::before { background: var(--ok); border-color: var(--ok); color: #fff; }
+.dot.same { color: #111216; }
+
+/* Terminal and code: one neutral dark panel in both themes, mint prompt. */
+.term, .code { color: #dcdde3; }
+:root[data-theme="light"] .term, :root[data-theme="light"] .code { border-color: #14151b; }
+.term-bar, .code-head { background: #101116; border-bottom-color: #23252e; color: #8d91a5; }
+.term-dots i { background: #2c2e3a; }
+.term-tab { color: #8d91a5; }
+.term-tab[aria-selected="true"] { color: #ecedf1; border-color: #363947; background: #1a1b22; }
+.term-foot { border-top-color: #23252e; color: #8d91a5; }
+.term-foot button { color: #b2b6ca; }
+.t-prompt { color: var(--mint); }
+.t-caret { background: var(--mint); }
+.t-cmd, .t-bold { color: #f3f3f6; }
+.t-dim { color: #8d91a5; }
+.t-tool { color: #b5abfc; }
+.code-head > span:first-child::before { color: #b5abfc; }
+.code-head .copy-btn { border-color: #363947; color: #8d91a5; }
+.code-head .copy-btn:hover { color: #ecedf1; border-color: #b5abfc; }
+.code .k { color: #b5abfc; }
+.code .s { color: #a5e8c6; }
+.code .c { color: #777b8f; }
+.code .n { color: #ffd479; }
+.code .p { color: var(--mint); }
+.code .f { color: #8fc0ff; }
+.code .w { color: #f3f3f6; }
+.code mark { background: rgba(145, 132, 217, 0.22); box-shadow: 0 0 0 2px rgba(145, 132, 217, 0.22); }
+.anno-line.is-current { background: rgba(145, 132, 217, 0.22); }
+
+/* Entrance. The hero rises once on load with no script needed; titles are
+   split into words by motion.js and rise one by one. */
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes word-rise { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes show-late { from { opacity: 0; } to { opacity: 1; } }
+.js .hero-copy > :not(.display), .js .hero .demo, .js .page-hero .wrap > :not(.display) { animation: rise 900ms var(--ease) both; }
+.js .hero-copy > :nth-child(1), .js .page-hero .wrap > :nth-child(1) { animation-delay: 50ms; }
+.js .hero-copy > :nth-child(2), .js .page-hero .wrap > :nth-child(2) { animation-delay: 150ms; }
+.js .hero-copy > :nth-child(3), .js .page-hero .wrap > :nth-child(3) { animation-delay: 380ms; }
+.js .hero-copy > :nth-child(4), .js .page-hero .wrap > :nth-child(4) { animation-delay: 470ms; }
+.js .hero-copy > :nth-child(5), .js .page-hero .wrap > :nth-child(5) { animation-delay: 560ms; }
+.js .hero .demo { animation-delay: 520ms; }
+/* If motion.js never runs, the title simply appears a moment later. */
+.js .display:not(.is-split) { animation: show-late 10ms 1200ms both; }
+.word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.word > span { display: inline-block; animation: word-rise 900ms var(--ease) both; animation-delay: calc(var(--i, 0) * 55ms); }
+
+/* Scroll reveal: motion.js marks blocks below the fold; each fades up once. */
+.js [data-rv] { opacity: 0; transform: translateY(18px); }
+.js [data-rv].is-in { opacity: 1; transform: none; transition: opacity 800ms var(--ease), transform 800ms var(--ease); }
+
+/* Theme switch: a slow cross-fade. Pages cross-fade into each other too. */
+:root.theming::view-transition-old(root), :root.theming::view-transition-new(root) { animation-duration: 650ms; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+:root.theming *, :root.theming *::before, :root.theming *::after { transition: background-color 650ms ease, color 650ms ease, border-color 650ms ease, fill 650ms ease, stroke 650ms ease !important; }
+@view-transition { navigation: auto; }
+
+/* Labels read as YAML keys: "how-it-works:", not "#how-it-works". The whole
+   tool is one YAML file, so the page is labelled the way that file is. */
+.eyebrow::before, .layer-tag b::before, .next-card span::before, .code-head > span:first-child::before { content: none; }
+.eyebrow::after, .next-card span::after { content: ":"; color: var(--signal-ink); font-weight: 600; }
+.eyebrow { color: var(--fg-muted); }
+
+/* An editor gutter down the left margin of wide screens: a hairline, with
+   each section's number beside it like a line number. */
+main { counter-reset: sec; }
+@media (min-width: 1380px) {
+  main { position: relative; }
+  main::before {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line);
+    left: calc(50% - var(--maxw) / 2 - 32px);
+  }
+  .section > .wrap { position: relative; }
+  .section > .wrap::before {
+    counter-increment: sec; content: counter(sec, decimal-leading-zero);
+    position: absolute; top: 2px; left: calc(var(--gutter) - 82px); width: 36px; text-align: right;
+    font: 12px/1.6 var(--f-mono); color: var(--fg-faint); font-variant-numeric: tabular-nums;
+  }
+}
+
+/* The robot, larger, on the not-found page. */
+.sprite-big { --px: 8px; margin-bottom: var(--s5); animation: bob 1300ms steps(1) infinite; }
+@keyframes bob { 0%, 49.9% { transform: none; } 50%, 100% { transform: translateY(calc(-1 * var(--px))); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .display:not(.is-split) { animation: none; }
+  @view-transition { navigation: none; }
+}
+:root.reduce-motion .js .display:not(.is-split), :root.reduce-motion.js .display:not(.is-split) { animation: none; }
+:root.reduce-motion .walker.is-walking, :root.reduce-motion .sprite-big { animation: none; }

@@ -6,7 +6,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#070a10">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111216" media="(prefers-color-scheme: dark)">
 <title>OVAT Results</title>
 <meta name="description" content="Measured results for OVAT on an Intel LunarLake AI PC: accuracy and memory across OVMS versions, determinism, tuning knobs, KV cache latency, NPU tool calling and how the benchmark keeps engines apart.">
 <link rel="canonical" href="https://lagmator22.github.io/ovat-navigate/results">
@@ -16,11 +17,12 @@
 <meta property="og:url" content="https://lagmator22.github.io/ovat-navigate/results">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="assets/fonts/geist-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/bricolage-grotesque-opsz.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/site.css?v=9125c883">
-<script src="assets/js/theme.js?v=f600b30e"></script>
-<script src="assets/js/site.js?v=70fa122c" defer></script>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css?v=c2ed6f00">
+<script src="assets/js/theme.js?v=ecc038ea"></script>
+<script src="assets/js/site.js?v=73cca493" defer></script>
+<script src="assets/js/motion.js?v=047b006c" defer></script>
 </head>
 <body class="sheet">
 <a class="skip" href="#main">Skip to content</a>
@@ -39,6 +41,8 @@
       <a class="icon-btn" href="https://github.com/Lagmator22/ovat" rel="noopener" aria-label="OVAT on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.7.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1.1 1.5 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 22 12.2C22 6.6 17.5 2 12 2z"/></svg></a>
     </div>
   </div>
+  <div class="track" aria-hidden="true"></div>
+  <canvas class="sprite walker" width="16" height="16" data-robot aria-hidden="true"></canvas>
 </header>
 <main id="main">
 <section class="page-hero">
@@ -316,7 +320,7 @@
           <img class="logo-dark" src="assets/media/ovat-logo-dark.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
           <img class="logo-light" src="assets/media/ovat-logo-light.png" width="900" height="235" alt="OpenVINO Agentic Toolkit for AIPC">
         </a>
-        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by Gurman (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
+        <p class="foot-about">A visual guide to the OpenVINO Agentic Toolkit, a Google Summer of Code 2026 project for OpenVINO by <a href="https://gurman.is-a.dev/" rel="noopener">Gurman Singh</a> (<a href="https://github.com/Lagmator22" rel="noopener">Lagmator22</a>). Every fact here comes from the OVAT source and its design notes.</p>
         <div class="made-for">
           <picture>
             <source srcset="assets/media/intel-static.png" media="(prefers-reduced-motion: reduce)">

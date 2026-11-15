@@ -28,7 +28,7 @@ src/partials/       pieces shared by more than one page
 build.py            wraps every page in the shared header, footer and CSP
 charts.py           draws the SVG charts at build time from real numbers
 assets/css/site.css the whole design system, as tokens at the top
-assets/js/          theme, diagrams (flow.js), terminal replay, codebase map
+assets/js/          theme, motion (motion.js), diagrams (flow.js), terminal replay, codebase map
 assets/fonts/       self-hosted fonts and their licenses
 ```
 
@@ -44,6 +44,19 @@ an en dash or a middle dot.
 
 To preview locally, serve the folder with any static server, for example
 `python3 -m http.server`, and open `http://localhost:8000/`.
+
+## Design
+
+The site shares its look with [gurman.is-a.dev](https://gurman.is-a.dev/): a
+quiet sheet in light or dark (it follows the system setting), hairline rules,
+square corners, IBM Plex Sans for words and Intel One Mono for code. The
+violet signal colour comes from the drawn diagrams. Section labels are written
+as YAML keys, wide screens get an editor-style gutter with section numbers,
+and a small robot walks the reading-progress line under the header.
+
+`assets/js/motion.js` holds the decoration: titles rise word by word, blocks
+fade up once as they scroll in, headline numbers count up. The page is
+complete without it, and reduced motion turns it off.
 
 ## Diagrams
 
@@ -72,7 +85,7 @@ Intel animation plays once instead of looping.
 ## Fonts
 
 Self-hosted under the SIL Open Font License 1.1 (license files in
-`assets/fonts/`): Bricolage Grotesque, Geist and Intel One Mono.
+`assets/fonts/`): IBM Plex Sans and Intel One Mono.
 
 ## License
 
